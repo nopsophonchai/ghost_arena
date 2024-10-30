@@ -3,6 +3,7 @@ from src.Items.Card import Card
 from src.Items.effects import gameEffects
 from src.Items.Item import Item
 from src.Items.Weapon import Weapon
+import random as rd
 
 
 class Player:
@@ -10,19 +11,36 @@ class Player:
         self.damage = 3
         self.health = 10
         self.armor = 0
-        self.items = [Weapon('sword',self.damage)]
+        self.items = {'sword':Weapon('sword',self.damage),'bow':Weapon('bow',self.damage//1.5)}
         self.deck = []
-        self.deck.extend([Card('sword',Weapon('sword',self.damage))]*6)
+        self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6)
+        rd.shuffle(self.deck)
         self.current = []
 
+        self.statusEffects = []
 
     def damageEnemy(self,damage):
         self.health -= (damage - self.armor)
-
+        print(f'Player Damage Taken: {damage}')
     def drawCard(self):
         self.current.append(self.deck.pop())
     
     def addCard(self,card):
-        self.deck.insert(card)
+        self.deck.insert(0,card)
+    
+    def addItem(self,item):
+        self.items[f'{item.name}'] = item
+
+    def useCard(self,card):
+        self.current.remove(card)
+        self.addCard(card)
+    
+    def applyStatEff(self):
+        print('Poison!')
+        for i in self.statusEffects:
+            i.apply(self)
+            if i.duration <= 0:
+                self.statusEffects.remove(i)
+
     
 

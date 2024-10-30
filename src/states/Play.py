@@ -4,6 +4,7 @@ from src.constants import *
 from src.Dependency import *
 from src.resources import *
 from src.Player import Player
+from src.Enemies.GongGoi import GongGoi
 pygame.font.init()
 import random as rd
 gameFont = {
@@ -27,8 +28,10 @@ class Play(BaseState):
         self.turnTimer = 0
 
         self.player = Player()
-        self.enemy = Player()
+        self.enemy = GongGoi('Gong Goi',10,3)
 
+        self.drawCount = 0
+        self.turnCount = 0
 
 
     def Exit(self):
@@ -42,34 +45,49 @@ class Play(BaseState):
 
     def update(self, dt, events):
         if self.turn == 0:
+            if len(self.player.statusEffects) != 0 and self.turnCount < 1:
+                self.player.applyStatEff()
+                self.turnCount = 1
             for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        self.select = (self.select - 1) % len(self.player.current)
+                        self.select = (self.select - 1) % (len(self.player.current) + 1)
+                        print(self.select)
                     if event.key == pygame.K_RIGHT:
-                        self.select = (self.select + 1) % len(self.player.current)
+                        self.select = (self.select + 1) % (len(self.player.current) + 1)
+                        print(self.select)
                     if event.key == pygame.K_RETURN:
                         self.confirm = True
 
             if self.confirm:
                 self.confirm = False
-                self.player.current[self.select].use(self.enemy)
-                self.turn = 1   
+                if self.select == 0 and self.drawCount == 0:
+                    self.player.drawCard()
+                    self.drawCount = 1
+                elif self.drawCount == 1 and self.select == 0:
+                    pass
+                else:
+                    self.player.current[self.select-1].use(self.enemy)
+                    self.player.useCard(self.player.current[self.select-1])
+                    self.turn = 1   
+                    self.turnCount = 0
+                    self.drawCount = 0
+                    if len(self.player.current)==0:
+                        self.select = 0
+                    print("-------Enemy's Turn-------")
         else:
+            if len(self.enemy.statusEffects) != 0 and self.turnCount < 1:
+                self.enemy.applyStatEff()
+                self.turnCount = 1
             self.turnTimer += 1
             if self.turnTimer > 50:
-                self.enemySelect = rd.randint(0,1)
-                match self.enemySelect:
-                    case 0:
-                        self.player.damageEnemy(1)
-                    case 1:
-                        self.enemy.health += 1
+                self.enemy.attack(self.player)
                 self.turn = 0
-                self.turnTimer = 0
-
+                self.turnCount = 0
+                print("-------Player's Turn-------")
                 
 
     def render(self, screen):
@@ -82,8 +100,8 @@ class Play(BaseState):
 
 
         if self.turn == 0:
-            for i in range(len(self.player.current)):
-                if i == self.select:
+            for i in range(0, len(self.player.current)):
+                if i+1 == self.select:
                     t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (0, 123, 255))
                     rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.25))
                     screen.blit(t_title, rect)
@@ -91,4 +109,11 @@ class Play(BaseState):
                     t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (255, 255, 255))
                     rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
                     screen.blit(t_title, rect)
-               
+            if self.select == 0:
+                t_title = gameFont['small'].render("Draw Card", False, (0, 123, 56))
+                rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.25))
+                screen.blit(t_title, rect)
+            else:
+                t_title = gameFont['small'].render("Draw Card", False, (30, 255, 30))
+                rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.125))
+                screen.blit(t_title, rect)

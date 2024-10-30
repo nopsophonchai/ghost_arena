@@ -10,7 +10,7 @@ class Weapon(Item):
 
     def attack(self,target):
         if target:
-            print(target)
+            # print(target)
             target.damageEnemy(self.damage)
     
     def applyEffect(self,target):
