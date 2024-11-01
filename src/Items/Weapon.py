@@ -2,10 +2,11 @@
 from src.Items.Item import Item
 
 class Weapon(Item):
-    def __init__(self,name, damage,effects = None):
+    def __init__(self,name, damage,weaponType, effects = None):
         super().__init__(name)
         self.damage = damage
         self.type = 'Weapon'
+        self.weaponType = weaponType
         self.effects = effects or []
 
     def attack(self,target):

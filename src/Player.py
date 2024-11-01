@@ -11,16 +11,23 @@ class Player:
         self.damage = 3
         self.health = 10
         self.armor = 0
-        self.items = {'sword':Weapon('sword',self.damage),'bow':Weapon('bow',self.damage//1.5)}
+        self.items = {'sword':Weapon('sword',self.damage,'melee'),'bow':Weapon('bow',self.damage//1.5,'range')}
         self.deck = []
         self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6)
         rd.shuffle(self.deck)
         self.current = []
 
         self.statusEffects = []
+        self.buffs = []
+        self.noMelee = False
+        self.noArmor = False
 
     def damageEnemy(self,damage):
-        self.health -= (damage - self.armor)
+        if not self.noArmor:
+            self.health -= (damage - self.armor)
+        else:
+            self.health -= (damage)
+
         print(f'Player Damage Taken: {damage}')
     def drawCard(self):
         self.current.append(self.deck.pop())
@@ -41,6 +48,13 @@ class Player:
             i.apply(self)
             if i.duration <= 0:
                 self.statusEffects.remove(i)
+    def applyDebuffs(self):
+        print(self.noMelee)
+        for debuff in self.buffs[:]: 
+            debuff.apply(self)
+            if debuff.duration <= 0:
+                debuff.remove(self)  
+                self.buffs.remove(debuff)
 
     
 
