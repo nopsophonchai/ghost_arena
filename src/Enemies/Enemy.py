@@ -10,6 +10,7 @@ class Enemy:
         self.name = name
         self.statusEffects = []
         self.attacks = {}
+        self.isDead = False
 
     def damageEnemy(self,damage):
         self.health -= (damage - self.armor)

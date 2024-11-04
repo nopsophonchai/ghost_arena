@@ -59,6 +59,7 @@ class SaveSelect(BaseState):
                 if event.key == pygame.K_RETURN :
                     self.showNum = True
                     if self.option==1:
-                        stateManager.Change('play',{})
+                        stateManager.Change('select',{})
                     elif self.option==2:
                         stateManager.Change('start',{})
+                        

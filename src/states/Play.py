@@ -35,6 +35,7 @@ class Play(BaseState):
         self.drawCount = 0
         self.turnCount = 0
 
+        self.deadTimer = 0
 
     def Exit(self):
         pass
@@ -42,6 +43,7 @@ class Play(BaseState):
     def Enter(self, params):
         for i in range(3):
             self.player.drawCard()
+        self.enemy = params['enemy']
         pass
 
 
@@ -82,6 +84,11 @@ class Play(BaseState):
                     else:
                         self.player.current[self.select-1].use(self.enemy)
                         self.player.useCard(self.player.current[self.select-1])
+                        if self.enemy.health <= 0:
+                            self.enemy.isDead = True
+                            self.deadTimer = 120
+
+                            
                         self.turn = 1   
                         self.turnCount = 0
                         self.drawCount = 0
@@ -102,42 +109,50 @@ class Play(BaseState):
                 
 
     def render(self, screen):
-        t_title = gameFont['small'].render(f"Enemy Health {self.enemy.health}", False, (255, 10, 40))
-        rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.75))
-        screen.blit(t_title, rect)
-        t_title = gameFont['small'].render(f"Player Health {self.player.health}", False, (255, 255, 255))
-        rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 3.75))
-        screen.blit(t_title, rect)
+        if self.deadTimer > 0:
+            message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))
+            message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+            screen.blit(message_surface, message_rect)
+            self.deadTimer -= 1
+            if self.deadTimer <= 0:
+                stateManager.Change('select',{})
+        else:
+            t_title = gameFont['small'].render(f"{self.enemy.name}: {self.enemy.health}", False, (255, 10, 40))
+            rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.75))
+            screen.blit(t_title, rect)
+            t_title = gameFont['small'].render(f"Player Health {self.player.health}", False, (255, 255, 255))
+            rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 3.75))
+            screen.blit(t_title, rect)
 
 
-        if self.turn == 0:
-            for i in range(0, len(self.player.current)):
-                if i+1 == self.select:
-                    if self.player.current[i].item.weaponType == 'melee' and self.player.noMelee:
-                        t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (80, 80, 80))
+            if self.turn == 0:
+                for i in range(0, len(self.player.current)):
+                    if i+1 == self.select:
+                        if self.player.current[i].item.weaponType == 'melee' and self.player.noMelee:
+                            t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (80, 80, 80))
+                            rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
+                            screen.blit(t_title, rect)
+                        else:
+                            t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (0, 123, 255))
+                            rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.25))
+                            screen.blit(t_title, rect)
+                    else:
+                        t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (255, 255, 255))
                         rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
                         screen.blit(t_title, rect)
-                    else:
-                        t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (0, 123, 255))
-                        rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.25))
-                        screen.blit(t_title, rect)
-                else:
-                    t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (255, 255, 255))
-                    rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
+                if self.select == 0:
+                    t_title = gameFont['small'].render("Draw Card", False, (0, 123, 56))
+                    rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.25))
                     screen.blit(t_title, rect)
-            if self.select == 0:
-                t_title = gameFont['small'].render("Draw Card", False, (0, 123, 56))
-                rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.25))
-                screen.blit(t_title, rect)
-            else:
-                t_title = gameFont['small'].render("Draw Card", False, (30, 255, 30))
-                rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.125))
-                screen.blit(t_title, rect)
-            if self.select == (len(self.player.current) + 1):
-                t_title = gameFont['small'].render("End Turn", False, (180, 0, 0))
-                rect = t_title.get_rect(center=(WIDTH / 3.25 + 200*(len(self.player.current)), HEIGHT / 1.25))
-                screen.blit(t_title, rect)
-            else:
-                t_title = gameFont['small'].render("End Turn", False, (180, 0, 0))
-                rect = t_title.get_rect(center=(WIDTH / 3.25 + 200*(len(self.player.current)), HEIGHT / 1.125))
-                screen.blit(t_title, rect)
+                else:
+                    t_title = gameFont['small'].render("Draw Card", False, (30, 255, 30))
+                    rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.125))
+                    screen.blit(t_title, rect)
+                if self.select == (len(self.player.current) + 1):
+                    t_title = gameFont['small'].render("End Turn", False, (180, 0, 0))
+                    rect = t_title.get_rect(center=(WIDTH / 3.25 + 200*(len(self.player.current)), HEIGHT / 1.25))
+                    screen.blit(t_title, rect)
+                else:
+                    t_title = gameFont['small'].render("End Turn", False, (180, 0, 0))
+                    rect = t_title.get_rect(center=(WIDTH / 3.25 + 200*(len(self.player.current)), HEIGHT / 1.125))
+                    screen.blit(t_title, rect)

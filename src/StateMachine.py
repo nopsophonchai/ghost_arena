@@ -21,4 +21,4 @@ class StateMachine:
 
     def SetStates(self, states):
         self.states = states
-        print("States Set")
+        print(f"States Set, {states}")

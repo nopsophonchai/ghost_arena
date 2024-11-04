@@ -32,6 +32,7 @@ class GameMain:
             'start': StartState(),
             'play': Play(),
             'save': SaveSelect(),
+            'select': EnemySelection(),
             'gameover': GameOver()
 
             # 'serve': ServeState(),

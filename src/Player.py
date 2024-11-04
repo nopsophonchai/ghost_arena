@@ -11,7 +11,7 @@ class Player:
         self.damage = 3
         self.health = 10
         self.armor = 0
-        self.items = {'sword':Weapon('sword',self.damage,'melee'),'bow':Weapon('bow',self.damage//1.5,'range')}
+        self.items = {'sword':Weapon('sword',self.damage,'melee'),'bow':Weapon('bow',int(self.damage//1.5),'range')}
         self.deck = []
         self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6)
         rd.shuffle(self.deck)
@@ -21,6 +21,8 @@ class Player:
         self.buffs = []
         self.noMelee = False
         self.noArmor = False
+
+        self.gold = 0
 
     def damageEnemy(self,damage):
         if not self.noArmor:
