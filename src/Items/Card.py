@@ -8,5 +8,5 @@ class Card:
         self.item = item #This is class Item
     def use(self,target):
         self.item.attack(target)
-        self.item.applyEffect(target)
+        print('called')
     

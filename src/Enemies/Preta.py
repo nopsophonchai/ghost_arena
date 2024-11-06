@@ -7,6 +7,7 @@ class Preta(Enemy):
     def __init__(self,name,health,damage,armor = 0):
         super().__init__(health,damage,armor,name='Preta')
         self.attacks = {'normal':[self.scream],'dot':[self.epred,self.bigHand]}
+        self.gold = 4
     def scream(self,target):
         target.damageEnemy(self.damage)
         print(f'Preta used scream!')

@@ -24,12 +24,15 @@ class EnemySelection(BaseState):
 
         self.enemiesList = []
         self.roundEnd = True
+        self.player = None
 
 
     def Exit(self):
-        pass
+        self.select = 0
 
     def Enter(self, params):
+        self.player = params['player']
+        print(self.player)
         if self.roundEnd == True:
             self.round += 1
             enemiesGenerated = rd.randint(self.round+3,6)
@@ -41,14 +44,14 @@ class EnemySelection(BaseState):
                     case 'Preta': addedEnemy = Preta('Preta',10,3)
                     case 'GongGoi': addedEnemy = GongGoi('GongGoi',4,2)
                 self.enemiesList.append(addedEnemy)
-            print(self.enemiesList)
+            # print(self.enemiesList)
             self.roundEnd = False
         else:
             for i in self.enemiesList:
                 if i.isDead:
                     self.enemiesList.remove(i)
                     print(f'Removed {i}')
-            print(len(self.enemiesList))
+            # print(len(self.enemiesList))
             if len(self.enemiesList) == 0:
                 self.roundEnd = True
                 stateManager.Change('save',{})
@@ -56,20 +59,20 @@ class EnemySelection(BaseState):
 
     def update(self, dt, events):
         for event in events:
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        self.select = (self.select - 1) % (len(self.enemiesList))
-                        print(self.select)
-                    if event.key == pygame.K_RIGHT:
-                        self.select = (self.select + 1) % (len(self.enemiesList))
-                        print(self.select)
-                    if event.key == pygame.K_RETURN:
-                        self.confirm = True
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.select = (self.select - 1) % (len(self.enemiesList))
+                    print(self.select)
+                if event.key == pygame.K_RIGHT:
+                    self.select = (self.select + 1) % (len(self.enemiesList))
+                    print(self.select)
+                if event.key == pygame.K_RETURN:
+                    self.confirm = True
         if self.confirm:
-            payload = {'enemy':self.enemiesList[self.select]}
+            payload = {'enemy':self.enemiesList[self.select],'round':self.round,'player':self.player}
             stateManager.Change('play',payload)
             self.confirm = False
 
@@ -77,7 +80,9 @@ class EnemySelection(BaseState):
         item_spacing = 200
         total_width = item_spacing * (len(self.enemiesList) - 1)
         start_x = (WIDTH - total_width) / 2
-
+        text_surface = gameFont['small'].render(f'Round {self.round}', True, (255, 255, 255))
+        rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 3))
+        screen.blit(text_surface, rect)
         for i in range(len(self.enemiesList)):
             text_surface = gameFont['small'].render(self.enemiesList[i].name, True, (255, 255, 255))
             rect = text_surface.get_rect(center=(start_x + item_spacing * i, HEIGHT / 1.25))

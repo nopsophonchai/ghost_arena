@@ -1,4 +1,4 @@
-
+import traceback
 from src.Items.Item import Item
 
 class Weapon(Item):
@@ -9,12 +9,16 @@ class Weapon(Item):
         self.weaponType = weaponType
         self.effects = effects or []
 
+        self.timer = 0
+
     def attack(self,target):
         if target:
             # print(target)
             target.damageEnemy(self.damage)
-    
+            self.applyEffect(target)
+
     def applyEffect(self,target):
         if target:
             for effect in self.effects:
-                effect(target)
+                effect(target, self.damage)
+

@@ -33,7 +33,9 @@ class GameMain:
             'play': Play(),
             'save': SaveSelect(),
             'select': EnemySelection(),
-            'gameover': GameOver()
+            'gameover': GameOver(),
+            'lobby': Lobby(),
+            'character': Character()
 
             # 'serve': ServeState(),
             # 'game-over': GameOverState(),
@@ -43,7 +45,7 @@ class GameMain:
             # 'paddle-select': PaddleSelectState()
         }
         stateManager.SetStates(states)
-        print(message)
+
 
     # def LoadHighScores(self):
     #     if not os.path.exists(RANK_FILE_NAME):

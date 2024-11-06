@@ -6,6 +6,7 @@ class Debuff:
         self.duration = duration
 
     def apply(self, target):
+        print(f'Debuff {self.name} applied')
         if self.duration > 0:
             self.apply_effect(target)
             self.duration -= 1 

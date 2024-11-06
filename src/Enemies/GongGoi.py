@@ -6,6 +6,7 @@ class GongGoi(Enemy):
     def __init__(self,name,health,damage,armor = 0):
         super().__init__(health,damage,armor,name='GongGoi')
         self.attacks = {'normal':[self.kick],'dot':[self.ultimate]}
+        self.gold = 3
     def kick(self,target):
         target.damageEnemy(self.damage)
         print(f'GongGoi used kick!')
