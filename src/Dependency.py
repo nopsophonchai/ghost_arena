@@ -11,3 +11,4 @@ from src.states.GameOver import GameOver
 from src.states.EnemySelection import EnemySelection
 from src.states.Lobby import Lobby
 from src.states.Character import Character
+from src.states.Shop import Shop

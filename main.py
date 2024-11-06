@@ -35,7 +35,8 @@ class GameMain:
             'select': EnemySelection(),
             'gameover': GameOver(),
             'lobby': Lobby(),
-            'character': Character()
+            'character': Character(),
+            'shop': Shop()
 
             # 'serve': ServeState(),
             # 'game-over': GameOverState(),

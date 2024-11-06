@@ -52,9 +52,9 @@ def disco_inferno(target,damage):
     target.damageEnemy(damage//3, 'fire')
 
 gameEffects =  {
-    'theSun': here_comes_the_sun,
-    'bLights': blinding_lights,
-    'brightLights': bright_lights,
-    'niceguy': nice_guy,
-    'discoinferno': disco_inferno
+    'theSun': (here_comes_the_sun,'Here Comes the Sun'),
+    'bLights': (blinding_lights,'Blinding Lights'),
+    'brightLights': (bright_lights,'Bright Lights'),
+    'niceguy': (nice_guy,'No More Mr.Nice Guy'),
+    'discoinferno': (disco_inferno,'Disco Inferno')
 }

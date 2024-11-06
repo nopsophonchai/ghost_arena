@@ -42,7 +42,7 @@ class Lobby(BaseState):
                 if event.key == pygame.K_LEFT:
                     stateManager.Change('character',{'player': self.player})
                 if event.key == pygame.K_RIGHT:
-                    stateManager.Change('save',{'player': self.player})
+                    stateManager.Change('shop',{'player': self.player})
                 if event.key == pygame.K_RETURN:
                     stateManager.Change('select',{'player': self.player})
     def render(self, screen):
