@@ -10,11 +10,13 @@ class Player:
     def __init__(self):
         self.damage = 3
         self.health = 10
+        self.maxHealth = 10
         self.armor = 0
-        self.items = {'sword':Weapon('sword',self.damage,'melee',[gameEffects['theSun'][0],gameEffects['niceguy'][0]]),'bow':Weapon('bow',int(self.damage//1.5),'range')}
+        self.items = {'sword':Weapon('Sword',self.damage,'melee'),'bow':Weapon('Bow',int(self.damage//1.5),'range')}
         self.deck = []
         self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6)
         rd.shuffle(self.deck)
+        self.deckCopy = self.deck[:]
         self.current = []
 
         self.statusEffects = []
@@ -22,7 +24,7 @@ class Player:
         self.noMelee = False
         self.noArmor = False
 
-        self.gold = 0
+        self.gold = 10
 
     def damageEnemy(self,damage):
         if not self.noArmor:
@@ -32,10 +34,16 @@ class Player:
 
         print(f'Player Damage Taken: {damage}')
     def drawCard(self):
+        print(f'Deck when drawn: {self.deck}')
         self.current.append(self.deck.pop())
     
     def addCard(self,card):
         self.deck.insert(0,card)
+        print(f'Deck when added: {self.deck}')
+
+    def playerScale(self,damage):
+        for i in self.items.values():
+            i.damage += damage
     
     def addItem(self,item):
         self.items[f'{item.name}'] = item
@@ -43,12 +51,12 @@ class Player:
     def useCard(self,card):
         self.current.remove(card)
         self.addCard(card)
+        print(f'Deck when used: {self.deck}')
 
     def refresh(self):
+        self.deck.extend(self.current)
         self.current = []
-        self.deck = []
-        self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6)
-        rd.shuffle(self.deck)
+        self.health = self.maxHealth
     
     def applyStatEff(self):
         print('Poison!')

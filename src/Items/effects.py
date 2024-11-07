@@ -51,10 +51,16 @@ def nice_guy(target,damage):
 def disco_inferno(target,damage):
     target.damageEnemy(damage//3, 'fire')
 
+def ricericebaby(target,damage):
+    target.damageEnemy(damage//3,'rice')
+
+def waterloo(target,damage):
+    target.damageEnemy(damage//3,'water')
+
 gameEffects =  {
-    'theSun': (here_comes_the_sun,'Here Comes the Sun'),
-    'bLights': (blinding_lights,'Blinding Lights'),
-    'brightLights': (bright_lights,'Bright Lights'),
-    'niceguy': (nice_guy,'No More Mr.Nice Guy'),
-    'discoinferno': (disco_inferno,'Disco Inferno')
+    'theSun': (here_comes_the_sun,'Here Comes the Sun',20),
+    'bLights': (blinding_lights,'Blinding Lights',10),
+    'brightLights': (bright_lights,'Bright Lights',10),
+    'niceguy': (nice_guy,'No More Mr.Nice Guy',30),
+    'discoinferno': (disco_inferno,'Disco Inferno',20)
 }

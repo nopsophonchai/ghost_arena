@@ -40,7 +40,7 @@ class Play(BaseState):
 
     def Exit(self):
         self.player.refresh()
-        pass
+
 
     def Enter(self, params):
         self.player = params['player']
@@ -48,9 +48,9 @@ class Play(BaseState):
             self.player.drawCard()
         self.enemy = params['enemy']
         self.round = params['round']
-
+        self.turn = 0
         print(self.player)
-        pass
+
 
 
     def update(self, dt, events):
@@ -88,6 +88,7 @@ class Play(BaseState):
                     self.drawCount = 0
                     self.turnCount = 0
                 else:
+                    print(self.player.noMelee)
                     if self.player.current[self.select-1].item.weaponType == 'melee' and self.player.noMelee:
                         pass
                     else:
@@ -96,6 +97,9 @@ class Play(BaseState):
                         if self.enemy.health <= 0:
                             self.enemy.isDead = True
                             self.deadTimer = 120
+                            # print(self.enemy.health)
+                            self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
+                            print(self.player.health)
                             self.player.gold += self.enemy.gold + (self.round*2)
 
                             
@@ -106,20 +110,21 @@ class Play(BaseState):
                             self.select = 0
                         print("-------Enemy's Turn-------")
         else:
-            if len(self.enemy.statusEffects) != 0 and self.turnCount < 1:
-                self.enemy.applyStatEff()
-                self.turnCount = 1
-            if len(self.enemy.buffs) != 0 and self.buffCount < 1:
-                self.enemy.applyDebuffs()
-                self.buffCount = 1
-            self.turnTimer += 1
-            if self.turnTimer > 50:
-                self.enemy.attack(self.player)
-                self.turn = 0
-                self.turnCount = 0
-                self.buffCount = 0
-                self.turnTimer = 0
-                print("-------Player's Turn-------")
+            if not self.enemy.isDead:
+                if len(self.enemy.statusEffects) != 0 and self.turnCount < 1:
+                    self.enemy.applyStatEff()
+                    self.turnCount = 1
+                if len(self.enemy.buffs) != 0 and self.buffCount < 1:
+                    self.enemy.applyDebuffs()
+                    self.buffCount = 1
+                self.turnTimer += 1
+                if self.turnTimer > 50:
+                    self.enemy.attack(self.player)
+                    self.turn = 0
+                    self.turnCount = 0
+                    self.buffCount = 0
+                    self.turnTimer = 0
+                    print("-------Player's Turn-------")
                 
 
     def render(self, screen):
@@ -129,6 +134,9 @@ class Play(BaseState):
             screen.blit(message_surface, message_rect)
             message_surface = gameFont['small'].render(f'Gold earned {self.enemy.gold+(2*self.round)}!', True, (255, 215, 0))
             message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.5))
+            screen.blit(message_surface, message_rect)
+            message_surface = gameFont['small'].render(f'Health recovered {self.enemy.maxHealth // 2}!', True, (255, 215, 0))
+            message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.25))
             screen.blit(message_surface, message_rect)
             self.deadTimer -= 1
             if self.deadTimer <= 0:

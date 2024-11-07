@@ -32,6 +32,7 @@ class Lobby(BaseState):
     def Enter(self, params):
         if 'player' in params:
             self.player = params['player']
+            self.player.refresh()
 
     def update(self, dt, events):
        for event in events:

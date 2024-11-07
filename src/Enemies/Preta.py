@@ -20,7 +20,7 @@ class Preta(Enemy):
         def remove_no_melee(target):
             target.noMelee = False
 
-        no_melee_debuff = Debuff(name="No Melee", apply_effect=apply_no_melee, remove_effect=remove_no_melee, duration=1)
+        no_melee_debuff = Debuff(name="No Melee", apply_effect=apply_no_melee, remove_effect=remove_no_melee, duration=2)
         target.buffs.append(no_melee_debuff)
         print(f'Preta used big hand!')
 

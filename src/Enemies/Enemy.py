@@ -4,6 +4,7 @@ import random as rd
 
 class Enemy:
     def __init__(self,health,damage,armor,name,immune = [],weakness = []):
+        self.maxHealth = health
         self.health = health
         self.damage = damage
         self.armor = armor
@@ -15,11 +16,12 @@ class Enemy:
         self.buffs = []
         self.immune = immune
         self.weakness = weakness
+    
 
     def damageEnemy(self,damage,type = 'normal'):
         if type in self.immune:
             pass
-        elif type == 'normal':
+        elif type == 'normal' or (type not in self.weakness and type not in self.immune):
             self.health -= (damage - self.armor)
         elif type == 'true':
             self.health -= damage

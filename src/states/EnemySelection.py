@@ -32,17 +32,18 @@ class EnemySelection(BaseState):
 
     def Enter(self, params):
         self.player = params['player']
-        print(self.player)
+        print(f'Player Select Health: {self.player.health}')
         if self.roundEnd == True:
             self.round += 1
-            enemiesGenerated = rd.randint(self.round+3,6)
+            enemiesGenerated = rd.randint(min(self.round+3,6),6)
+            # enemiesGenerated = 1
             allEnemies = ['Preta','GongGoi']
             for enemy in range(enemiesGenerated):
                 selectedEnemy = rd.choice(allEnemies)
                 addedEnemy = None
                 match selectedEnemy:
-                    case 'Preta': addedEnemy = Preta('Preta',10,3)
-                    case 'GongGoi': addedEnemy = GongGoi('GongGoi',4,2)
+                    case 'Preta': addedEnemy = Preta('Preta',(10+(2*(self.round-1))),(3+(self.round-1)))
+                    case 'GongGoi': addedEnemy = GongGoi('GongGoi',(4+(2*(self.round-1))),(2+(self.round-1)))
                 self.enemiesList.append(addedEnemy)
             # print(self.enemiesList)
             self.roundEnd = False
@@ -54,10 +55,11 @@ class EnemySelection(BaseState):
             # print(len(self.enemiesList))
             if len(self.enemiesList) == 0:
                 self.roundEnd = True
-                stateManager.Change('save',{})
+                stateManager.Change('lobby',{'player':self.player})
 
 
     def update(self, dt, events):
+
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
