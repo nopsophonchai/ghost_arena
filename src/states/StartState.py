@@ -61,4 +61,4 @@ class StartState(BaseState):
          
                 if event.key == pygame.K_RETURN:
                   self.showNum = True
-                  stateManager.Change('save',{})
+                  stateManager.Change('lobby',{})

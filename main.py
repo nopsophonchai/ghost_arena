@@ -95,7 +95,7 @@ class GameMain:
         main.screen.fill((0,0,0))
 
     def PlayGame(self):
-        self.bg_music.play(-1)
+        """ self.bg_music.play(-1) """
         clock = pygame.time.Clock()
         stateManager.Change('start', {
         })

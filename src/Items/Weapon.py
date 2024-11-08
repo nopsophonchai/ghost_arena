@@ -10,7 +10,9 @@ class Weapon(Item):
         self.effects = effects or []
         self.playerEffects = playerEffects or []
         self.beyond = False
+        self.bungieGum = False
         self.timer = 0
+
 
     def attack(self,target):
         if target:
@@ -20,10 +22,12 @@ class Weapon(Item):
                 target.damageEnemy(self.damage)
                 self.applyEffect(target)
 
+
     def applyEffect(self,target):
         if target:
             for effect in self.effects:
                 effect[0](target, self.damage)
 
-
+    def getCombinedEffects(self):
+        return self.effects + self.playerEffects
 

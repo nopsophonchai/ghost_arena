@@ -45,12 +45,26 @@ class Character(BaseState):
                 if event.key == pygame.K_UP:
                     self.page += 1
     def render(self, screen):
-        text_surface = gameFont['small'].render(f'Player Health: {self.player.health}', True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 3))
+        text_surface = gameFont['small'].render(f'Max Health: {self.player.health}', True, (255, 255, 255))
+        rect = text_surface.get_rect(center=(WIDTH / 4, HEIGHT / 3))
         screen.blit(text_surface, rect)
-        text_surface = gameFont['small'].render(f'Player Damage: {self.player.damage}', True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2.5))
+        text_surface = gameFont['small'].render(f'Damage: {self.player.damage}', True, (255, 255, 255))
+        rect = text_surface.get_rect(center=(WIDTH / 4, HEIGHT / 2.5))
         screen.blit(text_surface, rect)
-        text_surface = gameFont['small'].render(f"Player Items: {self.player.items['sword'].name}", True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+        text_surface = gameFont['small'].render(f"Items", True, (255, 255, 255))
+        rect = text_surface.get_rect(center=(WIDTH / 1.5, HEIGHT / 5.5))
         screen.blit(text_surface, rect)
+        spacing = 0
+        for items in self.player.items.values(): 
+            text_surface = gameFont['small'].render(f"{items.name}", True, (255, 255, 255))
+            rect = text_surface.get_rect(center=(WIDTH / 1.5, (HEIGHT / 3) + (200*spacing)))
+            screen.blit(text_surface, rect)
+            spacingE = 0
+            for effects in items.getCombinedEffects():
+                text_surface = gameFont['small'].render(f"{effects[1]}", True, (255, 255, 255))
+                rect = text_surface.get_rect(center=(WIDTH / 1.25, (HEIGHT / 3) + (75*spacingE)+ (200*spacing)))
+                screen.blit(text_surface, rect)
+                spacingE += 1
+            spacing += 1
+
+        
