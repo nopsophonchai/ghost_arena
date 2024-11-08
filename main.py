@@ -24,7 +24,7 @@ class GameMain:
         # self.scroll = 0
         # self.scroll_bg = False
 
-        # self.bg_music = pygame.mixer.Sound('sounds/music.wav')
+        self.bg_music = pygame.mixer.Sound('sound/music.mp3')
 
         stateManager.SetScreen(self.screen)
 
@@ -95,7 +95,7 @@ class GameMain:
         main.screen.fill((0,0,0))
 
     def PlayGame(self):
-        # self.bg_music.play(-1)
+        self.bg_music.play(-1)
         clock = pygame.time.Clock()
         stateManager.Change('start', {
         })

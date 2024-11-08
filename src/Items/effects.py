@@ -64,3 +64,14 @@ gameEffects =  {
     'niceguy': (nice_guy,'No More Mr.Nice Guy',30),
     'discoinferno': (disco_inferno,'Disco Inferno',20)
 }
+
+def beyond(target):
+    target.beyond = True
+
+def bungieGum(target):
+    target.bungieGum = True
+
+playerEffects = {
+    'beyond' : (beyond, 'Beyond...', 30),
+    'bungieGum': (bungieGum,'Bungie Gum',20)
+}

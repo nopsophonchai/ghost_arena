@@ -7,7 +7,7 @@ from src.Player import Player
 from src.Enemies.GongGoi import GongGoi
 from src.Enemies.Preta import Preta
 from src.Items.Weapon import Weapon
-from src.Items.effects import gameEffects
+from src.Items.effects import gameEffects,playerEffects
 pygame.font.init()
 import random as rd
 gameFont = {
@@ -29,7 +29,9 @@ class Shop(BaseState):
         self.weaponSelect = False
         self.chosenEffect = None
 
+        self.ibought = [0,0,0,0]
     def Exit(self):
+        self.ibought = [0,0,0,0]
         pass
 
     def Enter(self, params):
@@ -37,6 +39,7 @@ class Shop(BaseState):
             self.player = params['player']
         
         self.itemList = list(gameEffects.values())
+        self.itemList.extend(list(playerEffects.values()))
         self.chosenList = rd.sample(self.itemList,4)
     def update(self, dt, events):
         # print(self.player.items['sword'].effects)
@@ -64,7 +67,11 @@ class Shop(BaseState):
             if self.weaponSelect:
                 # print('\n')
                 # print(self.chosenEffect)
-                list(self.player.items.items())[self.select][1].effects.append(self.chosenEffect)
+                print(self.chosenEffect[1])
+                if self.chosenEffect[1] == 'Beyond...':
+                    list(self.player.items.items())[self.select][1].beyond = True
+                else:
+                    list(self.player.items.items())[self.select][1].effects.append(self.chosenEffect)
                 self.weaponSelect = False
             if not self.weaponSelect:
                 if self.select == 6:
@@ -85,7 +92,8 @@ class Shop(BaseState):
                         self.player.playerScale(1)
                         self.damageBought += 1
                 if self.select < 4:
-                    if self.player.gold >= self.chosenList[self.select][2]:
+                    if self.player.gold >= self.chosenList[self.select][2] and self.ibought[self.select] == 0:
+                        self.ibought[self.select] = 1
                         self.weaponSelect = True
                         self.player.gold -= self.chosenList[self.select][2]
                         self.chosenEffect = (self.chosenList[self.select][0],self.chosenList[self.select][1])

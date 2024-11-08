@@ -1,6 +1,6 @@
 import pygame
 from src.Items.Card import Card
-from src.Items.effects import gameEffects
+from src.Items.effects import gameEffects, playerEffects
 from src.Items.Item import Item
 from src.Items.Weapon import Weapon
 import random as rd
@@ -12,7 +12,7 @@ class Player:
         self.health = 10
         self.maxHealth = 10
         self.armor = 0
-        self.items = {'sword':Weapon('Sword',self.damage,'melee'),'bow':Weapon('Bow',int(self.damage//1.5),'range')}
+        self.items = {'sword':Weapon('Sword',self.damage,'melee',[],[playerEffects['beyond']]),'bow':Weapon('Bow',int(self.damage//1.5),'range')}
         self.deck = []
         self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6)
         rd.shuffle(self.deck)
@@ -24,7 +24,7 @@ class Player:
         self.noMelee = False
         self.noArmor = False
 
-        self.gold = 10
+        self.gold = 300
 
     def damageEnemy(self,damage):
         if not self.noArmor:
@@ -32,14 +32,14 @@ class Player:
         else:
             self.health -= (damage)
 
-        print(f'Player Damage Taken: {damage}')
+        # print(f'Player Damage Taken: {damage}')
     def drawCard(self):
-        print(f'Deck when drawn: {self.deck}')
+        # print(f'Deck when drawn: {self.deck}')
         self.current.append(self.deck.pop())
     
     def addCard(self,card):
         self.deck.insert(0,card)
-        print(f'Deck when added: {self.deck}')
+        # print(f'Deck when added: {self.deck}')
 
     def playerScale(self,damage):
         for i in self.items.values():
