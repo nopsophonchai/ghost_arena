@@ -10,7 +10,7 @@ class Weapon(Item):
         self.effects = effects or []
         self.playerEffects = playerEffects or []
         self.beyond = False
-        self.bungieGum = False
+        self.bungieGum = True
         self.timer = 0
 
 
