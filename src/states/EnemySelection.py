@@ -6,6 +6,8 @@ from src.resources import *
 from src.Player import Player
 from src.Enemies.GongGoi import GongGoi
 from src.Enemies.Preta import Preta
+from src.Enemies.Phrai import Phrai
+from src.Enemies.Krasue import Krasue
 from src.Items.Rice import Rice
 from src.Items.Fire import Fire
 from src.Items.Water import Water
@@ -32,6 +34,7 @@ class EnemySelection(BaseState):
 
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
+        self.allEnemies = ['Preta','GongGoi']
 
 
     def Exit(self):
@@ -42,15 +45,20 @@ class EnemySelection(BaseState):
         print(f'Player Select Health: {self.player.health}')
         if self.roundEnd == True:
             self.round += 1
+            if self.round == 2:
+                self.allEnemies.append('Phrai')
+                self.allEnemies.append('Krasue')
             enemiesGenerated = rd.randint(min(self.round+3,6),6)
             # enemiesGenerated = 1
-            allEnemies = ['Preta','GongGoi']
+
             for enemy in range(enemiesGenerated):
-                selectedEnemy = rd.choice(allEnemies)
+                selectedEnemy = rd.choice(self.allEnemies)
                 addedEnemy = None
                 match selectedEnemy:
                     case 'Preta': addedEnemy = Preta('Preta',(10+(2*(self.round-1))),(3+(self.round-1)))
                     case 'GongGoi': addedEnemy = GongGoi('GongGoi',(4+(2*(self.round-1))),(2+(self.round-1)))
+                    case 'Phrai': addedEnemy = Phrai('Phrai',(6+(2*(self.round-1))),(3+(self.round-1)))
+                    case 'Krasue': addedEnemy = Krasue('Krasue',(3+(2*(self.round-1))),(4+(self.round-1)))
                 self.enemiesList.append(addedEnemy)
             # print(self.enemiesList)
 
