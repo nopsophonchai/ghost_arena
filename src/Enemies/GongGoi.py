@@ -4,7 +4,7 @@ import math
 
 class GongGoi(Enemy):
     def __init__(self,name,health,damage,armor = 0):
-        super().__init__(health,damage,armor,name='GongGoi')
+        super().__init__(health,damage,armor,name='GongGoi',weakness=['Fire','Rice'])
         self.attacks = {'normal':[self.kick],'dot':[self.ultimate]}
         self.gold = 3
     def kick(self,target):

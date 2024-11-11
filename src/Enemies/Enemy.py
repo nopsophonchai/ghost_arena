@@ -22,11 +22,13 @@ class Enemy:
         if type in self.immune:
             pass
         elif type == 'normal' or (type not in self.weakness and type not in self.immune):
+            print('Not Weak!')
             self.health -= (damage - self.armor)
         elif type == 'true':
             self.health -= damage
         elif type in self.weakness:
-            self.health -= (1.5* damage)
+            print('Weak!')
+            self.health -= int(1.5* damage)
 
     def chooseAttacks(self):
         attackType, attackList = rd.choice(list(self.attacks.items()))
@@ -50,8 +52,11 @@ class Enemy:
     def applyStatEff(self):
         for i in self.statusEffects:
             i.apply(self)
+            if self.health <= 0:
+                self.isDead = True
             if i.duration <= 0:
                 self.statusEffects.remove(i)
+
     def applyDebuffs(self):
             print(self.buffs)
             for debuff in self.buffs[:]: 

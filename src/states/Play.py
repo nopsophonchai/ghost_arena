@@ -42,6 +42,8 @@ class Play(BaseState):
         self.interfaceSelect = 0
         self.interfaceConfirm = False
 
+        self.called = 0
+
     def Exit(self):
         self.player.refresh()
 
@@ -98,6 +100,13 @@ class Play(BaseState):
                     self.buffCount = 0
                     self.turnTimer = 0
                     print("-------Player's Turn-------")
+            elif self.called != 1:
+                self.called = 1
+                self.deadTimer = 120
+                        # print(self.enemy.health)
+                self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
+                print(self.player.health)
+                self.player.gold += self.enemy.gold + (self.round*2)
 
     def confirmHandle(self,dt, events):
         if not self.interface:
@@ -130,6 +139,9 @@ class Play(BaseState):
                             if len(self.player.current)==0:
                                 self.select = 0
                             print("-------Enemy's Turn-------")
+                    if chosenCard.item.type == 'Spell':
+                        self.interface = True
+                        self.confirm = True
                     if self.enemy.health <= 0:
                         self.enemy.isDead = True
                         self.deadTimer = 120
@@ -156,17 +168,23 @@ class Play(BaseState):
             
             if self.interfaceConfirm:
                 chosenCard = self.player.current[self.select-1]
-                match self.interfaceSelect:  
-                    case 0: chosenCard.use(self.enemy,self.player)
-                    case 1: chosenCard.heal(self.player,int(chosenCard.item.damage // 2))
-                    case 2: 
-                        def apply(target):
-                            target.miss = True
-                            print(f'Changed Miss: {target.miss}')
-                        def remove(target):
-                            target.miss = False
-                        sun = Debuff('sun',apply,remove,2)
-                        self.enemy.buffs.append(sun)
+                if chosenCard.item.type == 'Weapon':
+                    match self.interfaceSelect:  
+                        case 0: chosenCard.use(self.enemy,self.player)
+                        case 1: chosenCard.heal(self.player,int(chosenCard.item.damage // 2))
+                        case 2: 
+                            def apply(target):
+                                target.miss = True
+                                print(f'Changed Miss: {target.miss}')
+                            def remove(target):
+                                target.miss = False
+                            sun = Debuff('sun',apply,remove,2)
+                            self.enemy.buffs.append(sun)
+                elif chosenCard.item.type == 'Spell':
+                    chosenCard.item.attack(self.enemy,self.player,self.interfaceSelect)
+
+
+
                 self.player.useCard(self.player.current[self.select-1])
                 self.interface = False
                 self.interfaceConfirm = False
@@ -177,7 +195,9 @@ class Play(BaseState):
                 if len(self.player.current)==0:
                     self.select = 0
                 print("-------Enemy's Turn-------")
+                print(f'Enemy Health:{self.enemy.health}')
                 if self.enemy.health <= 0:
+                    print(self.enemy.health)
                     self.enemy.isDead = True
                     self.deadTimer = 120
                     # print(self.enemy.health)
@@ -200,6 +220,7 @@ class Play(BaseState):
             screen.blit(message_surface, message_rect)
             self.deadTimer -= 1
             if self.deadTimer <= 0:
+                self.called = 0
                 stateManager.Change('select',{'player':self.player})
         else:
             t_title = gameFont['small'].render(f"{self.enemy.name}: {self.enemy.health}", False, (255, 10, 40))
@@ -242,17 +263,33 @@ class Play(BaseState):
                     rect = t_title.get_rect(center=(WIDTH / 3.25 + 200*(len(self.player.current)), HEIGHT / 1.125))
                     screen.blit(t_title, rect)
         if self.interface:
-            pygame.draw.rect(screen, (255, 255, 255), (WIDTH/2 - 150, HEIGHT/2 - 150, 300, 300))
-            pygame.draw.rect(screen, (0, 0, 0), (WIDTH/2 - 145, HEIGHT/2 - 145, 290, 290))
-            titles = ["Attack", "Heal", "Block"]
-            line_height = 50 
-            box_center_y = HEIGHT / 2 
-            starting_y = box_center_y - line_height 
-            for i, title in enumerate(titles):
-                t_title = gameFont['small'].render(title, False, (180, 0, 0))
-                rect = t_title.get_rect(center=(WIDTH / 2, starting_y + i * line_height))
-                if i == self.interfaceSelect:
-                    pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
-                
+            if self.player.current[self.select-1].item.type == 'Weapon':
+                pygame.draw.rect(screen, (255, 255, 255), (WIDTH/2 - 150, HEIGHT/2 - 150, 300, 300))
+                pygame.draw.rect(screen, (0, 0, 0), (WIDTH/2 - 145, HEIGHT/2 - 145, 290, 290))
+                titles = ["Attack", "Heal", "Block"]
+                line_height = 50 
+                box_center_y = HEIGHT / 2 
+                starting_y = box_center_y - line_height 
+                for i, title in enumerate(titles):
+                    t_title = gameFont['small'].render(title, False, (180, 0, 0))
+                    rect = t_title.get_rect(center=(WIDTH / 2, starting_y + i * line_height))
+                    if i == self.interfaceSelect:
+                        pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
+                    
 
-                screen.blit(t_title, rect)
+                    screen.blit(t_title, rect)
+            elif self.player.current[self.select-1].item.type == 'Spell':
+                pygame.draw.rect(screen, (255, 255, 255), (WIDTH/2 - 150, HEIGHT/2 - 150, 300, 300))
+                pygame.draw.rect(screen, (0, 0, 0), (WIDTH/2 - 145, HEIGHT/2 - 145, 290, 290))
+                titles = [i[0] for i in self.player.current[self.select-1].item.spellList]
+                line_height = 50 
+                box_center_y = HEIGHT / 2 
+                starting_y = box_center_y - line_height 
+                for i, title in enumerate(titles):
+                    t_title = gameFont['small'].render(title, False, (180, 0, 0))
+                    rect = t_title.get_rect(center=(WIDTH / 2, starting_y + i * line_height))
+                    if i == self.interfaceSelect:
+                        pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
+                    
+
+                    screen.blit(t_title, rect)

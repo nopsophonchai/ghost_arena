@@ -5,7 +5,7 @@ import math
 
 class Preta(Enemy):
     def __init__(self,name,health,damage,armor = 0):
-        super().__init__(health,damage,armor,name='Preta')
+        super().__init__(health,damage,armor,name='Preta',weakness=['Fire','Rice','Water'])
         self.attacks = {'normal':[self.scream],'dot':[self.epred,self.bigHand]}
         self.gold = 4
     def scream(self,target):

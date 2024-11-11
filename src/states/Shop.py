@@ -43,6 +43,7 @@ class Shop(BaseState):
 
     def Enter(self, params):
         print(self.weaponSelect)
+        
         self.weaponSelect = False
         if 'player' in params:
             self.player = params['player']
@@ -51,6 +52,7 @@ class Shop(BaseState):
         self.itemList.extend(list(playerEffects.values()))
         print()
         self.chosenList = rd.sample(self.itemList,4)
+        self.weaponDict = {key: item for key, item in self.player.items.items() if item.type != 'Spell'}
 
     def update(self, dt, events):
         for event in events:
@@ -60,12 +62,12 @@ class Shop(BaseState):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     if self.weaponSelect:
-                        self.select = (self.select - 1) % len(self.player.items)
+                        self.select = (self.select - 1) % len(self.weaponDict)
                     else:
                         self.select = (self.select - 1) % 7
                 elif event.key == pygame.K_RIGHT:
                     if self.weaponSelect:
-                        self.select = (self.select + 1) % len(self.player.items)
+                        self.select = (self.select + 1) % len(self.weaponDict)
                     else:
                         self.select = (self.select + 1) % 7
                 elif event.key == pygame.K_RETURN:
@@ -186,13 +188,13 @@ class Shop(BaseState):
 
         if self.weaponSelect:
             item_spacing = 200
-            total_width = item_spacing * (len(list(self.player.items)) - 1)
+            total_width = item_spacing * (len(self.weaponDict) - 1)
             start_x = (WIDTH - total_width) / 2
             text_surface = gameFont['small'].render(f'Which item do you want to enchant?', True, (255, 255, 255))
             rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 3))
             screen.blit(text_surface, rect)
-            for i in range(len(list(self.player.items))):
-                text_surface = gameFont['small'].render(list(self.player.items.items())[i][1].name, True, (255, 255, 255))
+            for i in range(len(self.weaponDict)):
+                text_surface = gameFont['small'].render(list(self.weaponDict.items())[i][1].name, True, (255, 255, 255))
                 rect = text_surface.get_rect(center=(start_x + item_spacing * i, HEIGHT / 1.25))
                 if self.select == i:
                     pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
