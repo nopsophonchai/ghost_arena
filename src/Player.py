@@ -11,7 +11,7 @@ import random as rd
 
 class Player:
     def __init__(self):
-        self.damage = 3
+        self.damage = 300
         self.health = 10
         self.maxHealth = 10
         self.armor = 0
@@ -28,6 +28,8 @@ class Player:
         self.buffs = []
         self.noMelee = False
         self.noArmor = False
+        
+        self.noCard = False
 
         self.gold = 300
 
@@ -51,10 +53,11 @@ class Player:
             i.damage += damage
     
 
+
     def useCard(self,card):
         self.current.remove(card)
         self.addCard(card)
-        print(f'Deck when used: {self.deck}')
+        # print(f'Deck when used: {self.deck}')
 
     def refresh(self):
         for i in self.items.values():
@@ -70,13 +73,13 @@ class Player:
         rd.shuffle(self.deck)
     
     def applyStatEff(self):
-        print('Poison!')
+        # print('Poison!')
         for i in self.statusEffects:
             i.apply(self)
             if i.duration <= 0:
                 self.statusEffects.remove(i)
     def applyDebuffs(self):
-        print(self.noMelee)
+        print(f'No card: {self.noCard}')
         for debuff in self.buffs[:]: 
             debuff.apply(self)
             if debuff.duration <= 0:

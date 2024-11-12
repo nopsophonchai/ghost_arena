@@ -16,6 +16,7 @@ class Enemy:
         self.buffs = []
         self.immune = immune
         self.weakness = weakness
+        self.useUlt = 0
     
 
     def damageEnemy(self,damage,type = 'normal'):
@@ -23,7 +24,7 @@ class Enemy:
             pass
         elif type == 'normal' or (type not in self.weakness and type not in self.immune):
             print('Not Weak!')
-            self.health -= (damage - self.armor)
+            self.health -= max((damage - self.armor),0)
         elif type == 'true':
             self.health -= damage
         elif type in self.weakness:

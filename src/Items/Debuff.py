@@ -12,4 +12,5 @@ class Debuff:
             self.duration -= 1 
 
     def remove(self, target):
+        print(f'Removed debuff: {self.name}')
         self.remove_effect(target)

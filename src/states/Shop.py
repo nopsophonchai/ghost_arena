@@ -8,6 +8,7 @@ from src.Enemies.GongGoi import GongGoi
 from src.Enemies.Preta import Preta
 from src.Items.Weapon import Weapon
 from src.Items.effects import gameEffects,playerEffects
+from src.Enemies.Monk import Monk
 pygame.font.init()
 import random as rd
 gameFont = {
@@ -34,10 +35,14 @@ class Shop(BaseState):
         self.alertTimer = 0
         self.alert = False
 
+        self.free = False
+
+        self.roundCount = 0
+        self.thisRound = 0
+
         self.ibought = [0,0,0,0]
     def Exit(self):
         print(self.weaponSelect)
-        self.ibought = [0,0,0,0]
         self.select = 0
         self.weaponSelect = False
 
@@ -47,12 +52,21 @@ class Shop(BaseState):
         self.weaponSelect = False
         if 'player' in params:
             self.player = params['player']
-        
-        self.itemList = list(gameEffects.values())
-        self.itemList.extend(list(playerEffects.values()))
-        print()
-        self.chosenList = rd.sample(self.itemList,4)
-        self.weaponDict = {key: item for key, item in self.player.items.items() if item.type != 'Spell'}
+        if 'free' in params:
+            self.free = params['free']
+        if 'round' in params:
+            self.round = params['round']
+        if self.round != self.thisRound:
+            self.roundCount = 0
+        if self.roundCount == 0:
+            self.thisRound = self.round
+            self.ibought = [0,0,0,0]
+            self.itemList = list(gameEffects.values())
+            self.itemList.extend(list(playerEffects.values()))
+            print()
+            self.chosenList = rd.sample(self.itemList,4)
+            self.weaponDict = {key: item for key, item in self.player.items.items() if item.type != 'Spell'}
+            self.roundCount = 1
 
     def update(self, dt, events):
         for event in events:
@@ -70,6 +84,8 @@ class Shop(BaseState):
                         self.select = (self.select + 1) % len(self.weaponDict)
                     else:
                         self.select = (self.select + 1) % 7
+                elif event.key == pygame.K_0:
+                    stateManager.Change('play',{'player': self.player,'enemy':Monk('Monk',(80),(10))})
                 elif event.key == pygame.K_RETURN:
                     self.confirm = True  
         if self.confirm:
@@ -90,11 +106,13 @@ class Shop(BaseState):
                     case 'Bungie Gum':
                         list(self.player.items.items())[self.select][1].bungieGum = True
                 list(self.player.items.items())[self.select][1].playerEffects.append(self.chosenEffect)
-                self.player.gold -= self.price
+                if not self.free:
+                    self.player.gold -= self.price
                 self.ibought[self.chosen] = 1
             else:
                 list(self.player.items.items())[self.select][1].effects.append(self.chosenEffect)
-                self.player.gold -= self.price
+                if not self.free:
+                    self.player.gold -= self.price
                 self.ibought[self.chosen] = 1
             self.weaponSelect = False
             self.price = 0
@@ -103,21 +121,42 @@ class Shop(BaseState):
             if self.select == 6:
                 stateManager.Change('lobby', {'player': self.player})
             elif self.select == 4:
-                if self.player.gold >= self.healthPrice:
-                    self.player.maxHealth += 2
-                    self.player.gold -= self.healthPrice
-                    self.healthPrice += 2 * self.healthBought
-                    self.healthBought += 1
+                if self.player.gold >= self.healthPrice or self.free:
+                    if self.free:
+                        if self.healthBought >= 11 and self.player.gold >= self.healthPrice:
+                            self.player.gold -= self.healthPrice
+                            self.player.maxHealth += 2
+                            self.healthPrice += 2 * self.healthBought
+                            self.player.playerScale(1)
+                            self.healthBought += 1
+                        elif self.healthBought < 11:
+                            self.player.maxHealth += 2
+                            self.healthPrice += 2 * self.healthBought
+                            self.player.playerScale(1)
+                            self.healthBought += 1
+                    else:
+                        self.player.gold -= self.healthPrice
+                        self.player.maxHealth += 2
+                        self.healthPrice += 2 * self.healthBought
+                        self.player.playerScale(1)
+                        self.healthBought += 1
             elif self.select == 5:
-                if self.player.gold >= self.damagePrice:
-                    self.player.damage += 1
-                    self.player.gold -= self.damagePrice
+                if self.player.gold >= self.damagePrice or self.free:
+                    if self.free:
+                        if self.damageBought >= 11 and self.player.gold >= self.damagePrice:
+                            self.player.gold -= self.damagePrice
+                            self.player.damage += 1
+                        elif self.damageBought < 11:
+                            self.player.damage += 1
+                    else:
+                        self.player.gold -= self.damagePrice
+                        self.player.damage += 1
                     self.damagePrice += 2 * self.damageBought
                     self.player.playerScale(1)
                     self.damageBought += 1
             elif self.select < 4:
                 #print(self.chosenList)
-                if self.player.gold >= self.chosenList[self.select][2] and self.ibought[self.select] == 0:
+                if (self.player.gold >= self.chosenList[self.select][2] or self.free )and self.ibought[self.select] == 0:
                     self.chosen = self.select
                     
                     self.weaponSelect = True
@@ -158,12 +197,19 @@ class Shop(BaseState):
             text_surface = gameFont['small'].render(f'Increase health by 2', True, (255, 255, 255))
             rect = text_surface.get_rect(center=locations[4])
             if self.select == 4:
-                pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
+                if self.healthBought < 11:
+                    pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
+                else:
+                    pygame.draw.rect(screen, (255, 255, 0), rect.inflate(20, 10))
             screen.blit(text_surface, rect)
             text_surface = gameFont['small'].render(f'Increase damage by 1', True, (255, 255, 255))
             rect = text_surface.get_rect(center=locations[5])
             if self.select == 5:
-                pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
+                if self.damageBought < 11:
+                    pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
+                else:
+                    pygame.draw.rect(screen, (255, 255, 0), rect.inflate(20, 10))
+            
             screen.blit(text_surface, rect)
 
             screen.blit(text_surface, rect)
@@ -177,7 +223,7 @@ class Shop(BaseState):
             screen.blit(text_surface,rect)
 
             screen.blit(text_surface, rect)
-            text_surface = gameFont['small'].render(f'Health: {self.player.health}', True, (255, 255, 255))
+            text_surface = gameFont['small'].render(f'Health: {self.player.maxHealth}', True, (255, 255, 255))
             rect = text_surface.get_rect(center=(325,150))
             screen.blit(text_surface,rect)
 

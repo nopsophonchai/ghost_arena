@@ -8,10 +8,17 @@ from src.Enemies.GongGoi import GongGoi
 from src.Enemies.Preta import Preta
 from src.Enemies.Phrai import Phrai
 from src.Enemies.Krasue import Krasue
+from src.Enemies.Monk import Monk
+from src.Enemies.NangRam import NangRam
+from src.Enemies.Faker import Faker
 from src.Items.Rice import Rice
 from src.Items.Fire import Fire
 from src.Items.Water import Water
 from src.Items.Card import Card
+from src.Enemies.MaeNak import MaeNak,Dang
+from src.Enemies.Ka import Ka
+
+
 pygame.font.init()
 import random as rd
 gameFont = {
@@ -37,18 +44,32 @@ class EnemySelection(BaseState):
         self.allEnemies = ['Preta','GongGoi']
 
 
+
+
     def Exit(self):
         self.select = 0
 
     def Enter(self, params):
         self.player = params['player']
         print(f'Player Select Health: {self.player.health}')
+        if 'round' in params:
+            self.round = params['round']
         if self.roundEnd == True:
             self.round += 1
-            if self.round == 2:
-                self.allEnemies.append('Phrai')
-                self.allEnemies.append('Krasue')
             enemiesGenerated = rd.randint(min(self.round+3,6),6)
+            match self.round:
+                case 2:
+                    self.allEnemies.append('Phrai')
+                    self.allEnemies.append('Krasue')
+                case 3:
+                    self.allEnemies.append('NangRam')
+                case 4:
+                    self.allEnemies.append('MaeNak')
+                case 5:
+                    self.allEnemies.append('Ka')
+                case 7:
+                    self.allEnemies.append('Faker')
+            
             # enemiesGenerated = 1
 
             for enemy in range(enemiesGenerated):
@@ -59,8 +80,15 @@ class EnemySelection(BaseState):
                     case 'GongGoi': addedEnemy = GongGoi('GongGoi',(4+(2*(self.round-1))),(2+(self.round-1)))
                     case 'Phrai': addedEnemy = Phrai('Phrai',(6+(2*(self.round-1))),(3+(self.round-1)))
                     case 'Krasue': addedEnemy = Krasue('Krasue',(3+(2*(self.round-1))),(4+(self.round-1)))
+                    case 'NangRam': addedEnemy = NangRam('Nang Ram',(8+(2*(self.round-1))),(4+(self.round-1)))
+                    case 'MaeNak': addedEnemy = MaeNak('MaeNak',(8+(2*(self.round-1))),(4+(self.round-1)))
+                    case 'Ka': addedEnemy = Ka('Ka',(8+(2*(self.round-1))),(2+(self.round-1)))
+                    case 'Faker': addedEnemy = Faker('Faker',(8+(2*(self.round-1))),(2+(self.round-1)))
+                    case 'Monk': addedEnemy = Monk('Monk',(80+(2*(self.round-1))),(10+(self.round-1)))
                 self.enemiesList.append(addedEnemy)
             # print(self.enemiesList)
+            if self.round == 7:
+                self.enemiesList = [Faker('Faker',(8+(2*(self.round-1))),(2+(self.round-1)))]
 
 
 
@@ -125,7 +153,7 @@ class EnemySelection(BaseState):
                     case 'Armor': self.player.armor += 2
                 self.choose = False
                 self.confirm = False
-                stateManager.Change('lobby',{'player':self.player})
+                stateManager.Change('lobby',{'player':self.player,'round':self.round})
                 
 
     def render(self, screen):

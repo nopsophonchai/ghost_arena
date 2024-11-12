@@ -30,9 +30,12 @@ class Lobby(BaseState):
         pass
 
     def Enter(self, params):
+        
         if 'player' in params:
             self.player = params['player']
             self.player.refresh()
+        if 'round' in params:
+            self.round = params['round']
 
     def update(self, dt, events):
        for event in events:
@@ -41,10 +44,10 @@ class Lobby(BaseState):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    stateManager.Change('character',{'player': self.player})
+                    stateManager.Change('character',{'player': self.player,'round':self.round})
                 if event.key == pygame.K_RIGHT:
-                    stateManager.Change('shop',{'player': self.player})
+                    stateManager.Change('shop',{'player': self.player,'round':self.round})
                 if event.key == pygame.K_RETURN:
-                    stateManager.Change('select',{'player': self.player})
+                    stateManager.Change('select',{'player': self.player,'round':self.round})
     def render(self, screen):
         pass

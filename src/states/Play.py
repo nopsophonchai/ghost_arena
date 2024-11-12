@@ -7,6 +7,8 @@ from src.resources import *
 from src.Player import Player
 from src.Enemies.GongGoi import GongGoi
 from src.Enemies.Preta import Preta
+from src.Enemies.MaeNak import MaeNak, Dang
+
 pygame.font.init()
 import random as rd
 gameFont = {
@@ -44,6 +46,13 @@ class Play(BaseState):
 
         self.called = 0
 
+        self.lastCard = None
+        self.disableCard = False
+
+        self.dang = False
+        self.thisNak = None
+
+        self.monkRound = False
     def Exit(self):
         self.player.refresh()
 
@@ -53,9 +62,13 @@ class Play(BaseState):
         for i in range(3):
             self.player.drawCard()
         self.enemy = params['enemy']
-        self.round = params['round']
+        if 'round' in params:
+            self.round = params['round']
+        if self.enemy.name == 'Monk':
+            self.monkRound = True
+
         self.turn = 0
-        print(self.player)
+        # print(self.player)
 
 
 
@@ -64,6 +77,7 @@ class Play(BaseState):
             if not self.interface:
                 if self.turnCount < 1:
                     if len(self.player.statusEffects) != 0:
+
                         self.player.applyStatEff()
                     elif len(self.player.buffs) != 0:
                         self.player.applyDebuffs()
@@ -75,10 +89,10 @@ class Play(BaseState):
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             self.select = (self.select - 1) % (len(self.player.current) + 2)
-                            print(self.select)
+                            # print(self.select)
                         if event.key == pygame.K_RIGHT:
                             self.select = (self.select + 1) % (len(self.player.current) + 2)
-                            print(self.select)
+                            # print(self.select)
                         if event.key == pygame.K_RETURN:
                             self.confirm = True
 
@@ -95,17 +109,21 @@ class Play(BaseState):
                 self.turnTimer += 1
                 if self.turnTimer > 50:
                     self.enemy.attack(self.player)
+                    if self.enemy.name == 'MaeNak':
+                        if self.enemy.dangFlag:
+                            self.thisNak = self.enemy
+                            self.enemy = Dang('Dang',(3+(2*(self.round-1))),(4+(self.round-1)),self.thisNak)
                     self.turn = 0
                     self.turnCount = 0
                     self.buffCount = 0
                     self.turnTimer = 0
-                    print("-------Player's Turn-------")
-            elif self.called != 1:
+                    # print("-------Player's Turn-------")
+            elif self.called != 1 and self.enemy.name != 'Dang':
                 self.called = 1
                 self.deadTimer = 120
                         # print(self.enemy.health)
                 self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
-                print(self.player.health)
+                # print(self.player.health)
                 self.player.gold += self.enemy.gold + (self.round*2)
 
     def confirmHandle(self,dt, events):
@@ -121,11 +139,17 @@ class Play(BaseState):
                 self.drawCount = 0
                 self.turnCount = 0
             else:
-                print(self.player.noMelee)
+                # print(self.player.noMelee)
                 if self.player.current[self.select-1].item.weaponType == 'melee' and self.player.noMelee:
+                    pass
+                elif self.player.current[self.select-1] == self.lastCard and self.player.noCard:
+                    print('No card')
                     pass
                 else:
                     chosenCard = self.player.current[self.select-1]
+                    if not self.player.noCard:
+                        self.lastCard = chosenCard
+                        print(f'Last Card: {self.lastCard.name}')
                     if chosenCard.item.type == 'Weapon':
                         if chosenCard.item.bungieGum == True:
                             self.interface = True
@@ -138,22 +162,27 @@ class Play(BaseState):
                             self.drawCount = 0
                             if len(self.player.current)==0:
                                 self.select = 0
-                            print("-------Enemy's Turn-------")
+                            # print("-------Enemy's Turn-------")
                     if chosenCard.item.type == 'Spell':
                         self.interface = True
                         self.confirm = True
-                    if self.enemy.health <= 0:
+
+                    if self.enemy.health <= 0 and self.enemy.name != 'Dang':
                         self.enemy.isDead = True
                         self.deadTimer = 120
                         # print(self.enemy.health)
                         self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
-                        print(self.player.health)
+                        # print(self.player.health)
                         self.player.gold += self.enemy.gold + (self.round*2)
+                    if self.enemy.health <= 0 and self.enemy.name == 'Dang':
+                        self.enemy.isDead = True
+                        self.enemy = self.thisNak
+                        self.enemy.dangFlag = False
 
                         
                     
         else:
-            print("Welcome to the show")
+            # print("Welcome to the show")
             for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -175,7 +204,7 @@ class Play(BaseState):
                         case 2: 
                             def apply(target):
                                 target.miss = True
-                                print(f'Changed Miss: {target.miss}')
+                                # print(f'Changed Miss: {target.miss}')
                             def remove(target):
                                 target.miss = False
                             sun = Debuff('sun',apply,remove,2)
@@ -194,36 +223,54 @@ class Play(BaseState):
                 self.drawCount = 0
                 if len(self.player.current)==0:
                     self.select = 0
-                print("-------Enemy's Turn-------")
-                print(f'Enemy Health:{self.enemy.health}')
+                # print("-------Enemy's Turn-------")
+                # print(f'Enemy Health:{self.enemy.health}')
                 if self.enemy.health <= 0:
-                    print(self.enemy.health)
+                    # print(self.enemy.health)
                     self.enemy.isDead = True
                     self.deadTimer = 120
                     # print(self.enemy.health)
                     self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
-                    print(self.player.health)
+                    # print(self.player.health)
                     self.player.gold += self.enemy.gold + (self.round*2)
                 
 
     def render(self, screen):
         
         if self.deadTimer > 0:
-            message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))
-            message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
-            screen.blit(message_surface, message_rect)
-            message_surface = gameFont['small'].render(f'Gold earned {self.enemy.gold+(2*self.round)}!', True, (255, 215, 0))
-            message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.5))
-            screen.blit(message_surface, message_rect)
-            message_surface = gameFont['small'].render(f'Health recovered {self.enemy.maxHealth // 2}!', True, (255, 215, 0))
-            message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.25))
-            screen.blit(message_surface, message_rect)
-            self.deadTimer -= 1
-            if self.deadTimer <= 0:
-                self.called = 0
-                stateManager.Change('select',{'player':self.player})
+            if not self.monkRound:
+                message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+                screen.blit(message_surface, message_rect)
+                message_surface = gameFont['small'].render(f'Gold earned {self.enemy.gold+(2*self.round)}!', True, (255, 215, 0))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.5))
+                screen.blit(message_surface, message_rect)
+                message_surface = gameFont['small'].render(f'Health recovered {self.enemy.maxHealth // 2}!', True, (255, 215, 0))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.25))
+                screen.blit(message_surface, message_rect)
+                self.deadTimer -= 1
+                if self.deadTimer <= 0:
+                    self.called = 0
+                    stateManager.Change('select',{'player':self.player})
+            else:
+                message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+                screen.blit(message_surface, message_rect)
+                message_surface = gameFont['small'].render(f'ALL ITEMS ARE FREE!', True, (255, 215, 0))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.5))
+                screen.blit(message_surface, message_rect)
+                self.deadTimer -= 1
+                if self.deadTimer <= 0:
+                    self.called = 0
+                    stateManager.Change('shop',{'player':self.player,'free':True})
         else:
+            
+            if self.enemy.name == 'Dang':
+                t_title = gameFont['small'].render(f"{self.thisNak.name}: {self.thisNak.health}", False, (255, 10, 40))
+                rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.25))
+                screen.blit(t_title,rect)
             t_title = gameFont['small'].render(f"{self.enemy.name}: {self.enemy.health}", False, (255, 10, 40))
+            # print(self.enemy.name)
             rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.75))
             screen.blit(t_title, rect)
             t_title = gameFont['small'].render(f"Player Health {self.player.health}", False, (255, 255, 255))
@@ -234,16 +281,25 @@ class Play(BaseState):
             if self.turn == 0:
                 for i in range(0, len(self.player.current)):
                     if i+1 == self.select:
-                        if self.player.current[i].item.weaponType == 'melee' and self.player.noMelee:
-                            t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (80, 80, 80))
+                        if (self.player.current[i].item.weaponType == 'melee' and self.player.noMelee) or (self.player.current[i] == self.lastCard and self.player.noCard):
+                            if self.enemy.name == 'Ka':
+                                t_title = gameFont['small'].render("KA", False, (80, 80, 80))
+                            else:
+                                t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (80, 80, 80))
                             rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
                             screen.blit(t_title, rect)
                         else:
-                            t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (0, 123, 255))
+                            if self.enemy.name == 'Ka':
+                                t_title = gameFont['small'].render("KA", False, (0, 123, 255))
+                            else:
+                                t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (0, 123, 255))
                             rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.25))
                             screen.blit(t_title, rect)
                     else:
-                        t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (255, 255, 255))
+                        if self.enemy.name == 'Ka':
+                            t_title = gameFont['small'].render("KA", False, (255, 255, 255))
+                        else:
+                            t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (255, 255, 255))
                         rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
                         screen.blit(t_title, rect)
                 if self.select == 0:
