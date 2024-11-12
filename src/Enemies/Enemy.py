@@ -17,7 +17,6 @@ class Enemy:
         self.immune = immune
         self.weakness = weakness
     
-
     def damageEnemy(self,damage,type = 'normal'):
         if type in self.immune:
             pass
