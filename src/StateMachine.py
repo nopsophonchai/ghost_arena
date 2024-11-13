@@ -22,3 +22,9 @@ class StateMachine:
     def SetStates(self, states):
         self.states = states
         print(f"States Set, {states}")
+    
+    def Reset(self):
+        for state in self.states.values():
+            if hasattr(state, "Reset"):
+                state.Reset()  
+        print(self.states)

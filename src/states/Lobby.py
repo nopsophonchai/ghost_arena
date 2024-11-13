@@ -26,6 +26,16 @@ class Lobby(BaseState):
         self.roundEnd = True
         self.player = Player()
 
+    def Reset(self):
+        self.option = 1
+        self.round = 0
+        self.confirm = False
+        self.select = 0
+
+        self.enemiesList = []
+        self.roundEnd = True
+        self.player = Player()
+
     def Exit(self):
         pass
 

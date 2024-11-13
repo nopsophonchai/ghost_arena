@@ -53,6 +53,43 @@ class Play(BaseState):
         self.thisNak = None
 
         self.monkRound = False
+
+    def Reset(self):
+        self.option = 1
+        self.showNum = False
+        self.playerHealth = 10
+        self.enemyHealth = 10
+        self.select = 0
+        self.enemySelect = 0
+        self.currentTurn = 1
+        self.turn = 0
+        self.confirm = False
+        self.turnTimer = 0
+        self.interface = False
+        # self.enemy = GongGoi('Gong Goi',10,3)
+        self.enemy = Preta('Preta',10,3)
+
+        self.drawCount = 0
+        self.turnCount = 0
+        self.buffCount = 0
+
+        self.deadTimer = 0
+        self.round = 0
+
+        self.interfaceSelect = 0
+        self.interfaceConfirm = False
+
+        self.called = 0
+
+        self.lastCard = None
+        self.disableCard = False
+
+        self.dang = False
+        self.thisNak = None
+
+        self.monkRound = False
+
+
     def Exit(self):
         self.player.refresh()
 
@@ -73,6 +110,8 @@ class Play(BaseState):
 
 
     def update(self, dt, events):
+        if self.player.health <= 0:
+            stateManager.Change('gameover',{})
         if self.turn == 0:
             if not self.interface:
                 if self.turnCount < 1:

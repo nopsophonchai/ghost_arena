@@ -11,7 +11,7 @@ import random as rd
 
 class Player:
     def __init__(self):
-        self.damage = 300
+        self.damage = 3
         self.health = 10
         self.maxHealth = 10
         self.armor = 0
@@ -31,7 +31,7 @@ class Player:
         
         self.noCard = False
 
-        self.gold = 300
+        self.gold = 10
 
     def damageEnemy(self,damage,type='normal'):
         if not self.noArmor:

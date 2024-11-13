@@ -41,6 +41,33 @@ class Shop(BaseState):
         self.thisRound = 0
 
         self.ibought = [0,0,0,0]
+
+    def Reset(self):
+        self.confirm = False
+        self.select = 0
+        self.chosen = 0
+
+        self.healthBought = 0
+        self.damageBought = 0
+        self.healthPrice = 2
+        self.damagePrice = 2
+        self.price = 0
+
+        self.weaponSelect = False
+        self.chosenEffect = None
+
+        self.alertTimer = 0
+        self.alert = False
+
+        self.free = False
+
+        self.roundCount = 0
+        self.thisRound = 0
+
+        self.ibought = [0,0,0,0]
+
+
+
     def Exit(self):
         print(self.weaponSelect)
         self.select = 0

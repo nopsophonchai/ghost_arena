@@ -1,6 +1,12 @@
 from src.states.BaseState import BaseState
 import pygame, sys
 from ..Dependency import *
+from src.states.Play import Play
+from src.states.Lobby import Lobby
+from src.states.EnemySelection import EnemySelection
+from src.states.GameOver import GameOver
+from src.states.Character import Character
+from src.states.Shop import Shop
 
 
 
@@ -12,11 +18,15 @@ class StartState(BaseState):
         self.option = 1
         self.showNum = False
 
+
+    def Reset(self):
+        self.option = 1
+        self.showNum = False
+
     def Exit(self):
         pass
 
     def Enter(self, params):
-        # print(message)
         pass
 
     def render(self, screen):

@@ -44,8 +44,20 @@ class EnemySelection(BaseState):
         self.allEnemies = ['Preta','GongGoi']
 
 
+    def Reset(self):
+        self.option = 1
+        self.round = 0
+        self.confirm = False
+        self.select = 0
 
+        self.enemiesList = []
+        self.roundEnd = True
+        self.player = None
 
+        self.choose = False
+        self.itemList = ['Fire','Water','Rice','Armor']
+        self.allEnemies = ['Preta','GongGoi']
+        
     def Exit(self):
         self.select = 0
 
