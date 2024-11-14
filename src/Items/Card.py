@@ -13,3 +13,6 @@ class Card:
     def heal(self,player,amount):
         player.health = min(player.maxHealth, player.health + amount)
     
+    def render(self,screen,x,y):
+        screen.blit(pygame.image.load(f'graphics/cards.png/{self.name}.png'),(x,y,0,0))
+    

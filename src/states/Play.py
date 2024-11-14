@@ -8,6 +8,8 @@ from src.Player import Player
 from src.Enemies.GongGoi import GongGoi
 from src.Enemies.Preta import Preta
 from src.Enemies.MaeNak import MaeNak, Dang
+from src.Items.Card import Card
+from src.Items.Weapon import Weapon
 
 pygame.font.init()
 import random as rd
@@ -293,6 +295,8 @@ class Play(BaseState):
         screen.blit(self.player.currAni.image,(WIDTH / 3.5, HEIGHT / 3.75,0,0))
         screen.blit(self.enemy.currAni.image,(WIDTH / 1.5, HEIGHT / 3.75,0,0))
 
+        pygame.draw.rect(screen,(80,80,80),(WIDTH//1.25,HEIGHT // 1.5,400,400))
+
 
         if self.deadTimer > 0:
             if not self.monkRound:
@@ -336,45 +340,83 @@ class Play(BaseState):
 
 
             if self.turn == 0:
-                for i in range(0, len(self.player.current)):
-                    if i+1 == self.select:
+                card_width = 120
+                num_cards = len(self.player.current)
+                reserved_width = WIDTH * 0.4
+                available_width = WIDTH - reserved_width
+                spacing = 10  # Minimum spacing of 20 pixels
+
+                # Calculate the starting x position for centering within the available width
+                start_x = reserved_width / 2
+
+                # Render each card within the 75% width area
+                for i in range(num_cards):
+                    
+                    card_x = start_x + (i * (card_width + spacing))  # Add extra spacing for the first card
+                    print(card_x)
+                    if i + 1 == self.select:
+                        # Card is selected
                         if (self.player.current[i].item.weaponType == 'melee' and self.player.noMelee) or (self.player.current[i] == self.lastCard and self.player.noCard):
+                            # Display "Disabled" message if conditions are met
                             if self.enemy.name == 'Ka':
                                 t_title = gameFont['small'].render("KA", False, (80, 80, 80))
+                                rect = t_title.get_rect(center=(card_x, HEIGHT / 1.125))
+                                screen.blit(t_title, rect)
                             else:
-                                t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (80, 80, 80))
-                            rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
-                            screen.blit(t_title, rect)
+                                t_title = gameFont['small'].render("Disabled!", False, (80, 80, 80))
+                                rect = t_title.get_rect(center=(card_x+60, HEIGHT / 1.125))
+                                screen.blit(t_title, rect)
                         else:
+                            # Display the card normally
                             if self.enemy.name == 'Ka':
                                 t_title = gameFont['small'].render("KA", False, (0, 123, 255))
+                                rect = t_title.get_rect(center=(card_x, HEIGHT / 1.6))
+                                screen.blit(t_title, rect)
                             else:
-                                t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (0, 123, 255))
-                            rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.25))
-                            screen.blit(t_title, rect)
+                                right_area_start = WIDTH // 1.25
+                                right_area_width = WIDTH - right_area_start
+                                text_x_center = right_area_start + right_area_width // 2
+                                self.player.current[i].render(screen, card_x, HEIGHT / 1.6)
+                                t_title = gameFont['medium'].render(f"{self.player.current[i].name.upper()}", False, (255, 255, 255))
+                                rect = t_title.get_rect(center=(text_x_center, HEIGHT / 1.4))
+                                screen.blit(t_title, rect)
+                                t_title = gameFont['small'].render(f"Damage: {self.player.current[i].item.damage}", False, (255, 255, 255))
+                                rect = t_title.get_rect(center=(text_x_center, HEIGHT / 1.25))
+                                screen.blit(t_title, rect)
                     else:
+                        # Card is not selected
                         if self.enemy.name == 'Ka':
                             t_title = gameFont['small'].render("KA", False, (255, 255, 255))
+                            rect = t_title.get_rect(center=(card_x, HEIGHT / 1.5))
+                            screen.blit(t_title, rect)
                         else:
-                            t_title = gameFont['small'].render(f"{self.player.current[i].name}", False, (255, 255, 255))
-                        rect = t_title.get_rect(center=(WIDTH / 3.25+200*i, HEIGHT / 1.125))
-                        screen.blit(t_title, rect)
+                            self.player.current[i].render(screen, card_x, HEIGHT / 1.5)
+
+                # Draw "Draw Card" and "End Turn" options with appropriate spacing
+                draw_card_x = start_x - 70
+                end_turn_x = start_x + num_cards * (card_width + spacing) + 60
+
+                # Draw "Draw Card"
                 if self.select == 0:
                     t_title = gameFont['small'].render("Draw Card", False, (0, 123, 56))
-                    rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.25))
+                    rect = t_title.get_rect(center=(draw_card_x, HEIGHT / 1.25))
                     screen.blit(t_title, rect)
                 else:
                     t_title = gameFont['small'].render("Draw Card", False, (30, 255, 30))
-                    rect = t_title.get_rect(center=(WIDTH / 3.25 - 200, HEIGHT / 1.125))
+                    rect = t_title.get_rect(center=(draw_card_x, HEIGHT / 1.125))
                     screen.blit(t_title, rect)
-                if self.select == (len(self.player.current) + 1):
+
+                # Draw "End Turn"
+                if self.select == (num_cards + 1):
                     t_title = gameFont['small'].render("End Turn", False, (180, 0, 0))
-                    rect = t_title.get_rect(center=(WIDTH / 3.25 + 200*(len(self.player.current)), HEIGHT / 1.25))
+                    rect = t_title.get_rect(center=(end_turn_x, HEIGHT / 1.25))
                     screen.blit(t_title, rect)
                 else:
                     t_title = gameFont['small'].render("End Turn", False, (180, 0, 0))
-                    rect = t_title.get_rect(center=(WIDTH / 3.25 + 200*(len(self.player.current)), HEIGHT / 1.125))
+                    rect = t_title.get_rect(center=(end_turn_x, HEIGHT / 1.125))
                     screen.blit(t_title, rect)
+                    
+
         if self.interface:
             if self.player.current[self.select-1].item.type == 'Weapon':
                 pygame.draw.rect(screen, (255, 255, 255), (WIDTH/2 - 150, HEIGHT/2 - 150, 300, 300))
