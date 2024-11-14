@@ -1,6 +1,6 @@
 import pygame
 import random as rd
-
+from src.resources import enemyAni
 
 class Enemy:
     def __init__(self,health,damage,armor,name,immune = [],weakness = []):
@@ -17,6 +17,9 @@ class Enemy:
         self.immune = immune
         self.weakness = weakness
         self.useUlt = 0
+
+        self.currAni = None
+        self.animationList = enemyAni
     
 
     def damageEnemy(self,damage,type = 'normal'):
@@ -25,11 +28,15 @@ class Enemy:
         elif type == 'normal' or (type not in self.weakness and type not in self.immune):
             print('Not Weak!')
             self.health -= max((damage - self.armor),0)
+            print('Animation changed\n')
+            self.ChangeAnimation(f'{self.name}Hurt')
         elif type == 'true':
             self.health -= damage
+            self.ChangeAnimation(f'{self.name}Hurt')
         elif type in self.weakness:
             print('Weak!')
             self.health -= int(1.5* damage)
+            self.ChangeAnimation(f'{self.name}Hurt')
 
     def chooseAttacks(self):
         attackType, attackList = rd.choice(list(self.attacks.items()))
@@ -68,5 +75,11 @@ class Enemy:
                     debuff.remove(self)  
                     self.buffs.remove(debuff)
                     print(self.miss)
+
+    def ChangeAnimation(self,name):
+        self.currAni = self.animationList[name]
+
+    def render(self,dt):
+        self.currAni.update(dt)
 
     

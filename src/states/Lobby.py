@@ -35,6 +35,7 @@ class Lobby(BaseState):
         self.enemiesList = []
         self.roundEnd = True
         self.player = Player()
+        
 
     def Exit(self):
         pass
@@ -44,10 +45,12 @@ class Lobby(BaseState):
         if 'player' in params:
             self.player = params['player']
             self.player.refresh()
+            
         if 'round' in params:
             self.round = params['round']
-
+        self.player.ChangeAnimation('playerIdle')
     def update(self, dt, events):
+       self.player.render(dt)
        for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -60,4 +63,4 @@ class Lobby(BaseState):
                 if event.key == pygame.K_RETURN:
                     stateManager.Change('select',{'player': self.player,'round':self.round})
     def render(self, screen):
-        pass
+        screen.blit(self.player.currAni.image,(WIDTH//2 - 64,HEIGHT//2 - 64,0,0))

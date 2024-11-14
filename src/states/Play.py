@@ -99,6 +99,7 @@ class Play(BaseState):
         for i in range(3):
             self.player.drawCard()
         self.enemy = params['enemy']
+        self.enemy.ChangeAnimation('PretaIdle')
         if 'round' in params:
             self.round = params['round']
         if self.enemy.name == 'Monk':
@@ -110,14 +111,20 @@ class Play(BaseState):
 
 
     def update(self, dt, events):
+        self.player.render(dt)
+        self.enemy.render(dt)
         if self.player.health <= 0:
             stateManager.Change('gameover',{})
         if self.turn == 0:
+            if self.player.currAni.times_played > 0:
+                self.player.currAni.Refresh()
+                self.player.ChangeAnimation('playerIdle')
             if not self.interface:
                 if self.turnCount < 1:
                     if len(self.player.statusEffects) != 0:
 
                         self.player.applyStatEff()
+
                     elif len(self.player.buffs) != 0:
                         self.player.applyDebuffs()
                     self.turnCount = 1
@@ -138,6 +145,9 @@ class Play(BaseState):
             if self.confirm:
                 self.confirmHandle(dt, events)
         else:
+            if self.enemy.currAni.times_played > 0:
+                self.enemy.currAni.Refresh()
+                self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
             if not self.enemy.isDead:
                 if len(self.enemy.statusEffects) != 0 and self.turnCount < 1:
                     self.enemy.applyStatEff()
@@ -148,6 +158,11 @@ class Play(BaseState):
                 self.turnTimer += 1
                 if self.turnTimer > 50:
                     self.enemy.attack(self.player)
+                    self.player.currAni.Refresh()
+                    self.player.ChangeAnimation('playerHurt')
+                    self.player.currAni.loop = False
+
+                        
                     if self.enemy.name == 'MaeNak':
                         if self.enemy.dangFlag:
                             self.thisNak = self.enemy
@@ -275,7 +290,10 @@ class Play(BaseState):
                 
 
     def render(self, screen):
-        
+        screen.blit(self.player.currAni.image,(WIDTH / 3.5, HEIGHT / 3.75,0,0))
+        screen.blit(self.enemy.currAni.image,(WIDTH / 1.5, HEIGHT / 3.75,0,0))
+
+
         if self.deadTimer > 0:
             if not self.monkRound:
                 message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))

@@ -1,0 +1,65 @@
+{
+    "spriteSheetURL": "./graphics/Player.png",
+    "type":"animation",
+    "size":[384,128],
+
+    "sprites":[
+        {
+            "name":"Player_Idle",
+            "xsize":128,
+            "ysize":128,
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":128,
+                    "y":0,
+                    "scale":1
+                }
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":0,
+				"scale":1
+		     },
+            "interval_time":0.35,
+            "colorKey": null
+        },
+        {
+            "name":"Player_Hurt",
+            "xsize":128,
+            "ysize":128,
+            "images":[
+                {
+                    "x":256,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":256,
+                    "y":0,
+                    "scale":1
+                }
+            ],
+	       "idle_image":
+			{
+				"x":256,
+				"y":0,
+				"scale":1
+		     },
+
+            "interval_time":0.3,
+            "colorKey": null
+        }
+]
+}
+

@@ -7,6 +7,7 @@ from src.Items.Rice import Rice
 from src.Items.Fire import Fire
 from src.Items.Water import Water
 import random as rd
+from src.resources import aniList
 
 
 class Player:
@@ -32,6 +33,10 @@ class Player:
         self.noCard = False
 
         self.gold = 10
+
+
+        self.animationList = aniList
+        self.currAni = None
 
     def damageEnemy(self,damage,type='normal'):
         if not self.noArmor:
@@ -85,6 +90,14 @@ class Player:
             if debuff.duration <= 0:
                 debuff.remove(self)  
                 self.buffs.remove(debuff)
+    def ChangeAnimation(self,name):
+        self.currAni = self.animationList[name]
+        print(self.currAni.images)
+        print('called')
+
+    def render(self,dt):
+        self.currAni.update(dt)
+
 
     
 

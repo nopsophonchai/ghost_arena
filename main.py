@@ -117,7 +117,7 @@ class GameMain:
 
             #screen update
             pygame.display.update()
-
+            # print(sprite_collection)
 
 if __name__ == '__main__':
     main = GameMain()
