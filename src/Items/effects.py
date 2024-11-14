@@ -58,11 +58,11 @@ def waterloo(target,damage):
     target.damageEnemy(damage//3,'water')
 
 gameEffects =  {
-    'theSun': (here_comes_the_sun,'Here Comes the Sun',20),
-    'bLights': (blinding_lights,'Blinding Lights',10),
-    'brightLights': (bright_lights,'Bright Lights',10),
-    'niceguy': (nice_guy,'No More Mr.Nice Guy',30),
-    'discoinferno': (disco_inferno,'Disco Inferno',20)
+    'theSun': (here_comes_the_sun,'Here Comes the Sun',20,'70% Chance to make the \nenemy miss the next attack'),
+    'bLights': (blinding_lights,'Blinding Lights',10,'50% Chance to make the \nenemy miss the next attack'),
+    'brightLights': (bright_lights,'Bright Lights',10,'30% Chance to make the \nenemy miss the next attack'),
+    'niceguy': (nice_guy,'No More Mr.Nice Guy',30,"Deals additional true damage \nequal to half your \nweapon's damage"),
+    'discoinferno': (disco_inferno,'Disco Inferno',20,"Deals additional fire damage\n equal to one third \nyour weapon's damage")
 }
 
 def beyond(target):
@@ -72,6 +72,6 @@ def bungieGum(target):
     target.bungieGum = True
 
 playerEffects = {
-    'beyond' : (beyond, 'Beyond...', 30),
-    'bungieGum': (bungieGum,'Bungie Gum',20)
+    'beyond' : (beyond, 'Beyond...', 30,"Your attacks and effects \nare applied twice"),
+    'bungieGum': (bungieGum,'Bungie Gum',20,"You can eat this weapon to \nheal or block the next attack")
 }

@@ -64,3 +64,13 @@ class Lobby(BaseState):
                     stateManager.Change('select',{'player': self.player,'round':self.round})
     def render(self, screen):
         screen.blit(self.player.currAni.image,(WIDTH//2 - 64,HEIGHT//2 - 64,0,0))
+        # screen.blit(pygame.image.load('graphics/swordCard.png'),(WIDTH//2-60,HEIGHT//1.5,0,0))
+
+        self.player.items['sword'].render(screen,WIDTH//4,HEIGHT//1.5)
+        self.player.items['Fire'].render(screen,WIDTH//1.5,HEIGHT//3)
+
+
+
+
+        
+

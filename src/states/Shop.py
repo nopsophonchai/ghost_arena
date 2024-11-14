@@ -122,7 +122,7 @@ class Shop(BaseState):
         self.confirm = False 
         if self.weaponSelect:
             playerEffectName = [effect[1] for effect in list(self.player.items.items())[self.select][1].playerEffects] + [effect[1] for effect in list(self.player.items.items())[self.select][1].effects]
-            if self.chosenEffect[1] in playerEffectName:
+            if self.chosenEffect[1] in playerEffectName or len(list(self.player.items.items())[self.select][1].playerEffects) + len(list(self.player.items.items())[self.select][1].effects) > 2:
                 print('Effect already exists!')
                 self.alert = True
 
@@ -188,7 +188,7 @@ class Shop(BaseState):
                     
                     self.weaponSelect = True
                     self.price = self.chosenList[self.select][2]
-                    self.chosenEffect = (self.chosenList[self.select][0], self.chosenList[self.select][1])
+                    self.chosenEffect = (self.chosenList[self.select][0], self.chosenList[self.select][1],self.chosenList[self.select][3])
                     self.select = 0
                     #print(self.chosenEffect)
 
