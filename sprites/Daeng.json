@@ -1,0 +1,70 @@
+{
+    "spriteSheetURL": "./graphics/Daeng.png",
+    "type":"animation",
+    "size":[192,64],
+    "sprites":[
+        {
+            "name":"Daeng_Idle",
+            "xsize": 64,
+            "ysize": 64,
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":64,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":1
+                }
+			
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":0,
+				"scale":1
+		     },
+            "interval_time":0.6,
+            "colorKey": null
+        },
+        {
+            "name":"Daeng_Hurt",
+            "xsize":64,
+            "ysize": 64,
+            "images":[
+                {
+                    "x":128,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":128,
+                    "y":0,
+                    "scale":1
+                }
+            ],
+	       "idle_image":
+			{
+				"x":128,
+				"y":0,
+				"scale":1
+		     },
+
+            "interval_time":0.6,
+            "colorKey": null
+        }
+]
+}
+

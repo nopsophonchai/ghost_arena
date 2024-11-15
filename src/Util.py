@@ -59,6 +59,14 @@ class SpriteManager:
             [
                 "sprites/Mark.json",
                 "sprites/Preta.json",
+                "sprites/GG.json",
+                "sprites/MaeNak.json",
+                "sprites/Ka.json",
+                "sprites/KraSue.json",
+                "sprites/Daeng.json",
+                "sprites/MaeNakDaeng.json",
+                "sprites/NangRam.json",
+                "sprites/Prai.json",
             ]
         )
         # print('\n')
