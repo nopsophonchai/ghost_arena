@@ -43,7 +43,7 @@ class Shop(BaseState):
 
         self.ibought = [0,0,0,0]
 
-        self.background_image = pygame.transform.scale(pygame.image.load("./graphics/shopBG.png"), (WIDTH, HEIGHT))
+        self.background_image = pygame.transform.scale(pygame.image.load("./graphics/shop_background.png"), (WIDTH, HEIGHT))
 
         self.bottom_image = pygame.image.load("./graphics/lotus_monk.png")
 
