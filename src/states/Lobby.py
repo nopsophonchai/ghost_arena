@@ -26,6 +26,12 @@ class Lobby(BaseState):
         self.roundEnd = True
         self.player = Player()
 
+        self.bg_image = pygame.image.load("./graphics/bg_lobby.png")
+        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH, HEIGHT))
+        self.smoke = pygame.image.load("./graphics/smoke.png")
+        self.a_left = pygame.image.load("./graphics/arrow_left.png")
+        self.a_right = pygame.image.load("./graphics/arrow_right.png")
+
     def Reset(self):
         self.option = 1
         self.round = 0
@@ -63,11 +69,25 @@ class Lobby(BaseState):
                 if event.key == pygame.K_RETURN:
                     stateManager.Change('select',{'player': self.player,'round':self.round})
     def render(self, screen):
+        new_wright = self.a_right.get_width() // 3
+        new_hright = self.a_right.get_height() // 3
+        scaled_rightimage = pygame.transform.scale(self.a_right, (new_wright, new_hright))
+        new_wleft = self.a_left.get_width() // 3
+        new_hleft = self.a_left.get_height() // 3
+        scaled_leftimage = pygame.transform.scale(self.a_left, (new_wleft, new_hleft))
+        screen.blit(self.bg_image, (0, 0))
+        screen.blit(self.smoke,(WIDTH//2 - 64,HEIGHT//2 - 250,0,0))
         screen.blit(self.player.currAni.image,(WIDTH//2 - 64,HEIGHT//2 - 64,0,0))
+        screen.blit(scaled_rightimage, (WIDTH // 1.5+220, HEIGHT // 4 + 415))
+        #screen.blit(scaled_leftimage, (0,HEIGHT -115))
+        screen.blit(scaled_leftimage, (0,0))
         # screen.blit(pygame.image.load('graphics/swordCard.png'),(WIDTH//2-60,HEIGHT//1.5,0,0))
 
-        self.player.items['sword'].render(screen,WIDTH//4,HEIGHT//1.5)
-        self.player.items['Fire'].render(screen,WIDTH//1.5,HEIGHT//3)
+        self.player.items['sword'].render(screen,WIDTH//4-100,HEIGHT//1.5 -100)
+        self.player.items['Fire'].render(screen,WIDTH//1.5,HEIGHT//4)
+       
+
+      
 
 
 

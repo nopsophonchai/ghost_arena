@@ -95,7 +95,7 @@ class StartState(BaseState):
 
             # Title with Outline
             title_text = "GHOST ARENA"
-            t_title_color = (106, 106, 129)
+            t_title_color = (139, 0, 0)
             title_font = gameFont['large']
             
             # Render the title outline in red and black
@@ -117,7 +117,7 @@ class StartState(BaseState):
             screen.blit(title_surface, title_rect)
 
             # Start Option with Outline
-            t_start_color = (106, 106, 129) 
+            t_start_color = (55, 0, 0) 
             start_text = "START"
             option_font = gameFont['medium']
             y_pos = HEIGHT / 2 + 210
