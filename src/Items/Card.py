@@ -15,4 +15,8 @@ class Card:
     
     def render(self,screen,x,y):
         screen.blit(pygame.image.load(f'graphics/cards.png/{self.name}.png'),(x,y,0,0))
+<<<<<<< HEAD
     
+=======
+    
+>>>>>>> origin/main

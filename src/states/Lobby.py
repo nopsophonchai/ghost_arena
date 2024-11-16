@@ -36,6 +36,7 @@ class Lobby(BaseState):
         self.enemiesList = []
         self.roundEnd = True
         self.player = Player()
+        
 
     def Exit(self):
         pass
@@ -44,13 +45,20 @@ class Lobby(BaseState):
         if 'player' in params:
             self.player = params['player']
             self.player.refresh()
+            
         if 'round' in params:
             self.round = params['round']
         self.player.ChangeAnimation('playerIdle')
+<<<<<<< HEAD
 
     def update(self, dt, events):
         self.player.render(dt)
         for event in events:
+=======
+    def update(self, dt, events):
+       self.player.render(dt)
+       for event in events:
+>>>>>>> origin/main
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -69,6 +77,7 @@ class Lobby(BaseState):
                         stateManager.Change('select', {'player': self.player, 'round': self.round})
 
     def render(self, screen):
+<<<<<<< HEAD
         scale_factor = 4.0  # Adjusted to make the character bigger 
 
         # Scale the player's current animation image
@@ -101,3 +110,16 @@ class Lobby(BaseState):
         if is_selected and is_play:
             pygame.draw.rect(screen, (255, 255, 0), text_rect.inflate(40, 25), 3, border_radius=10)  # Yellow outline for selected Play
         screen.blit(text_surface, text_rect)
+=======
+        screen.blit(self.player.currAni.image,(WIDTH//2 - 64,HEIGHT//2 - 64,0,0))
+        # screen.blit(pygame.image.load('graphics/swordCard.png'),(WIDTH//2-60,HEIGHT//1.5,0,0))
+
+        self.player.items['sword'].render(screen,WIDTH//4,HEIGHT//1.5)
+        self.player.items['Fire'].render(screen,WIDTH//1.5,HEIGHT//3)
+
+
+
+
+        
+
+>>>>>>> origin/main

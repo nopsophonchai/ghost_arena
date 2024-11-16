@@ -57,9 +57,24 @@ class SpriteManager:
     def __init__(self):
         self.spriteCollection = self.loadSprites(
             [
+<<<<<<< HEAD
                 "sprites/characters/Mark.json",
                 "sprites/ghosts/Preta.json",
                 "sprites/characters/Monk.json"
+=======
+                "sprites/Mark.json",
+                "sprites/Preta.json",
+                "sprites/GG.json",
+                "sprites/MaeNak.json",
+                "sprites/Ka.json",
+                "sprites/KraSue.json",
+                "sprites/Daeng.json",
+                "sprites/MaeNakDaeng.json",
+                "sprites/NangRam.json",
+                "sprites/Prai.json",
+                "sprites/Monk.json",
+                "sprites/Faker.json",
+>>>>>>> origin/main
             ]
         )
         # print('\n')
@@ -168,3 +183,7 @@ class SpriteSheet(object):
         return pygame.transform.scale(
             image, (xTileSize * scalingfactor, yTileSize * scalingfactor)
         )
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main

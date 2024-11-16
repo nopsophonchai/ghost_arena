@@ -16,7 +16,7 @@ class Player:
         self.health = 10
         self.maxHealth = 10
         self.armor = 0
-        self.items = {'sword':Weapon('Sword',self.damage,'melee',[],[]),'bow':Weapon('Bow',int(self.damage//1.5),'range')}
+        self.items = {'sword':Weapon('Sword',self.damage,'melee',[],[]),'bow':Weapon('Bow',int(self.damage//1.5),'range'),'Fire':Fire('Fire',self.damage,'Fire')}
         self.deck = []
         
         self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6 )
@@ -32,7 +32,11 @@ class Player:
         
         self.noCard = False
 
-        self.gold = 10
+        self.gold = 1000
+
+
+        self.animationList = aniList
+        self.currAni = None
 
 
         self.animationList = aniList

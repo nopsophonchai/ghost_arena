@@ -41,7 +41,7 @@ class EnemySelection(BaseState):
 
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
-        self.allEnemies = ['Preta','GongGoi']
+        self.allEnemies = ["Faker"]
 
 
     def Reset(self):
@@ -63,6 +63,9 @@ class EnemySelection(BaseState):
 
     def Enter(self, params):
         self.player = params['player']
+        if 'enemy' in params:
+            self.enemy = params['enemy']
+            self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
         print(f'Player Select Health: {self.player.health}')
         if 'round' in params:
             self.round = params['round']
@@ -97,6 +100,7 @@ class EnemySelection(BaseState):
                     case 'Ka': addedEnemy = Ka('Ka',(8+(2*(self.round-1))),(2+(self.round-1)))
                     case 'Faker': addedEnemy = Faker('Faker',(8+(2*(self.round-1))),(2+(self.round-1)))
                     case 'Monk': addedEnemy = Monk('Monk',(80+(2*(self.round-1))),(10+(self.round-1)))
+                addedEnemy.ChangeAnimation(f'{addedEnemy.name}Idle')
                 self.enemiesList.append(addedEnemy)
             # print(self.enemiesList)
             if self.round == 7:
@@ -119,6 +123,7 @@ class EnemySelection(BaseState):
 
 
     def update(self, dt, events):
+       # self.enemy.render(dt)
         if not self.choose:
             for event in events:
                 if event.type == pygame.QUIT:
@@ -167,7 +172,8 @@ class EnemySelection(BaseState):
                 self.confirm = False
                 stateManager.Change('lobby',{'player':self.player,'round':self.round})
                 
-
+        for enemy in self.enemiesList:
+            enemy.render(dt)
     def render(self, screen):
         
         if self.choose:
@@ -185,13 +191,22 @@ class EnemySelection(BaseState):
                 screen.blit(text_surface, rect)
 
         else:
+        #show enemy     
             item_spacing = 200
             total_width = item_spacing * (len(self.enemiesList) - 1)
             start_x = (WIDTH - total_width) / 2
+            #round info
             text_surface = gameFont['small'].render(f'Round {self.round}', True, (255, 255, 255))
             rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 3))
             screen.blit(text_surface, rect)
-            for i in range(len(self.enemiesList)):
+            #animation of enemy 
+            for i, enemy in enumerate(self.enemiesList):
+                #enemy.render(dt)
+                if enemy.currAni: 
+                    enemy_image_rect =  enemy.currAni.image.get_rect(center=(start_x + item_spacing * i, HEIGHT / 2))
+                    screen.blit(enemy.currAni.image, enemy_image_rect)
+                else:
+                    print("No animation")
                 text_surface = gameFont['small'].render(self.enemiesList[i].name, True, (255, 255, 255))
                 rect = text_surface.get_rect(center=(start_x + item_spacing * i, HEIGHT / 1.25))
                 if self.select == i:

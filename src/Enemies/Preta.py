@@ -1,6 +1,7 @@
 from src.Enemies.Enemy import Enemy
 from src.Items.StatusEffect import StatusEffect
 from src.Items.Debuff import Debuff
+
 import math
 
 class Preta(Enemy):
@@ -8,6 +9,8 @@ class Preta(Enemy):
         super().__init__(health,damage,armor,name='Preta',weakness=['Fire','Rice','Water'])
         self.attacks = {'normal':[self.scream],'dot':[self.epred,self.bigHand]}
         self.gold = 4
+        
+
     def scream(self,target):
         target.damageEnemy(self.damage)
         print(f'Preta used scream!')
@@ -34,3 +37,5 @@ class Preta(Enemy):
         no_armor_debuff = Debuff(name="No Armor", apply_effect=apply_no_armor, remove_effect=remove_no_armor, duration= 2)
         target.buffs.append(no_armor_debuff)
         print(f'Preta epred!')
+
+

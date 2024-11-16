@@ -42,6 +42,7 @@ class MaeNak(Enemy):
         self.passive(target)
         if self.dangCool == 3:
             self.dangFlag = True
+            #self.ChangeAnimation('DangIdle')
             print('Dang is summoned')
             self.dangCool = 0
         else:
