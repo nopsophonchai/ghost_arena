@@ -10,18 +10,19 @@ class TutorialState(BaseState):
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
         self.instructions = [
-            "Welcome to the Ghost Arena! Use the arrow keys to move around.",
-            "Press 'Enter' to attack enemies. Attacks are made with cards.",
+            "Welcome to the Ghost Arena! Use the arrow keys to select the options.",
+            "Press 'Enter' to attack enemies and confirm your selection. Attacks are made with cards.",
             "Each card represents a spell or an item attack you can use.",
             "At the start of each round, draw 4 cards to your hand.",
             "When you use a card, it goes to the bottom of the deck.",
-            "This is a turn-based game. You can only target one enemy per turn."
+            "This is a turn-based game. You can only target one enemy per turn.",
+            "Press 0 for special interactions any page"
         ]
 
         # Typing effect variables
         self.current_instruction = ""
         self.current_char_index = 0
-        self.typing_speed = 0.025  # Adjust typing speed as needed
+        self.typing_speed = 0.005  # Adjust typing speed as needed
         self.time_since_last_char = 0
         self.show_next_button = False
 

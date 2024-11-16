@@ -26,6 +26,8 @@ class Character(BaseState):
         self.roundEnd = True
         self.player = Player()
         self.page = 1
+
+        self.midBattle = False
     
     def Reset(self):
         self.option = 1
@@ -44,6 +46,8 @@ class Character(BaseState):
     def Enter(self, params):
         if 'player' in params:
             self.player = params['player']
+        if 'midBattle' in params:
+            self.midBattle = True
 
     def update(self, dt, events):
        for event in events:
@@ -52,7 +56,10 @@ class Character(BaseState):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
-                    stateManager.Change('lobby',{'player': self.player})
+                    if self.midBattle:
+                        stateManager.Change('play',{})
+                    else:
+                        stateManager.Change('lobby',{'player': self.player})
                 if event.key == pygame.K_UP:
                     self.page += 1
     def render(self, screen):

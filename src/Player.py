@@ -38,6 +38,8 @@ class Player:
         self.animationList = aniList
         self.currAni = None
 
+        self.effectList = []
+
     def damageEnemy(self,damage,type='normal'):
         if not self.noArmor:
             self.health -= (damage - self.armor)

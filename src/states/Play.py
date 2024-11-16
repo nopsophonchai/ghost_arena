@@ -55,6 +55,7 @@ class Play(BaseState):
         self.thisNak = None
 
         self.monkRound = False
+        self.checkCharacter = False
 
     def Reset(self):
         self.option = 1
@@ -91,23 +92,27 @@ class Play(BaseState):
 
         self.monkRound = False
 
+        self.checkCharacter = False
+
 
     def Exit(self):
-        self.player.refresh()
+        if not self.checkCharacter:
+            self.player.refresh()
 
 
     def Enter(self, params):
-        self.player = params['player']
-        for i in range(3):
-            self.player.drawCard()
-        self.enemy = params['enemy']
-        self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
-        if 'round' in params:
-            self.round = params['round']
-        if self.enemy.name == 'Monk':
-            self.monkRound = True
+        if not self.checkCharacter:
+            self.player = params['player']
+            for i in range(3):
+                self.player.drawCard()
+            self.enemy = params['enemy']
+            self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
+            if 'round' in params:
+                self.round = params['round']
+            if self.enemy.name == 'Monk':
+                self.monkRound = True
 
-        self.turn = 0
+            self.turn = 0
         # print(self.player)
 
 
@@ -116,6 +121,7 @@ class Play(BaseState):
         self.player.render(dt)
         self.enemy.render(dt)
         if self.player.health <= 0:
+            self.checkCharacter = False
             stateManager.Change('gameover',{})
         if self.turn == 0:
             if self.player.currAni.times_played > 0:
@@ -143,6 +149,9 @@ class Play(BaseState):
                             # print(self.select)
                         if event.key == pygame.K_RETURN:
                             self.confirm = True
+                        if event.key == pygame.K_0:
+                            self.checkCharacter = True
+                            stateManager.Change('character',{'midBattle':True})
 
             if self.confirm:
                 self.confirmHandle(dt, events)
@@ -313,6 +322,7 @@ class Play(BaseState):
                 self.deadTimer -= 1
                 if self.deadTimer <= 0:
                     self.called = 0
+                    self.checkCharacter = False
                     stateManager.Change('select',{'player':self.player})
             else:
                 message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))
