@@ -22,7 +22,7 @@ class StoryState(BaseState):
         self.show_start_button = False
 
         # Background
-        self.bg_image = pygame.image.load("./graphics/background.png")
+        self.bg_image = pygame.image.load("./graphics/bgtwo.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
         # Button to advance the story

@@ -6,7 +6,7 @@ class TutorialState(BaseState):
     def __init__(self):
         super(TutorialState, self).__init__()
         self.step = 0
-        self.bg_image = pygame.image.load("./graphics/background.png")
+        self.bg_image = pygame.image.load("./graphics/bgtwo.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
         self.instructions = [

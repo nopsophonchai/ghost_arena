@@ -33,38 +33,14 @@ class GameMain:
             'shop': Shop()
         }
         stateManager.SetStates(states)
+        stateManager.Change('start', {})
 
     def RenderBackground(self):
         self.screen.fill((0, 0, 0))
 
-    def play_intro_video(self, video_path):
-        """ Plays the intro video, then releases resources and switches to 'start' state """
-        cap = cv2.VideoCapture(video_path)
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break  
-            frame = cv2.resize(frame, (self.screen.get_width(), self.screen.get_height()))
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame_surface = pygame.surfarray.make_surface(np.rot90(frame))
-            self.screen.blit(frame_surface, (0, 0))
-            pygame.display.flip()
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-            pygame.time.Clock().tick(90)  # Adjust to control playback speed
-
-        cap.release()  # Release video resources
-        print("Intro video finished, transitioning to StartState.")
-        stateManager.Change('start', {})  # Transition to StartState
+    
 
     def PlayGame(self):
-        """ Main game loop with intro video and state transitions """
-        # Play the main intro video before starting the main loop
-        self.play_intro_video("./video/first-intro.mp4")
 
         clock = pygame.time.Clock()
 

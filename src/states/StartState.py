@@ -59,15 +59,11 @@ class StartState(BaseState):
 
     def Exit(self):
         # Close resources in moviepy if necessary
-        if self.current_video:
-            self.current_video.close()
-        print("Resources released, exiting StartState.")
+        pass
 
     def Enter(self, params=None):
         # Start with the intro video and prepare the frame iterator
-        self.current_video = self.intro_video
-        print("Entered StartState, ready to play intro video.")
-        self.frame_iterator = self.current_video.iter_frames(fps=24, dtype="uint8")
+        pass
 
     def render(self, screen):
     # Clear screen and draw raindrops
@@ -162,7 +158,7 @@ class StartState(BaseState):
                     self.showNum = False
                 if event.key == pygame.K_RETURN:
                     self.showNum = True
-                    stateManager.Change('lobby', {})
+                    stateManager.Change('tutorial', {})
 
         # Update raindrops
         for drop in self.raindrops:
