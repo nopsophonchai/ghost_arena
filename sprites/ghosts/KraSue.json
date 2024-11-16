@@ -1,0 +1,66 @@
+{
+    "spriteSheetURL": "./graphics/KraSue.png",
+    "type":"animation",
+    "size":[384,128],
+    "sprites":[
+        {
+            "name":"KraSue_Idle",
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":3
+                },
+                {
+                    "x":128,
+                    "y":0,
+                    "scale":3
+                },
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":3
+                }
+			
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":0,
+				"scale":3
+		     },
+            "interval_time":0.6,
+            "colorKey": null
+        },
+        {
+            "name":"KraSue_Hurt",
+            "images":[
+                {
+                    "x":256,
+                    "y":0,
+                    "scale":3
+                },
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":3
+                },
+                {
+                    "x":256,
+                    "y":0,
+                    "scale":3
+                }
+            ],
+	       "idle_image":
+			{
+				"x":256,
+				"y":0,
+				"scale":3
+		     },
+
+            "interval_time":0.6,
+            "colorKey": null
+        }
+]
+}
+

@@ -57,7 +57,7 @@ class EnemySelection(BaseState):
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
         self.allEnemies = ['Preta','GongGoi']
-        
+
     def Exit(self):
         self.select = 0
 
@@ -160,7 +160,7 @@ class EnemySelection(BaseState):
                         self.player.addItem(Water('water',self.player.damage,'Water'))
                         self.itemList.remove(self.itemList[self.select])
                     case 'Rice': 
-                        self.player.addItem(Rice('rice',self.player.damage,'rice'))
+                        self.player.addItem(Rice('rice',self.player.damage,'Rice'))
                         self.itemList.remove(self.itemList[self.select])
                     case 'Armor': self.player.armor += 2
                 self.choose = False
