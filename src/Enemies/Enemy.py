@@ -78,6 +78,7 @@ class Enemy:
 
     def ChangeAnimation(self,name):
         self.currAni = self.animationList[name]
+            
 
     def render(self,dt):
         self.currAni.update(dt)

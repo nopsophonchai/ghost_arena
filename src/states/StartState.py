@@ -58,10 +58,16 @@ class StartState(BaseState):
         self.showNum = False
 
     def Exit(self):
-        pass
+        # Close resources in moviepy if necessary
+        if self.current_video:
+            self.current_video.close()
+        print("Resources released, exiting StartState.")
 
-    def Enter(self, params):
-        pass
+    def Enter(self, params=None):
+        # Start with the intro video and prepare the frame iterator
+        self.current_video = self.intro_video
+        print("Entered StartState, ready to play intro video.")
+        self.frame_iterator = self.current_video.iter_frames(fps=24, dtype="uint8")
 
     def render(self, screen):
     # Clear screen and draw raindrops
