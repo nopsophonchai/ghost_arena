@@ -1,6 +1,7 @@
 import pygame
 import random as rd
 from src.resources import enemyAni
+from src.constants import *
 
 class Enemy:
     def __init__(self,health,damage,armor,name,immune = [],weakness = []):
@@ -20,6 +21,8 @@ class Enemy:
 
         self.currAni = None
         self.animationList = enemyAni
+
+        self.effectList = []
     
 
     def damageEnemy(self,damage,type = 'normal'):

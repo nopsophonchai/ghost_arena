@@ -105,7 +105,7 @@ class StartState(BaseState):
             #     outline_rect = outline_surface.get_rect(center=(WIDTH / 2 + offset[0], HEIGHT / 3 + offset[1]))
             #     screen.blit(outline_surface, outline_rect)
 
-            black_offsets = [(-5, 0), (5, 0), (0, -5), (0, 5)]  # Positions for black outline
+            black_offsets = [(-2, 0), (2, 0), (0, -2), (0, 2)]  # Positions for black outline
             for offset in black_offsets:
                 outline_surface = title_font.render(title_text, True, (199, 199, 209))
                 outline_rect = outline_surface.get_rect(center=(WIDTH / 2 + offset[0], HEIGHT / 3 + offset[1]))
@@ -121,6 +121,27 @@ class StartState(BaseState):
             start_text = "START"
             option_font = gameFont['medium']
             y_pos = HEIGHT / 2 + 210
+
+            # Render the "START" option outline in red and black
+            # for offset in outline_offsets:
+            #     outline_surface = option_font.render(start_text, True, (255, 0, 0))
+            #     outline_rect = outline_surface.get_rect(center=(WIDTH / 2 + offset[0], y_pos + offset[1]))
+            #     screen.blit(outline_surface, outline_rect)
+
+            for offset in black_offsets:
+                outline_surface = option_font.render(start_text, True, (199, 199, 209))
+                outline_rect = outline_surface.get_rect(center=(WIDTH / 2 + offset[0], y_pos + offset[1]))
+                screen.blit(outline_surface, outline_rect)
+
+            # Render the main "START" text
+            option_surface = option_font.render(start_text, True, t_start_color)
+            option_rect = option_surface.get_rect(center=(WIDTH / 2, y_pos))
+            screen.blit(option_surface, option_rect)
+
+            t_start_color = (55, 0, 0) 
+            start_text = "Press SPACE to skip intro"
+            option_font = gameFont['medium']
+            y_pos = HEIGHT / 2 + 300
 
             # Render the "START" option outline in red and black
             # for offset in outline_offsets:
@@ -159,6 +180,8 @@ class StartState(BaseState):
                 if event.key == pygame.K_RETURN:
                     self.showNum = True
                     stateManager.Change('tutorial', {})
+                if event.key == pygame.K_SPACE:
+                    stateManager.Change('lobby', {})
 
         # Update raindrops
         for drop in self.raindrops:

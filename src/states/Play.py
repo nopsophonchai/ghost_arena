@@ -120,6 +120,7 @@ class Play(BaseState):
     def update(self, dt, events):
         self.player.render(dt)
         self.enemy.render(dt)
+        self.player.updateEffects(dt)
         if self.player.health <= 0:
             self.checkCharacter = False
             stateManager.Change('gameover',{})
@@ -151,7 +152,7 @@ class Play(BaseState):
                             self.confirm = True
                         if event.key == pygame.K_0:
                             self.checkCharacter = True
-                            stateManager.Change('character',{'midBattle':True})
+                            stateManager.Change('character',{'midBattle':True,'player':self.player})
 
             if self.confirm:
                 self.confirmHandle(dt, events)
@@ -302,11 +303,13 @@ class Play(BaseState):
                 
 
     def render(self, screen):
-        screen.blit(self.player.currAni.image,(WIDTH / 3.5, HEIGHT / 3.75,0,0))
-        screen.blit(self.enemy.currAni.image,(WIDTH / 1.5, HEIGHT / 3.75,0,0))
+        playerRect = self.player.currAni.image.get_rect(center=(WIDTH / 3, HEIGHT / 2.5))
+        enemyRect = self.enemy.currAni.image.get_rect(center=(WIDTH / 1.5, HEIGHT / 2.5))
+        screen.blit(self.player.currAni.image,playerRect)
+        screen.blit(self.enemy.currAni.image,enemyRect)
 
-        pygame.draw.rect(screen,(80,80,80),(WIDTH//1.25,HEIGHT // 1.5,400,400))
-
+        pygame.draw.rect(screen,(255,255,255),(WIDTH//1.25,HEIGHT // 1.5,(WIDTH - WIDTH//1.25),(HEIGHT - HEIGHT // 1.5)))
+        pygame.draw.rect(screen,(0,0,0),(WIDTH//1.25 + 5,HEIGHT // 1.5 + 5,(WIDTH - WIDTH//1.25) - 10,(HEIGHT - HEIGHT // 1.5) - 10))
 
         if self.deadTimer > 0:
             if not self.monkRound:
@@ -343,10 +346,10 @@ class Play(BaseState):
                 screen.blit(t_title,rect)
             t_title = gameFont['small'].render(f"{self.enemy.name}: {self.enemy.health}", False, (255, 10, 40))
             # print(self.enemy.name)
-            rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.75))
+            rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 5))
             screen.blit(t_title, rect)
             t_title = gameFont['small'].render(f"Player Health {self.player.health}", False, (255, 255, 255))
-            rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 3.75))
+            rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 5))
             screen.blit(t_title, rect)
 
 
@@ -364,7 +367,7 @@ class Play(BaseState):
                 for i in range(num_cards):
                     
                     card_x = start_x + (i * (card_width + spacing))  # Add extra spacing for the first card
-                    print(card_x)
+                    # print(card_x)
                     if i + 1 == self.select:
                         # Card is selected
                         if (self.player.current[i].item.weaponType == 'melee' and self.player.noMelee) or (self.player.current[i] == self.lastCard and self.player.noCard):
@@ -459,3 +462,9 @@ class Play(BaseState):
                     
 
                     screen.blit(t_title, rect)
+        
+        for action in self.player.effectList:
+            text_surface = gameFont['small'].render(action['text'], True, (255, 255, 255))
+            position = action['position']
+            screen.blit(text_surface, (position[0], position[1]))
+

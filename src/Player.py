@@ -8,6 +8,7 @@ from src.Items.Fire import Fire
 from src.Items.Water import Water
 import random as rd
 from src.resources import aniList
+from src.constants import *
 
 
 class Player:
@@ -16,7 +17,7 @@ class Player:
         self.health = 10
         self.maxHealth = 10
         self.armor = 0
-        self.items = {'sword':Weapon('Sword',self.damage,'melee',[],[]),'bow':Weapon('Bow',int(self.damage//1.5),'range'),'Fire':Fire('Fire',self.damage,'Fire')}
+        self.items = {'sword':Weapon('Sword',self.damage,'melee',[],[]),'bow':Weapon('Bow',int(self.damage//1.5),'range')}
         self.deck = []
         
         self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6 )
@@ -83,6 +84,7 @@ class Player:
         # print('Poison!')
         for i in self.statusEffects:
             i.apply(self)
+            self.addEffect(f'{i.name}', (WIDTH / 3, HEIGHT / 6), duration=100)
             if i.duration <= 0:
                 self.statusEffects.remove(i)
     def applyDebuffs(self):
@@ -99,7 +101,24 @@ class Player:
 
     def render(self,dt):
         self.currAni.update(dt)
+    
+    def updateEffects(self, dt):
+        for index, effect in enumerate(self.effectList[:]): 
+            effect['position'][1] -= 2
 
+            effect['position'][1] -= index * 2 
+
+            effect['timer'] -= 1
+
+            if effect['timer'] <= 0:
+                self.effectList.remove(effect)
+
+    def addEffect(self, text, position, duration=1000):
+            self.effectList.append({
+                'text': text,
+                'position': list(position), 
+                'timer': duration
+            })
 
     
 

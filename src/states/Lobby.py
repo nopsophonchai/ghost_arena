@@ -83,8 +83,8 @@ class Lobby(BaseState):
         screen.blit(scaled_leftimage, (0,0))
         # screen.blit(pygame.image.load('graphics/swordCard.png'),(WIDTH//2-60,HEIGHT//1.5,0,0))
 
-        self.player.items['sword'].render(screen,WIDTH//4-100,HEIGHT//1.5 -100)
-        self.player.items['Fire'].render(screen,WIDTH//1.5,HEIGHT//4)
+        # self.player.items['sword'].render(screen,WIDTH//4-100,HEIGHT//1.5 -100)
+        # self.player.items['Fire'].render(screen,WIDTH//1.5,HEIGHT//4)
        
 
       

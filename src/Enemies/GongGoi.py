@@ -1,6 +1,7 @@
 from src.Enemies.Enemy import Enemy
 from src.Items.StatusEffect import StatusEffect
 import math
+from src.constants import *
 
 class GongGoi(Enemy):
     def __init__(self,name,health,damage,armor = 0):
@@ -10,8 +11,10 @@ class GongGoi(Enemy):
     def kick(self,target):
         target.damageEnemy(self.damage)
         print(f'GongGoi used kick!')
+        target.addEffect('GongGoi used kick!', (WIDTH / 3, HEIGHT / 6), duration=100)
 
     def ultimate(self,target):
         poison = StatusEffect('poison',math.ceil(self.damage/2),2)
         target.statusEffects.append(poison)
         print(f'GongGoi used poison!')
+        target.addEffect('GongGoi used poison!', (WIDTH / 3, HEIGHT / 6), duration=100)
