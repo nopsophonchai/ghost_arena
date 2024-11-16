@@ -55,7 +55,7 @@ class Lobby(BaseState):
         self.roundEnd = True
         self.player = Player()
 
-        self.background_image = pygame.transform.scale(pygame.image.load("./graphics/lobbyBG.jpeg"), (WIDTH, HEIGHT))
+        self.background_image = pygame.transform.scale(pygame.image.load("./graphics/lobby_background.jpeg"), (WIDTH, HEIGHT))
 
         # Menu options
         self.menu_options = ["Characters", "Shop", "Play"]
