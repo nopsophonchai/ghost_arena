@@ -41,7 +41,7 @@ class EnemySelection(BaseState):
 
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
-        self.allEnemies = ["GongGoi","Preta"]
+        self.allEnemies = ["Faker"]
 
 
     def Reset(self):

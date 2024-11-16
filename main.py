@@ -20,7 +20,6 @@ class GameMain:
 
         stateManager.SetScreen(self.screen)
 
-        # Define states including StartState
         states = {
             'start': StartState(),
             'play': Play(),

@@ -54,6 +54,8 @@ enemyAni = {
         'PhraiHurt': sprite_collection['Prai_Hurt'].animation,
         'MonkIdle': sprite_collection['Monk_Idle'].animation,
         'MonkHurt': sprite_collection['Monk_Hurt'].animation,
+        'FakerIdle': sprite_collection['Faker_Idle'].animation,
+        'FakerHurt': sprite_collection['Faker_Hurt'].animation,
 
 
 
