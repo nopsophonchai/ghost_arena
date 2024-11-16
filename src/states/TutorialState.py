@@ -38,7 +38,7 @@ class TutorialState(BaseState):
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))
 
-        t_title = gameFont['large'].render("How to Play", False, (255, 255, 255))
+        t_title = gameFont['large'].render("How to Play", False, (139, 0, 0))
         rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3 - 140))
         screen.blit(t_title, rect)
 
@@ -75,6 +75,8 @@ class TutorialState(BaseState):
                 elif event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+                elif event.key == pygame.K_SPACE:
+                     stateManager.Change('story', {})
 
     def next_step(self):
         self.step += 1

@@ -43,7 +43,7 @@ class StoryState(BaseState):
         screen.blit(self.bg_image, (0, 0))
 
         # Render the "Story" title
-        t_title = gameFont['large'].render("Story", False, (255, 255, 255))
+        t_title = gameFont['large'].render("Story", False, (139, 0, 0))
         rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3 - 140))
         screen.blit(t_title, rect)
 
@@ -60,7 +60,7 @@ class StoryState(BaseState):
         if self.show_start_button:
             
             pygame.draw.rect(screen, (137, 148, 153), self.next_button)
-            next_text = gameFont['small'].render("Start Game", True, (0, 0, 0))
+            next_text = gameFont['small'].render("Start", True, (0, 0, 0))
             screen.blit(next_text, (self.next_button.x + 20, self.next_button.y + 10))    
 
     def update(self, dt, events):
@@ -85,6 +85,8 @@ class StoryState(BaseState):
                 elif event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+                elif event.key == pygame.K_SPACE:
+                    stateManager.Change('lobby',{'player': self.player})
 
     def next_line(self):
         self.current_line_index += 1
