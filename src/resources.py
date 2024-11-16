@@ -52,6 +52,8 @@ enemyAni = {
         'NangRamHurt': sprite_collection['NangRam_Hurt'].animation,
         'PhraiIdle': sprite_collection['Prai_Idle'].animation,
         'PhraiHurt': sprite_collection['Prai_Hurt'].animation,
+        'MonkIdle': sprite_collection['Monk_Idle'].animation,
+        'MonkHurt': sprite_collection['Monk_Hurt'].animation,
 
 
 

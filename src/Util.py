@@ -67,6 +67,7 @@ class SpriteManager:
                 "sprites/MaeNakDaeng.json",
                 "sprites/NangRam.json",
                 "sprites/Prai.json",
+                "sprites/Monk.json",
             ]
         )
         # print('\n')
