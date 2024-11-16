@@ -95,11 +95,7 @@ class StartState(BaseState):
 
             # Title with Outline
             title_text = "GHOST ARENA"
-<<<<<<< HEAD
-            t_title_color = (255, 255, 255)
-=======
             t_title_color = (106, 106, 129)
->>>>>>> origin/main
             title_font = gameFont['large']
             
             # Render the title outline in red and black
@@ -162,11 +158,7 @@ class StartState(BaseState):
                     self.showNum = False
                 if event.key == pygame.K_RETURN:
                     self.showNum = True
-<<<<<<< HEAD
-                    stateManager.Change('lobby', {})
-=======
                     stateManager.Change('tutorial', {})
->>>>>>> origin/main
 
         # Update raindrops
         for drop in self.raindrops:
@@ -201,8 +193,4 @@ class StartState(BaseState):
                 self.lightning_active = True
                 self.lightning_flash_count = random.randint(2, 5)  # Random number of flashes per strike
                 self.lightning_alpha = 255  # Start with full brightness for each strike
-<<<<<<< HEAD
                 self.lightning_timer = 0
-=======
-                self.lightning_timer = 0
->>>>>>> origin/main

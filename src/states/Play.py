@@ -103,11 +103,7 @@ class Play(BaseState):
         for i in range(3):
             self.player.drawCard()
         self.enemy = params['enemy']
-<<<<<<< HEAD
-        self.enemy.ChangeAnimation('PretaIdle')
-=======
         self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
->>>>>>> origin/main
         if 'round' in params:
             self.round = params['round']
         if self.enemy.name == 'Monk':
@@ -299,30 +295,11 @@ class Play(BaseState):
             
 
     def render(self, screen):
-<<<<<<< HEAD
-
-        screen.blit(self.background_image, (0, 0))
-
-        scale_factor = 2.0  # Adjusted to make the character bigger 
-
-        # Scale the player's current animation image
-        scaled_image = pygame.transform.scale(self.player.currAni.image, 
-                                            (int(self.player.currAni.image.get_width() * scale_factor),
-                                            int(self.player.currAni.image.get_height() * scale_factor)))
-        
-
-        screen.blit(scaled_image, (int(WIDTH * 0.2), HEIGHT//3 - scaled_image.get_height()//2))
-=======
         screen.blit(self.player.currAni.image,(WIDTH / 3.5, HEIGHT / 3.75,0,0))
->>>>>>> origin/main
         screen.blit(self.enemy.currAni.image,(WIDTH / 1.5, HEIGHT / 3.75,0,0))
 
         pygame.draw.rect(screen,(80,80,80),(WIDTH//1.25,HEIGHT // 1.5,400,400))
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
         if self.deadTimer > 0:
             if not self.monkRound:
                 message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))

@@ -30,10 +30,6 @@ aniList = {
 enemyAni = {
         'PretaIdle': sprite_collection['Preta_Idle'].animation,
         'PretaHurt': sprite_collection['Preta_Hurt'].animation,
-<<<<<<< HEAD
-        
-}
-=======
         'GongGoiIdle': sprite_collection['GG_Green_Idle'].animation,
         'GongGoiHurt': sprite_collection['GG_Green_Hurt'].animation,
         'GG_PurpleIdle': sprite_collection['GG_Purple_Idle'].animation,
@@ -66,4 +62,3 @@ enemyAni = {
         
         
 }
->>>>>>> origin/main
