@@ -11,6 +11,7 @@ from src.Items.effects import gameEffects,playerEffects
 from src.Enemies.Monk import Monk
 pygame.font.init()
 import random as rd
+
 gameFont = {
         'small': pygame.font.Font('./fonts/font.ttf', 24),
         'medium': pygame.font.Font('./fonts/font.ttf', 48),
@@ -42,6 +43,11 @@ class Shop(BaseState):
 
         self.ibought = [0,0,0,0]
 
+        self.background_image = pygame.transform.scale(pygame.image.load("./graphics/shop_background.png"), (WIDTH, HEIGHT))
+
+        self.bottom_image = pygame.image.load("./graphics/lotus_monk.png")
+
+
     def Reset(self):
         self.confirm = False
         self.select = 0
@@ -65,6 +71,7 @@ class Shop(BaseState):
         self.thisRound = 0
 
         self.ibought = [0,0,0,0]
+
 
 
 
@@ -197,7 +204,8 @@ class Shop(BaseState):
 
                     
     def render(self, screen):
-
+        screen.blit(self.background_image, (0, 0))
+        screen.blit(self.bottom_image, ((WIDTH - self.bottom_image.get_width()) // 2, HEIGHT - self.bottom_image.get_height()))
             
         if not self.weaponSelect:
             locations = [(WIDTH / 3, HEIGHT / 3),(WIDTH / 1.5, HEIGHT / 3),(WIDTH / 3, HEIGHT / 1.5), (WIDTH / 1.5, HEIGHT / 1.5), (WIDTH / 3, HEIGHT / 1.25),(WIDTH / 1.5, HEIGHT / 1.25)]
@@ -284,4 +292,6 @@ class Shop(BaseState):
             if self.alertTimer >= 100:
                 self.alertTimer = 0
                 self.alert = False
+
+        
 

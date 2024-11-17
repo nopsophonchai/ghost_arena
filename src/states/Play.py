@@ -56,6 +56,7 @@ class Play(BaseState):
 
         self.monkRound = False
         self.checkCharacter = False
+        self.checkCharacter = False
 
     def Reset(self):
         self.option = 1
@@ -94,8 +95,12 @@ class Play(BaseState):
 
         self.checkCharacter = False
 
+        self.checkCharacter = False
+
 
     def Exit(self):
+        if not self.checkCharacter:
+            self.player.refresh()
         if not self.checkCharacter:
             self.player.refresh()
 
@@ -111,7 +116,18 @@ class Play(BaseState):
                 self.round = params['round']
             if self.enemy.name == 'Monk':
                 self.monkRound = True
+        if not self.checkCharacter:
+            self.player = params['player']
+            for i in range(3):
+                self.player.drawCard()
+            self.enemy = params['enemy']
+            self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
+            if 'round' in params:
+                self.round = params['round']
+            if self.enemy.name == 'Monk':
+                self.monkRound = True
 
+            self.turn = 0
             self.turn = 0
         # print(self.player)
 
@@ -121,7 +137,9 @@ class Play(BaseState):
         self.player.render(dt)
         self.enemy.render(dt)
         self.player.updateEffects(dt)
+        self.player.updateEffects(dt)
         if self.player.health <= 0:
+            self.checkCharacter = False
             self.checkCharacter = False
             stateManager.Change('gameover',{})
         if self.turn == 0:
@@ -150,6 +168,9 @@ class Play(BaseState):
                             # print(self.select)
                         if event.key == pygame.K_RETURN:
                             self.confirm = True
+                        if event.key == pygame.K_0:
+                            self.checkCharacter = True
+                            stateManager.Change('character',{'midBattle':True,'player':self.player})
                         if event.key == pygame.K_0:
                             self.checkCharacter = True
                             stateManager.Change('character',{'midBattle':True,'player':self.player})
@@ -310,6 +331,13 @@ class Play(BaseState):
 
         pygame.draw.rect(screen,(255,255,255),(WIDTH//1.25,HEIGHT // 1.5,(WIDTH - WIDTH//1.25),(HEIGHT - HEIGHT // 1.5)))
         pygame.draw.rect(screen,(0,0,0),(WIDTH//1.25 + 5,HEIGHT // 1.5 + 5,(WIDTH - WIDTH//1.25) - 10,(HEIGHT - HEIGHT // 1.5) - 10))
+        playerRect = self.player.currAni.image.get_rect(center=(WIDTH / 3, HEIGHT / 2.5))
+        enemyRect = self.enemy.currAni.image.get_rect(center=(WIDTH / 1.5, HEIGHT / 2.5))
+        screen.blit(self.player.currAni.image,playerRect)
+        screen.blit(self.enemy.currAni.image,enemyRect)
+
+        pygame.draw.rect(screen,(255,255,255),(WIDTH//1.25,HEIGHT // 1.5,(WIDTH - WIDTH//1.25),(HEIGHT - HEIGHT // 1.5)))
+        pygame.draw.rect(screen,(0,0,0),(WIDTH//1.25 + 5,HEIGHT // 1.5 + 5,(WIDTH - WIDTH//1.25) - 10,(HEIGHT - HEIGHT // 1.5) - 10))
 
         if self.deadTimer > 0:
             if not self.monkRound:
@@ -325,6 +353,7 @@ class Play(BaseState):
                 self.deadTimer -= 1
                 if self.deadTimer <= 0:
                     self.called = 0
+                    self.checkCharacter = False
                     self.checkCharacter = False
                     stateManager.Change('select',{'player':self.player})
             else:
@@ -347,8 +376,10 @@ class Play(BaseState):
             t_title = gameFont['small'].render(f"{self.enemy.name}: {self.enemy.health}", False, (255, 10, 40))
             # print(self.enemy.name)
             rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 5))
+            rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 5))
             screen.blit(t_title, rect)
             t_title = gameFont['small'].render(f"Player Health {self.player.health}", False, (255, 255, 255))
+            rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 5))
             rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 5))
             screen.blit(t_title, rect)
 
@@ -367,6 +398,7 @@ class Play(BaseState):
                 for i in range(num_cards):
                     
                     card_x = start_x + (i * (card_width + spacing))  # Add extra spacing for the first card
+                    # print(card_x)
                     # print(card_x)
                     if i + 1 == self.select:
                         # Card is selected
