@@ -8,7 +8,7 @@ from src.constants import *
 class Dang(Enemy):
     def __init__(self,name,health,damage,nak,armor = 0):
         super().__init__(health,damage,armor,name='Dang',weakness=[])
-        self.attacks = {'normal':[(self.dangAttack,'slap')],'dot':[(self.dangHeal,'mom heal')]}
+        self.attacks = {'normal':[(self.dangAttack,'slap',f'Deal {self.damage} damage')],'dot':[(self.dangHeal,'mom heal',f'Heals Mae Nak for {self.damage} health')]}
         self.gold = 1
         self.dangFlag = False
         self.nak = nak
@@ -24,7 +24,7 @@ class Dang(Enemy):
 class MaeNak(Enemy):
     def __init__(self,name,health,damage,armor = 0):
         super().__init__(health,damage,armor,name='MaeNak',weakness=[])
-        self.attacks = {'normal':[(self.mothersScream,'mommy scream')],'dot':[(self.summonDaeng,'summon Dang')]}
+        self.attacks = {'normal':[(self.mothersScream,'mommy scream',f'Deal {self.damage} true damage')],'dot':[(self.summonDaeng,'summon Dang',f'Summons Dang\nYou must kill Dang before\nyou can kill Mae Nak\n\nThis unit has a 50% chance\nto steal a card in your hand')]}
         # self.attacks = {'normal':[self.smile],'dot':[self.smile]}
         self.gold = 4
         self.dangFlag = False

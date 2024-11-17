@@ -8,7 +8,7 @@ from src.constants import *
 class Ka(Enemy):
     def __init__(self,name,health,damage,armor = 5):
         super().__init__(health,damage,armor,name='Ka',weakness=[])
-        self.attacks = {'normal':[(self.lice,'lice')],'dot':[(self.freaky,'freaky')]}
+        self.attacks = {'normal':[(self.lice,'lice',f'Heals itself for {self.health//2}\nDeal {self.damage} damage')],'dot':[(self.freaky,'freaky',f'Reduce your damage by 1\nIf you have 6 damage\nor lower, deal {self.damage} damage\n\nNo immunity or weakness')]}
         self.gold = 1
 
 

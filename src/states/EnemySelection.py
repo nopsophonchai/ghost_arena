@@ -41,9 +41,12 @@ class EnemySelection(BaseState):
 
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
-        self.allEnemies = ['Preta','GongGoi']
+        # self.allEnemies = ['Preta','GongGoi']
+        # self.allEnemies = ['Krasue']
+        self.allEnemies = ['Faker']
         # self.allEnemies = ['MaeNak']
         # self.allEnemies = ['Ka']
+        # self.allEnemies = ['Phrai']
         # self.allEnemies = ['NangRam']
         self.info = False
 
@@ -234,22 +237,27 @@ class EnemySelection(BaseState):
             screen.blit(text_surface, rect)
 
             y_offset = -160 
-            for category, attacks in self.enemiesList[self.select].attacks.items():
-                for attack in attacks:
-                    y_offset += 20
-                    attack_name = attack[1].capitalize()  # Attack name
-                    attack_desc = attack[2]  # Attack description
+            if self.enemiesList[self.select].name == 'Faker':
+                attack_name_surface = gameFont['small'].render(f'Faker', True, (255, 30, 30))
+                attack_name_rect = attack_name_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2 + y_offset))
+                screen.blit(attack_name_surface, attack_name_rect)
+            else:
+                for category, attacks in self.enemiesList[self.select].attacks.items():
+                    for attack in attacks:
+                        y_offset += 20
+                        attack_name = attack[1].capitalize()  # Attack name
+                        attack_desc = attack[2]  # Attack description
 
-                    # Render attack name
-                    attack_name_surface = gameFont['small'].render(f'{attack_name}:', True, (255, 30, 30))
-                    attack_name_rect = attack_name_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2 + y_offset))
-                    screen.blit(attack_name_surface, attack_name_rect)
-                    y_offset += 30  # Move down for the description
+                        # Render attack name
+                        attack_name_surface = gameFont['small'].render(f'{attack_name}:', True, (255, 30, 30))
+                        attack_name_rect = attack_name_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2 + y_offset))
+                        screen.blit(attack_name_surface, attack_name_rect)
+                        y_offset += 30  # Move down for the description
 
-                    # Render attack description with line breaks
-                    for line in attack_desc.split('\n'):
-                        line_surface = gameFont['small'].render(line, True, (255, 255, 255))
-                        line_rect = line_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2 + y_offset))
-                        screen.blit(line_surface, line_rect)
-                        y_offset += 30  # Move down for the next line
-            
+                        # Render attack description with line breaks
+                        for line in attack_desc.split('\n'):
+                            line_surface = gameFont['small'].render(line, True, (255, 255, 255))
+                            line_rect = line_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2 + y_offset))
+                            screen.blit(line_surface, line_rect)
+                            y_offset += 30  # Move down for the next line
+                

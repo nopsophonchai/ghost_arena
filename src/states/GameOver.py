@@ -15,12 +15,15 @@ class GameOver(BaseState):
         #start = 1,       ranking = 2
         self.option = 1
         self.showNum = False
+        self.win = False
 
     def Exit(self):
         pass
 
     def Enter(self, params):
         stateManager.Reset()
+        if 'victory' in params:
+            self.win = True
 
 
     def update(self, dt, events):
@@ -38,9 +41,20 @@ class GameOver(BaseState):
 
     def render(self, screen):
         # title
-        t_title = gameFont['large'].render("Game Over!", False, (255, 255, 255))
-        rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3))
-        screen.blit(t_title, rect)
-        t_title = gameFont['medium'].render("Press Enter to Restart!", False, (255, 255, 255))
-        rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 2))
-        screen.blit(t_title, rect)
+        if self.win:
+            t_title = gameFont['large'].render("You win!", False, (255, 255, 255))
+            rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3))
+            screen.blit(t_title, rect)
+            t_title = gameFont['medium'].render("You got your soul back or whatever the story was", False, (255, 255, 255))
+            rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+            screen.blit(t_title, rect)
+            t_title = gameFont['medium'].render("Press Enter to Restart!", False, (255, 255, 255))
+            rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 1.5))
+            screen.blit(t_title, rect)
+        else:
+            t_title = gameFont['large'].render("Game Over!", False, (255, 255, 255))
+            rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3))
+            screen.blit(t_title, rect)
+            t_title = gameFont['medium'].render("Press Enter to Restart!", False, (255, 255, 255))
+            rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+            screen.blit(t_title, rect)

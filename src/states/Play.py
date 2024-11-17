@@ -370,7 +370,10 @@ class Play(BaseState):
                 if self.deadTimer <= 0:
                     self.called = 0
                     self.checkCharacter = False
-                    stateManager.Change('select',{'player':self.player})
+                    if self.enemy.name != 'Faker':
+                        stateManager.Change('select',{'player':self.player})
+                    else:
+                        stateManager.Change('gameover',{'victory':True})
             else:
 
                 message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))

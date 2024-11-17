@@ -6,7 +6,7 @@ from src.constants import *
 class GongGoi(Enemy):
     def __init__(self,name,health,damage,armor = 0):
         super().__init__(health,damage,armor,name='GongGoi',weakness=['Fire','Rice'])
-        self.attacks = {'normal':[(self.kick,'kick',f'Deal {self.damage} damage')],'dot':[(self.ultimate,'poison',f'Deal {math.ceil(self.damage/2)} poison damage\nfor 2 turns')]}
+        self.attacks = {'normal':[(self.kick,'kick',f'Deal {self.damage} damage')],'dot':[(self.ultimate,'poison',f'Deal {math.ceil(self.damage/2)} poison damage\nfor 2 turns\n\nWeakness: Fire,Rice')]}
         self.gold = 3
     def kick(self,target):
         target.damageEnemy(self.damage)

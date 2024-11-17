@@ -8,7 +8,7 @@ import math
 class Preta(Enemy):
     def __init__(self,name,health,damage,armor = 0):
         super().__init__(health,damage,armor,name='Preta',weakness=['Fire','Rice','Water'])
-        self.attacks = {'normal':[(self.scream,'scream',f'Deal {self.damage} damage')],'dot':[(self.epred,'E Pred',f'Deal {self.damage+2} damage\nRemove your armor\nfor 1 turn'),(self.bigHand,'Big Hand',f'Deal {self.damage} damage\nDisable sword for 1 turn')]}
+        self.attacks = {'normal':[(self.scream,'scream',f'Deal {self.damage} damage')],'dot':[(self.epred,'E Pred',f'Deal {self.damage+2} damage\nRemove your armor\nfor 1 turn'),(self.bigHand,'Big Hand',f'Deal {self.damage} damage\nDisable sword for 1 turn\n\nWeak to Fire, Rice, and Water')]}
         self.gold = 4
         
 
