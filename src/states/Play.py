@@ -56,6 +56,18 @@ class Play(BaseState):
 
         self.monkRound = False
 
+        self.blood_animation = sprite_collection['slash'].animation
+        self.fire_animation = sprite_collection['explosion'].animation
+        self.bg_image = pygame.image.load("./graphics/bg_lobby.png")
+        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH, HEIGHT))
+        self.top_frame = pygame.image.load("./graphics/top_frame.png")
+        self.big_frame = pygame.image.load("./graphics/big_frame.png")
+        self.top_frame = pygame.transform.scale(self.top_frame, (200, 100))
+        self.big_frame = pygame.transform.scale(self.big_frame, (300, 300))
+
+        self.spell = False
+
+
     def Reset(self):
         self.option = 1
         self.showNum = False
@@ -68,6 +80,8 @@ class Play(BaseState):
         self.confirm = False
         self.turnTimer = 0
         self.interface = False
+    
+
         # self.enemy = GongGoi('Gong Goi',10,3)
         self.enemy = Preta('Preta',10,3)
 
@@ -113,6 +127,8 @@ class Play(BaseState):
 
 
     def update(self, dt, events):
+        self.blood_animation.update(dt)
+        self.fire_animation.update(dt)
         self.player.render(dt)
         self.enemy.render(dt)
         if self.player.health <= 0:
@@ -268,6 +284,8 @@ class Play(BaseState):
                             self.enemy.buffs.append(sun)
                 elif chosenCard.item.type == 'Spell':
                     chosenCard.item.attack(self.enemy,self.player,self.interfaceSelect)
+                    self.spell = True
+                  
 
 
 
@@ -293,10 +311,23 @@ class Play(BaseState):
                 
 
     def render(self, screen):
+        screen.blit(self.bg_image, (0, 0))
+
+        # vfx here my friends
+        original_image = self.blood_animation.image
+        original_width, original_height = original_image.get_size()
+        new_width = int(original_width * 3)  
+        new_height = int(original_height * 3)  
+        scaled_image = pygame.transform.scale(original_image, (new_width, new_height))
+        if self.enemy.cry == True:
+            screen.blit(scaled_image, (WIDTH / 1.5, HEIGHT / 3.75,0,0))
+            self.enemy.cry = False
+        
         screen.blit(self.player.currAni.image,(WIDTH / 3.5, HEIGHT / 3.75,0,0))
         screen.blit(self.enemy.currAni.image,(WIDTH / 1.5, HEIGHT / 3.75,0,0))
 
-        pygame.draw.rect(screen,(80,80,80),(WIDTH//1.25,HEIGHT // 1.5,400,400))
+        screen.blit(self.big_frame, (WIDTH//1.3-7,HEIGHT // 1.5))
+        #pygame.draw.rect(screen,(80,80,80),(WIDTH//1.25,HEIGHT // 1.5,400,400))
 
 
         if self.deadTimer > 0:
@@ -329,14 +360,15 @@ class Play(BaseState):
             
             if self.enemy.name == 'Dang':
                 t_title = gameFont['small'].render(f"{self.thisNak.name}: {self.thisNak.health}", False, (255, 10, 40))
-                rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.25))
+                rect = t_title.get_rect(topright=(WIDTH -10,10))
                 screen.blit(t_title,rect)
             t_title = gameFont['small'].render(f"{self.enemy.name}: {self.enemy.health}", False, (255, 10, 40))
             # print(self.enemy.name)
-            rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.75))
+            rect = t_title.get_rect(topleft=(WIDTH /1.5 + 90,60))
+            screen.blit(self.top_frame, (WIDTH /1.5 +30,10))
             screen.blit(t_title, rect)
-            t_title = gameFont['small'].render(f"Player Health {self.player.health}", False, (255, 255, 255))
-            rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 3.75))
+            t_title = gameFont['small'].render(f"Player Health: {self.player.health}", False, (255, 255, 255))
+            rect = t_title.get_rect(topleft=(10,10))
             screen.blit(t_title, rect)
 
 
@@ -378,11 +410,11 @@ class Play(BaseState):
                                 right_area_width = WIDTH - right_area_start
                                 text_x_center = right_area_start + right_area_width // 2
                                 self.player.current[i].render(screen, card_x, HEIGHT / 1.6)
-                                t_title = gameFont['medium'].render(f"{self.player.current[i].name.upper()}", False, (255, 255, 255))
-                                rect = t_title.get_rect(center=(text_x_center, HEIGHT / 1.4))
+                                t_title = gameFont['medium'].render(f"{self.player.current[i].name.upper()}", False, (139, 0, 0))
+                                rect = t_title.get_rect(center=(text_x_center-35, HEIGHT / 1.4+55))
                                 screen.blit(t_title, rect)
-                                t_title = gameFont['small'].render(f"Damage: {self.player.current[i].item.damage}", False, (255, 255, 255))
-                                rect = t_title.get_rect(center=(text_x_center, HEIGHT / 1.25))
+                                t_title = gameFont['small'].render(f"Damage: {self.player.current[i].item.damage}", False, (0, 0, 0))
+                                rect = t_title.get_rect(center=(text_x_center-35, HEIGHT / 1.25+55))
                                 screen.blit(t_title, rect)
                     else:
                         # Card is not selected

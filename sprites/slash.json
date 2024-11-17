@@ -1,0 +1,22 @@
+{
+    "spriteSheetURL": "./graphics/slash.png",
+    "type": "animation",
+    "size": [256, 48],
+    "sprites": [
+        {
+            "name": "slash",
+            "xsize": 64,
+            "ysize": 48,
+            "images": [
+                { "x": 0, "y": 0, "scale": 1 },
+                { "x": 64, "y": 0, "scale": 1 },
+                { "x": 128, "y": 0, "scale": 1 },
+                { "x": 192, "y": 0, "scale": 1 }
+            ],
+        
+            "loop": false,
+            "interval_time": 0.05,
+            "colorKey": null
+        }
+    ]
+}

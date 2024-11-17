@@ -9,6 +9,7 @@ from src.Enemies.Preta import Preta
 from src.Items.Weapon import Weapon
 from src.Items.effects import gameEffects,playerEffects
 from src.Enemies.Monk import Monk
+
 pygame.font.init()
 import random as rd
 gameFont = {
@@ -42,6 +43,11 @@ class Shop(BaseState):
 
         self.ibought = [0,0,0,0]
 
+        self.monk_idle_animation = sprite_collection['Monk_Idle'].animation
+      
+ 
+
+
     def Reset(self):
         self.confirm = False
         self.select = 0
@@ -65,6 +71,8 @@ class Shop(BaseState):
         self.thisRound = 0
 
         self.ibought = [0,0,0,0]
+
+        self.enemy = Monk('Monk',10,3)
 
 
 
@@ -96,6 +104,10 @@ class Shop(BaseState):
             self.roundCount = 1
 
     def update(self, dt, events):
+
+        self.monk_idle_animation.update(dt)
+    
+
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -197,6 +209,7 @@ class Shop(BaseState):
 
                     
     def render(self, screen):
+        screen.blit(self.monk_idle_animation.image, (WIDTH / 2, HEIGHT / 2))
 
             
         if not self.weaponSelect:

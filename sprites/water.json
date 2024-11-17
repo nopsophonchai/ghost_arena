@@ -1,0 +1,38 @@
+{
+    "spriteSheetURL": "./graphics/water_spritesheet.png",
+    "type": "animation",
+    "size": [330, 308],  
+    "sprites": [
+        {
+            "name": "water",
+            "xsize": 66,
+            "ysize": 77,
+            "images": [
+                { "x": 0, "y": 0, "scale": 1 },
+                { "x": 66, "y": 0, "scale": 1 },
+                { "x": 132, "y": 0, "scale": 1 },
+                { "x": 198, "y": 0, "scale": 1 },
+                { "x": 264, "y": 0, "scale": 1 },
+                { "x": 0, "y": 77, "scale": 1 },
+                { "x": 66, "y": 77, "scale": 1 },
+                { "x": 132, "y": 77, "scale": 1 },
+                { "x": 198, "y": 77, "scale": 1 },
+                { "x": 264, "y": 77, "scale": 1 },
+                { "x": 0, "y": 154, "scale": 1 },
+                { "x": 66, "y": 154, "scale": 1 },
+                { "x": 132, "y": 154, "scale": 1 },
+                { "x": 198, "y": 154, "scale": 1 },
+                { "x": 264, "y": 154, "scale": 1 },
+                { "x": 0, "y": 231, "scale": 1 },
+                { "x": 66, "y": 231, "scale": 1 },
+                { "x": 132, "y": 231, "scale": 1 },
+                { "x": 198, "y": 231, "scale": 1 },
+                { "x": 264, "y": 231, "scale": 1 }
+            ],
+        
+            "interval_time": 0.05,
+            "loop": true,
+            "colorKey": null
+        }
+    ]
+}

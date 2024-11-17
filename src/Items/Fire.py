@@ -15,6 +15,7 @@ class Fire(Item):
         self.spellList = [('Burning',self.burning,f'Deal {self.damage} fire damage\nBurn for {self.damage//2} \nfire damage for 1 turn'),('Healing Flame',self.healingFlame,f'Heal for {self.damage} health'),('Magma',self.magma,f'Remove enemy armor\nDeal {self.damage} fire damage\nBurn for {self.damage} for 1 turn')]
         self.effects = []
         self.playerEffects = []
+        self.fire = False
 
 
     def attack(self,target,player,selected):
@@ -27,12 +28,15 @@ class Fire(Item):
             target.damageEnemy(self.damage,self.damageType)
             burn = StatusEffect('burn',self.damage//2,2,self.damageType)
             target.statusEffects.append(burn)
+            self.fire = True
+
     
     def healingFlame(self,target,player):
         if player:
             player.health += self.damage
     
     def magma(self,target,player):
+        self.fire = True
         if self.useThree < 1:
             if target:
                 target.armor = 0

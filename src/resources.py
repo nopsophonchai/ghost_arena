@@ -62,3 +62,12 @@ enemyAni = {
         
         
 }
+
+vfxAni = {
+    'explosion': sprite_collection['explosion'].animation,
+        'water': sprite_collection['water'].animation,
+        'rice': sprite_collection['rice'].animation,
+        'slash': sprite_collection['slash'].animation,
+        'shoot': sprite_collection['shoot'].animation,
+
+}

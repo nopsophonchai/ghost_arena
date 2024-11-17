@@ -8,6 +8,7 @@ pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 
 music_channel = mixer.Channel(0)
+
 music_channel.set_volume(0.2)
 
 class GameMain:
@@ -57,6 +58,7 @@ class GameMain:
             # Render background and state
             self.RenderBackground()
             stateManager.render()
+            
 
             # Screen update
             pygame.display.update()

@@ -20,6 +20,8 @@ class Enemy:
 
         self.currAni = None
         self.animationList = enemyAni
+
+        self.cry = False
     
 
     def damageEnemy(self,damage,type = 'normal'):
@@ -30,13 +32,16 @@ class Enemy:
             self.health -= max((damage - self.armor),0)
             print('Animation changed\n')
             self.ChangeAnimation(f'{self.name}Hurt')
+            self.cry = True
         elif type == 'true':
             self.health -= damage
             self.ChangeAnimation(f'{self.name}Hurt')
+            self.cry = True
         elif type in self.weakness:
             print('Weak!')
             self.health -= int(1.5* damage)
             self.ChangeAnimation(f'{self.name}Hurt')
+            self.cry = True
 
     def chooseAttacks(self):
         attackType, attackList = rd.choice(list(self.attacks.items()))

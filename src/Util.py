@@ -69,6 +69,11 @@ class SpriteManager:
                 "sprites/Prai.json",
                 "sprites/Monk.json",
                 "sprites/Faker.json",
+                "sprites/water.json",
+                "sprites/explosion.json",
+                "sprites/rice.json",
+                "sprites/slash.json",
+                "sprites/shoot.json",
             ]
         )
         # print('\n')

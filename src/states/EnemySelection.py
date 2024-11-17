@@ -197,7 +197,7 @@ class EnemySelection(BaseState):
             start_x = (WIDTH - total_width) / 2
             #round info
             text_surface = gameFont['small'].render(f'Round {self.round}', True, (255, 255, 255))
-            rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 3))
+            rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 4))
             screen.blit(text_surface, rect)
             #animation of enemy 
             for i, enemy in enumerate(self.enemiesList):
