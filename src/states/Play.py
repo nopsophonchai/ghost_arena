@@ -58,7 +58,7 @@ class Play(BaseState):
 
         self.blood_animation = sprite_collection['slash'].animation
         self.fire_animation = sprite_collection['explosion'].animation
-        self.bg_image = pygame.image.load("./graphics/bg_lobby.png")
+        self.bg_image = pygame.image.load("./graphics/play_background.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH, HEIGHT))
         self.top_frame = pygame.image.load("./graphics/top_frame.png")
         self.big_frame = pygame.image.load("./graphics/big_frame.png")
@@ -323,8 +323,8 @@ class Play(BaseState):
             screen.blit(scaled_image, (WIDTH / 1.5, HEIGHT / 3.75,0,0))
             self.enemy.cry = False
         
-        screen.blit(self.player.currAni.image,(WIDTH / 3.5, HEIGHT / 3.75,0,0))
-        screen.blit(self.enemy.currAni.image,(WIDTH / 1.5, HEIGHT / 3.75,0,0))
+        screen.blit(self.player.currAni.image,(WIDTH / 3.5, HEIGHT / 3.75-10,0,0))
+        screen.blit(self.enemy.currAni.image,(WIDTH / 1.5, HEIGHT / 3.75-10,0,0))
 
         screen.blit(self.big_frame, (WIDTH//1.3-7,HEIGHT // 1.5))
         #pygame.draw.rect(screen,(80,80,80),(WIDTH//1.25,HEIGHT // 1.5,400,400))
