@@ -41,9 +41,9 @@ class EnemySelection(BaseState):
 
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
-        # self.allEnemies = ['Preta','GongGoi']
+        self.allEnemies = ['Preta','GongGoi']
         # self.allEnemies = ['Krasue']
-        self.allEnemies = ['Faker']
+        # self.allEnemies = ['Faker']
         # self.allEnemies = ['MaeNak']
         # self.allEnemies = ['Ka']
         # self.allEnemies = ['Phrai']
@@ -106,7 +106,7 @@ class EnemySelection(BaseState):
                     case 'NangRam': addedEnemy = NangRam('Nang Ram',(8+(2*(self.round-1))),(4+(self.round-1)))
                     case 'MaeNak': addedEnemy = MaeNak('MaeNak',(8+(2*(self.round-1))),(4+(self.round-1)))
                     case 'Ka': addedEnemy = Ka('Ka',(8+(2*(self.round-1))),(2+(self.round-1)))
-                    case 'Faker': addedEnemy = Faker('Faker',(8+(2*(self.round-1))),(2+(self.round-1)))
+                    case 'Faker': addedEnemy = Faker('Faker',(100+(2*(self.round-1))),(10+(self.round-1)))
                     case 'Monk': addedEnemy = Monk('Monk',(80+(2*(self.round-1))),(10+(self.round-1)))
                 addedEnemy.ChangeAnimation(f'{addedEnemy.name}Idle')
                 self.enemiesList.append(addedEnemy)

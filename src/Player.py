@@ -15,7 +15,7 @@ class Player:
     def __init__(self):
         self.damage = 3
         self.health = 10
-        self.maxHealth = 1000
+        self.maxHealth = 10
         self.maxDamage = 3
         self.armor = 0
         self.items = {'sword':Weapon('Sword',self.damage,'melee',[],[]),'bow':Weapon('Bow',int(self.damage//1.5),'range')}
@@ -40,7 +40,7 @@ class Player:
         
         self.noCard = False
 
-        self.gold = 1000
+        self.gold = 10
 
 
         self.animationList = aniList

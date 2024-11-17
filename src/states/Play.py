@@ -95,6 +95,7 @@ class Play(BaseState):
         self.checkCharacter = False
 
 
+
     def Exit(self):
         if not self.checkCharacter:
             self.player.refresh()

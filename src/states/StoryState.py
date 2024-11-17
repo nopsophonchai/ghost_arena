@@ -18,7 +18,6 @@ class StoryState(BaseState):
         self.typing_speed = 0.025  # Adjust typing speed as needed
         self.time_since_last_char = 0
         self.show_next_button = False
-        self.player = Player()
         self.show_start_button = False
 
         # Background
@@ -86,7 +85,7 @@ class StoryState(BaseState):
                     pygame.quit()
                     sys.exit()
                 elif event.key == pygame.K_SPACE:
-                    stateManager.Change('lobby',{'player': self.player})
+                    stateManager.Change('lobby',{})
 
     def next_line(self):
         self.current_line_index += 1
@@ -98,4 +97,6 @@ class StoryState(BaseState):
             self.show_start_button = True
         else:
             # End of story, transition to the next state
-            stateManager.Change('lobby',{'player': self.player})
+            stateManager.Change('lobby',{})
+
+

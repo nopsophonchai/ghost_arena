@@ -58,7 +58,7 @@ class Lobby(BaseState):
         self.background_image = pygame.transform.scale(pygame.image.load("./graphics/lobby_background.jpeg"), (WIDTH, HEIGHT))
 
         # Menu options
-        self.menu_options = ["Characters", "Shop", "Play"]
+        self.menu_options = ["Character", "Shop", "Play"]
 
         # Initialize raindrops
         self.raindrops = [Raindrop() for _ in range(30)]
@@ -71,6 +71,7 @@ class Lobby(BaseState):
         self.enemiesList = []
         self.roundEnd = True
         self.player = Player()
+        print(self.player.damage)
 
     def Exit(self):
         pass
