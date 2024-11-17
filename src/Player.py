@@ -9,18 +9,25 @@ from src.Items.Water import Water
 import random as rd
 from src.resources import aniList
 from src.constants import *
-
+import math
 
 class Player:
     def __init__(self):
         self.damage = 3
         self.health = 10
-        self.maxHealth = 10
+        self.maxHealth = 1000
+        self.maxDamage = 3
         self.armor = 0
         self.items = {'sword':Weapon('Sword',self.damage,'melee',[],[]),'bow':Weapon('Bow',int(self.damage//1.5),'range')}
+        # self.items = {'fire':Fire('Fire',self.damage,'Fire')}
+        # self.items = {'rice':Rice('rice',self.damage,'Rice')}
+        # self.items = {'water':Water('water',self.damage,'Water')}
         self.deck = []
         
         self.deck.extend([Card('sword',self.items['sword'])]*6 + [Card('bow',self.items['bow'])]*6 )
+        # self.deck.extend([Card('fire',self.items['fire'])]*6)
+        # self.deck.extend([Card('rice',self.items['rice'])]*6)
+        # self.deck.extend([Card('water',self.items['water'])]*6)
         
         rd.shuffle(self.deck)
         self.deckCopy = self.deck[:]
@@ -40,14 +47,20 @@ class Player:
         self.currAni = None
 
         self.effectList = []
+        self.statusList = []
 
     def damageEnemy(self,damage,type='normal'):
+        damageTaken = 0
+        color = (153,153,153)
         if not self.noArmor:
-            self.health -= (damage - self.armor)
+            damageTaken = (damage - self.armor)
+            self.health -= damageTaken
         else:
+            damateTaken = damage
             self.health -= (damage)
 
         # print(f'Player Damage Taken: {damage}')
+        self.addEffect(f'{damageTaken}',(WIDTH / 3.5, HEIGHT / 6), color,duration=100)
     def drawCard(self):
         # print(f'Deck when drawn: {self.deck}')
         self.current.append(self.deck.pop())
@@ -59,8 +72,9 @@ class Player:
     def playerScale(self,damage):
         for i in self.items.values():
             i.damage += damage
-    
-
+        
+        self.items['bow'].damage = self.maxDamage
+        self.items['bow'].damage = math.ceil(self.items['bow'].damage / 1.5)
 
     def useCard(self,card):
         self.current.remove(card)
@@ -72,7 +86,8 @@ class Player:
             i.useThree = 0
         self.deck.extend(self.current)
         self.current = []
-        self.health = self.maxHealth
+        self.damage = self.maxDamage
+        # self.health = self.maxHealth
 
     def addItem(self,item):
         self.items[f'{item.name}'] = item
@@ -86,17 +101,25 @@ class Player:
             i.apply(self)
             self.addEffect(f'{i.name}', (WIDTH / 3, HEIGHT / 6), duration=100)
             if i.duration <= 0:
+                for j in self.statusList:
+                    if i.name == j[0]:
+                        self.statusList.remove(j)
                 self.statusEffects.remove(i)
+                
     def applyDebuffs(self):
         print(f'No card: {self.noCard}')
         for debuff in self.buffs[:]: 
             debuff.apply(self)
             if debuff.duration <= 0:
                 debuff.remove(self)  
+                for j in self.statusList:
+                    if debuff.name == j[0]:
+                        self.statusList.remove(j)
                 self.buffs.remove(debuff)
+
     def ChangeAnimation(self,name):
         self.currAni = self.animationList[name]
-        print(self.currAni.images)
+        # print(self.currAni.images)
         print('called')
 
     def render(self,dt):
@@ -113,11 +136,12 @@ class Player:
             if effect['timer'] <= 0:
                 self.effectList.remove(effect)
 
-    def addEffect(self, text, position, duration=1000):
+    def addEffect(self, text, position, color = (153,153,153),duration=100):
             self.effectList.append({
                 'text': text,
                 'position': list(position), 
-                'timer': duration
+                'timer': duration,
+                'color':color
             })
 
     

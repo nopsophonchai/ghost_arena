@@ -154,10 +154,6 @@ class Character(BaseState):
         # text_surface = gameFont['small'].render(f"Items", True, (255, 255, 255))
         # rect = text_surface.get_rect(center=(WIDTH / 1.5, HEIGHT / 5.5))
         # screen.blit(text_surface, rect)
-
-        text_surface = gameFont['medium'].render(f'Max Health: {self.player.health}', True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH /4 - 150, HEIGHT / 4))
-        screen.blit(self.bg_image, (0, 0))
         # text_surface = gameFont['small'].render(f'Max Health: {self.player.health}', True, (255, 255, 255))
         # rect = text_surface.get_rect(center=(WIDTH / 4, HEIGHT / 3))
         # screen.blit(text_surface, rect)
@@ -168,19 +164,17 @@ class Character(BaseState):
         # rect = text_surface.get_rect(center=(WIDTH / 1.5, HEIGHT / 5.5))
         # screen.blit(text_surface, rect)
 
-        text_surface = gameFont['medium'].render(f'Max Health: {self.player.health}', True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH /4 - 150, HEIGHT / 4))
+        text_surface = gameFont['medium'].render(f'Max Health: {self.player.maxHealth}', True, (255, 255, 255))
+        rect = text_surface.get_rect(center=(WIDTH /3 - 45, HEIGHT / 4))
         screen.blit(text_surface, rect)
 
         text_surface = gameFont['medium'].render(f'Damage: {self.player.damage}', True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH / 4 - 150, HEIGHT /4 + 40))
-
-        text_surface = gameFont['medium'].render(f'Damage: {self.player.damage}', True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH / 4 - 150, HEIGHT /4 + 40))
+        rect = text_surface.get_rect(center=(WIDTH / 3 - 45, HEIGHT /4 + 40))
         screen.blit(text_surface, rect)
 
-        text_surface = gameFont['super_small'].render(f'Press right to go back', True, (255, 255, 255))
-        rect = text_surface.get_rect(center=(WIDTH / 2 + 350, HEIGHT /4 + 480))
+        text_surface = gameFont['medium'].render(f'Armor: {self.player.armor}', True, (255, 255, 255))
+        rect = text_surface.get_rect(center=(WIDTH / 3 - 45, HEIGHT /4 + 80))
+        screen.blit(text_surface, rect)
 
         text_surface = gameFont['super_small'].render(f'Press right to go back', True, (255, 255, 255))
         rect = text_surface.get_rect(center=(WIDTH / 2 + 350, HEIGHT /4 + 480))

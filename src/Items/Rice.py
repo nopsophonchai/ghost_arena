@@ -4,6 +4,7 @@ from src.Items.StatusEffect import StatusEffect
 import random as rd
 import pygame
 from src.resources import *
+from src.constants import *
 
 class Rice(Item):
     def __init__(self,name, damage,spellType):
@@ -13,7 +14,7 @@ class Rice(Item):
         self.weaponType = 'range'
         self.damageType = 'Rice'
         self.interfaceFlag = False
-        self.spellList = [('Throw',self.throw,f'Deal {self.damage} rice damage'),('Eat',self.eat,f'Heal for {self.damage // 2} health'),('Bin Tha Bat',self.binthabat,f'20% chance to kill enemy')]
+        self.spellList = [('Throw',self.throw,f'Deal {self.damage} rice damage'),('Eat',self.eat,f'Heal for {self.damage // 2} health'),('Bin Tha Bat',self.binthabat,f'5% chance to instantly kill enemy')]
         self.effects = []
         self.playerEffects = []
 
@@ -26,17 +27,22 @@ class Rice(Item):
     def throw(self,target,player):
         if target:
             target.damageEnemy(self.damage,self.damageType)
+            player.addEffect(f'{self.damage}',(WIDTH / 1.5, HEIGHT / 6), (238,217,196),duration=100)
 
     
     def eat(self,target,player):
         if player:
             player.health += self.damage // 2
-    
+            player.addEffect(f'+{self.damage // 2}',(WIDTH / 3.5, HEIGHT / 6), (143,206,0),duration=100)
+
     def binthabat(self,target,player):
         if target:
             prob = rd.random()
-            if prob <= 0.2:
+            if prob <= 0.05:
                 target.damageEnemy(1000000,self.damageType)
+                player.addEffect(f'{self.damage}',(WIDTH / 1.5, HEIGHT / 6), (238,217,196),duration=100)
+            else:
+                player.addEffect(f'Bad Luck!',(WIDTH / 1.5, HEIGHT / 6), (238,217,196),duration=100)
 
     def getCombinedEffects(self):
         return self.effects + self.playerEffects

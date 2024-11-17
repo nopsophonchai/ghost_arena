@@ -27,7 +27,7 @@
 				"scale":2
 		     },
             "interval_time":0.35,
-            "colorKey": null
+            "colorKey": [255, 0, 255] 
         },
         {
             "name":"Player_Hurt",
@@ -58,7 +58,7 @@
 		     },
 
             "interval_time":0.3,
-            "colorKey": null
+            "colorKey": [255, 0, 255] 
         }
 ]
 }

@@ -42,6 +42,10 @@ class EnemySelection(BaseState):
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
         self.allEnemies = ['Preta','GongGoi']
+        # self.allEnemies = ['MaeNak']
+        # self.allEnemies = ['Ka']
+        # self.allEnemies = ['NangRam']
+        self.info = False
 
 
     def Reset(self):
@@ -70,6 +74,7 @@ class EnemySelection(BaseState):
         if 'round' in params:
             self.round = params['round']
         if self.roundEnd == True:
+            self.player.health = self.player.maxHealth
             self.round += 1
             enemiesGenerated = rd.randint(min(self.round+3,6),6)
             match self.round:
@@ -138,6 +143,11 @@ class EnemySelection(BaseState):
                         print(self.select)
                     if event.key == pygame.K_RETURN:
                         self.confirm = True
+                    if event.key == pygame.K_0:
+                        if not self.info:
+                            self.info = True
+                        else:
+                            self.info = False
             if self.confirm:
                 payload = {'enemy':self.enemiesList[self.select],'round':self.round,'player':self.player}
                 stateManager.Change('play',payload)
@@ -199,6 +209,9 @@ class EnemySelection(BaseState):
             text_surface = gameFont['small'].render(f'Round {self.round}', True, (255, 255, 255))
             rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 5))
             screen.blit(text_surface, rect)
+            text_surface = gameFont['small'].render(f'Press 0 to view enemy info', True, (255, 255, 255))
+            rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.05))
+            screen.blit(text_surface, rect)
             #animation of enemy 
             for i, enemy in enumerate(self.enemiesList):
                 #enemy.render(dt)
@@ -212,3 +225,31 @@ class EnemySelection(BaseState):
                 if self.select == i:
                     pygame.draw.rect(screen, (0, 128, 255), rect.inflate(20, 10))
                 screen.blit(text_surface, rect)
+
+        if self.info:
+            pygame.draw.rect(screen, (255, 255, 255), (WIDTH/2 - 200, HEIGHT/2 - 250, 400, 500))
+            pygame.draw.rect(screen, (0, 0, 0), (WIDTH/2 - 195, HEIGHT/2 - 245, 390, 490))
+            text_surface = gameFont['medium'].render(f'{self.enemiesList[self.select].name}', True, (255, 255, 255))
+            rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT /2 -220))
+            screen.blit(text_surface, rect)
+
+            y_offset = -160 
+            for category, attacks in self.enemiesList[self.select].attacks.items():
+                for attack in attacks:
+                    y_offset += 20
+                    attack_name = attack[1].capitalize()  # Attack name
+                    attack_desc = attack[2]  # Attack description
+
+                    # Render attack name
+                    attack_name_surface = gameFont['small'].render(f'{attack_name}:', True, (255, 30, 30))
+                    attack_name_rect = attack_name_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2 + y_offset))
+                    screen.blit(attack_name_surface, attack_name_rect)
+                    y_offset += 30  # Move down for the description
+
+                    # Render attack description with line breaks
+                    for line in attack_desc.split('\n'):
+                        line_surface = gameFont['small'].render(line, True, (255, 255, 255))
+                        line_rect = line_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2 + y_offset))
+                        screen.blit(line_surface, line_rect)
+                        y_offset += 30  # Move down for the next line
+            

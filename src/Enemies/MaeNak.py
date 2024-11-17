@@ -3,11 +3,12 @@ from src.Items.StatusEffect import StatusEffect
 from src.Items.Debuff import Debuff
 import random as rd
 import math
+from src.constants import *
 
 class Dang(Enemy):
     def __init__(self,name,health,damage,nak,armor = 0):
         super().__init__(health,damage,armor,name='Dang',weakness=[])
-        self.attacks = {'normal':[self.dangAttack],'dot':[self.dangHeal]}
+        self.attacks = {'normal':[(self.dangAttack,'slap')],'dot':[(self.dangHeal,'mom heal')]}
         self.gold = 1
         self.dangFlag = False
         self.nak = nak
@@ -23,7 +24,7 @@ class Dang(Enemy):
 class MaeNak(Enemy):
     def __init__(self,name,health,damage,armor = 0):
         super().__init__(health,damage,armor,name='MaeNak',weakness=[])
-        self.attacks = {'normal':[self.mothersScream],'dot':[self.summonDaeng]}
+        self.attacks = {'normal':[(self.mothersScream,'mommy scream')],'dot':[(self.summonDaeng,'summon Dang')]}
         # self.attacks = {'normal':[self.smile],'dot':[self.smile]}
         self.gold = 4
         self.dangFlag = False

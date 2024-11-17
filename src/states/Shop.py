@@ -77,6 +77,7 @@ class Shop(BaseState):
 
     def Exit(self):
         print(self.weaponSelect)
+        self.player.refresh()
         self.select = 0
         self.weaponSelect = False
 
@@ -161,32 +162,34 @@ class Shop(BaseState):
                             self.player.gold -= self.healthPrice
                             self.player.maxHealth += 2
                             self.healthPrice += 2 * self.healthBought
-                            self.player.playerScale(1)
+                            # self.player.playerScale(1)
                             self.healthBought += 1
                         elif self.healthBought < 11:
                             self.player.maxHealth += 2
                             self.healthPrice += 2 * self.healthBought
-                            self.player.playerScale(1)
+                            # self.player.playerScale(1)
                             self.healthBought += 1
                     else:
                         self.player.gold -= self.healthPrice
                         self.player.maxHealth += 2
                         self.healthPrice += 2 * self.healthBought
-                        self.player.playerScale(1)
+                        # self.player.playerScale(1)
+                        # print(self.player.items['sword'].damage)
                         self.healthBought += 1
             elif self.select == 5:
                 if self.player.gold >= self.damagePrice or self.free:
                     if self.free:
                         if self.damageBought >= 11 and self.player.gold >= self.damagePrice:
                             self.player.gold -= self.damagePrice
-                            self.player.damage += 1
+                            self.player.maxDamage += 1
                         elif self.damageBought < 11:
-                            self.player.damage += 1
+                            self.player.maxDamage += 1
                     else:
                         self.player.gold -= self.damagePrice
-                        self.player.damage += 1
+                        self.player.maxDamage += 1
                     self.damagePrice += 2 * self.damageBought
                     self.player.playerScale(1)
+                    print(self.player.items['sword'].damage)
                     self.damageBought += 1
             elif self.select < 4:
                 #print(self.chosenList)
@@ -253,7 +256,7 @@ class Shop(BaseState):
             screen.blit(text_surface,rect)
 
             screen.blit(text_surface, rect)
-            text_surface = gameFont['small'].render(f'Damage: {self.player.damage}', True, (255, 255, 255))
+            text_surface = gameFont['small'].render(f'Damage: {self.player.maxDamage}', True, (255, 255, 255))
             rect = text_surface.get_rect(center=(325,120))
             screen.blit(text_surface,rect)
 

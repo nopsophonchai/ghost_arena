@@ -3,11 +3,12 @@ from src.Items.StatusEffect import StatusEffect
 from src.Items.Debuff import Debuff
 import random as rd
 import math
+from src.constants import *
 
 class Ka(Enemy):
     def __init__(self,name,health,damage,armor = 5):
         super().__init__(health,damage,armor,name='Ka',weakness=[])
-        self.attacks = {'normal':[self.lice],'dot':[self.freaky]}
+        self.attacks = {'normal':[(self.lice,'lice')],'dot':[(self.freaky,'freaky')]}
         self.gold = 1
 
 
@@ -17,9 +18,15 @@ class Ka(Enemy):
         print(f'Ka gave you lice!')
     
     def freaky(self,target):
-        if target.damage > 1:
+        if target.damage > 6:
             target.damage -= 1
             print(f'Ka is freaky!')
+            print([i[0] for i in target.statusList])
+            if 'Decrease Damage' not in [i[0] for i in target.statusList]:
+                print('FREAKKKKK')
+                target.statusList.append(('Decrease Damage','graphics/icons/decrease.png'))
+        else:
+            target.damageEnemy(self.damage)
 
 
 

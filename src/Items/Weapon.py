@@ -18,7 +18,9 @@ class Weapon(Item):
 
     def attack(self,target):
         if target:
+            print(self.damage)
             target.damageEnemy(self.damage)
+            # target.addEffect(f'{self.name} used {chosenAttack[1]}!', (WIDTH / 3, HEIGHT / 6), duration=100)
             self.applyEffect(target)
             if self.beyond:
                 target.damageEnemy(self.damage)

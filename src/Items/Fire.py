@@ -3,6 +3,7 @@ from src.Items.Item import Item
 from src.Items.StatusEffect import StatusEffect
 import pygame
 from src.resources import *
+from src.constants import *
 
 class Fire(Item):
     def __init__(self,name, damage,spellType):
@@ -12,7 +13,7 @@ class Fire(Item):
         self.weaponType = 'range'
         self.damageType = 'Fire'
         self.interfaceFlag = False
-        self.spellList = [('Burning',self.burning,f'Deal {self.damage} fire damage\nBurn for {self.damage//2} \nfire damage for 1 turn'),('Healing Flame',self.healingFlame,f'Heal for {self.damage} health'),('Magma',self.magma,f'Remove enemy armor\nDeal {self.damage} fire damage\nBurn for {self.damage} for 1 turn')]
+        self.spellList = [('Burning',self.burning,f'Deal {self.damage} fire damage\nBurn for {self.damage//2} \nfire damage for 1 turn'),('Healing Flame',self.healingFlame,f'Overheal for {self.damage} health'),('Magma',self.magma,f'Remove enemy armor\nDeal {self.damage} fire damage\nBurn for {self.damage} for 1 turn')]
         self.effects = []
         self.playerEffects = []
 
@@ -27,10 +28,13 @@ class Fire(Item):
             target.damageEnemy(self.damage,self.damageType)
             burn = StatusEffect('burn',self.damage//2,2,self.damageType)
             target.statusEffects.append(burn)
+            target.statusList.append(('burn','graphics/icons/fire.png'))
     
     def healingFlame(self,target,player):
         if player:
             player.health += self.damage
+            player.addEffect(f'+{self.damage}',(WIDTH / 3.5, HEIGHT / 6), (143,206,0),duration=100)
+
     
     def magma(self,target,player):
         if self.useThree < 1:
@@ -38,10 +42,11 @@ class Fire(Item):
                 target.armor = 0
                 burn = StatusEffect('burn',self.damage,2,self.damageType)
                 target.statusEffects.append(burn)
-                target.damageEnemy(self.damage)
+                target.damageEnemy(self.damage,'Fire')
+                target.statusList.append(('burn','graphics/icons/fire.png'))
                 self.useThree += 1
         else:
-            target.damageEnemy(1)
+            target.damageEnemy(1,'Fire')
 
     def getCombinedEffects(self):
         return self.effects + self.playerEffects

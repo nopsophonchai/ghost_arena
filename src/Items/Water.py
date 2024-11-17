@@ -3,6 +3,7 @@ from src.Items.Item import Item
 from src.Items.StatusEffect import StatusEffect
 import math
 import pygame
+from src.constants import *
 from src.resources import *
 
 class Water(Item):
@@ -26,11 +27,14 @@ class Water(Item):
     def splash(self,target,player):
         if target:
             target.damageEnemy(self.damage,self.damageType)
+            player.addEffect(f'{self.damage}',(WIDTH / 1.5, HEIGHT / 6), (61,133,198),duration=100)
             target.damage -= 1
+            player.addEffect(f'Damage reduced by 1!',(WIDTH / 1.5, HEIGHT / 6))
     
     def waterOfLife(self,target,player):
         if player:
             player.health += math.ceil(self.damage*1.5)
+            player.addEffect(f'+{math.ceil(self.damage*1.5)}',(WIDTH / 3.5, HEIGHT / 6), (143,206,0),duration=100)
     
     def tsunami(self,target,player):
         if self.useThree < 1:
@@ -38,8 +42,11 @@ class Water(Item):
                 target.health = player.health 
                 target.damageEnemy(self.damage)
                 self.useThree += 1
+                player.addEffect(f'ENEMY HEALTH = {player.health}!',(WIDTH / 1.5, HEIGHT / 6), (61,133,198),duration=100)
+                player.addEffect(f'{self.damage}',(WIDTH / 1.5, HEIGHT / 6), (61,133,198),duration=100)
                 print('TSUNAMI')
         else:
+            player.addEffect(f'Max number of casts met, damaging for 1!',(WIDTH / 1.5, HEIGHT / 6), (61,133,198),duration=100)
             target.damageEnemy(1)
 
     def getCombinedEffects(self):

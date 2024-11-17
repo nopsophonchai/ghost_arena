@@ -49,20 +49,22 @@ def nice_guy(target,damage):
     target.damageEnemy(damage//2,'true')
 
 def disco_inferno(target,damage):
-    target.damageEnemy(damage//3, 'fire')
+    target.damageEnemy(damage//3, 'Fire')
 
 def ricericebaby(target,damage):
-    target.damageEnemy(damage//3,'rice')
+    target.damageEnemy(damage//3,'Rice')
 
 def waterloo(target,damage):
-    target.damageEnemy(damage//3,'water')
+    target.damageEnemy(damage//3,'Water')
 
 gameEffects =  {
     'theSun': (here_comes_the_sun,'Here Comes the Sun',20,'70% Chance to make the \nenemy miss the next attack'),
     'bLights': (blinding_lights,'Blinding Lights',10,'50% Chance to make the \nenemy miss the next attack'),
     'brightLights': (bright_lights,'Bright Lights',10,'30% Chance to make the \nenemy miss the next attack'),
     'niceguy': (nice_guy,'No More Mr.Nice Guy',30,"Deals additional true damage \nequal to half your \nweapon's damage"),
-    'discoinferno': (disco_inferno,'Disco Inferno',20,"Deals additional fire damage\n equal to one third \nyour weapon's damage")
+    'discoinferno': (disco_inferno,'Disco Inferno',20,"Deals additional fire damage\n equal to one third \nyour weapon's damage"),
+    'ricericebaby': (ricericebaby,'Rice Rice Baby',20,"Deals additional rice damage\n equal to one third \nyour weapon's damage"),
+    'waterloo': (waterloo,'Waterloo',20,"Deals additional water damage\n equal to one third \nyour weapon's damage")
 }
 
 def beyond(target):

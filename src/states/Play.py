@@ -56,7 +56,6 @@ class Play(BaseState):
 
         self.monkRound = False
         self.checkCharacter = False
-        self.checkCharacter = False
 
     def Reset(self):
         self.option = 1
@@ -95,14 +94,11 @@ class Play(BaseState):
 
         self.checkCharacter = False
 
-        self.checkCharacter = False
-
 
     def Exit(self):
         if not self.checkCharacter:
             self.player.refresh()
-        if not self.checkCharacter:
-            self.player.refresh()
+
 
 
     def Enter(self, params):
@@ -116,30 +112,19 @@ class Play(BaseState):
                 self.round = params['round']
             if self.enemy.name == 'Monk':
                 self.monkRound = True
-        if not self.checkCharacter:
-            self.player = params['player']
-            for i in range(3):
-                self.player.drawCard()
-            self.enemy = params['enemy']
-            self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
-            if 'round' in params:
-                self.round = params['round']
-            if self.enemy.name == 'Monk':
-                self.monkRound = True
 
-            self.turn = 0
             self.turn = 0
         # print(self.player)
 
 
 
     def update(self, dt, events):
+        # print(self.player.damage)
         self.player.render(dt)
         self.enemy.render(dt)
         self.player.updateEffects(dt)
-        self.player.updateEffects(dt)
+        self.enemy.updateEffects(dt)
         if self.player.health <= 0:
-            self.checkCharacter = False
             self.checkCharacter = False
             stateManager.Change('gameover',{})
         if self.turn == 0:
@@ -171,13 +156,11 @@ class Play(BaseState):
                         if event.key == pygame.K_0:
                             self.checkCharacter = True
                             stateManager.Change('character',{'midBattle':True,'player':self.player})
-                        if event.key == pygame.K_0:
-                            self.checkCharacter = True
-                            stateManager.Change('character',{'midBattle':True,'player':self.player})
 
             if self.confirm:
                 self.confirmHandle(dt, events)
         else:
+            self.select = 0
             if self.enemy.currAni.times_played > 0:
                 self.enemy.currAni.Refresh()
                 self.enemy.ChangeAnimation(f'{self.enemy.name}Idle')
@@ -210,11 +193,16 @@ class Play(BaseState):
                 self.called = 1
                 self.deadTimer = 120
                         # print(self.enemy.health)
-                self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
                 # print(self.player.health)
-                self.player.gold += self.enemy.gold + (self.round*2)
+                # print(self.enemy.maxHealth//2)
+                # print(self.player.health + (self.enemy.maxHealth // 2))
+                # print(min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2)))
+                # self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
+                # # print(self.player.health)
+                # self.player.gold += self.enemy.gold + (self.round*2)
 
     def confirmHandle(self,dt, events):
+        print(f'Self Interface: {self.interface}')
         if not self.interface:
             self.confirm = False
             if self.select == 0 and self.drawCount == 0:
@@ -265,10 +253,7 @@ class Play(BaseState):
                     if self.enemy.health <= 0 and self.enemy.name == 'Dang':
                         self.enemy.isDead = True
                         self.enemy = self.thisNak
-                        self.enemy.dangFlag = False
-
-                        
-                    
+                        self.enemy.dangFlag = False         
         else:
             # print("Welcome to the show")
             for event in events:
@@ -313,7 +298,7 @@ class Play(BaseState):
                     self.select = 0
                 # print("-------Enemy's Turn-------")
                 # print(f'Enemy Health:{self.enemy.health}')
-                if self.enemy.health <= 0:
+                if self.enemy.health <= 0 and self.enemy.name != 'Dang':
                     # print(self.enemy.health)
                     self.enemy.isDead = True
                     self.deadTimer = 120
@@ -321,9 +306,20 @@ class Play(BaseState):
                     self.player.health = min(self.player.maxHealth,self.player.health + (self.enemy.maxHealth // 2))
                     # print(self.player.health)
                     self.player.gold += self.enemy.gold + (self.round*2)
+                elif self.enemy.health <= 0 and self.enemy.name == 'Dang':
+                    self.enemy.isDead = True
+                    self.enemy = self.thisNak
+                    self.enemy.dangFlag = False  
                 
 
     def render(self, screen):
+        # screen.blit(pygame.image.load('graphics/fightbg.png'),(0,-150,0,0))
+        fight_bg = pygame.image.load('graphics/fightbg.png')
+        crop_rect = pygame.Rect(0, 150, fight_bg.get_width(), fight_bg.get_height() - 150)
+        cropped_fight_bg = fight_bg.subsurface(crop_rect)
+        screen.blit(cropped_fight_bg, (0, 0))
+        pygame.draw.rect(screen,(255,255,255),(0,HEIGHT//1.25-5,WIDTH,HEIGHT-HEIGHT//1.25))
+        pygame.draw.rect(screen,(0,0,0),(0,HEIGHT//1.25,WIDTH,HEIGHT-HEIGHT//1.25))
         playerRect = self.player.currAni.image.get_rect(center=(WIDTH / 3, HEIGHT / 2.5))
         enemyRect = self.enemy.currAni.image.get_rect(center=(WIDTH / 1.5, HEIGHT / 2.5))
         screen.blit(self.player.currAni.image,playerRect)
@@ -331,32 +327,52 @@ class Play(BaseState):
 
         pygame.draw.rect(screen,(255,255,255),(WIDTH//1.25,HEIGHT // 1.5,(WIDTH - WIDTH//1.25),(HEIGHT - HEIGHT // 1.5)))
         pygame.draw.rect(screen,(0,0,0),(WIDTH//1.25 + 5,HEIGHT // 1.5 + 5,(WIDTH - WIDTH//1.25) - 10,(HEIGHT - HEIGHT // 1.5) - 10))
-        playerRect = self.player.currAni.image.get_rect(center=(WIDTH / 3, HEIGHT / 2.5))
-        enemyRect = self.enemy.currAni.image.get_rect(center=(WIDTH / 1.5, HEIGHT / 2.5))
-        screen.blit(self.player.currAni.image,playerRect)
-        screen.blit(self.enemy.currAni.image,enemyRect)
 
-        pygame.draw.rect(screen,(255,255,255),(WIDTH//1.25,HEIGHT // 1.5,(WIDTH - WIDTH//1.25),(HEIGHT - HEIGHT // 1.5)))
-        pygame.draw.rect(screen,(0,0,0),(WIDTH//1.25 + 5,HEIGHT // 1.5 + 5,(WIDTH - WIDTH//1.25) - 10,(HEIGHT - HEIGHT // 1.5) - 10))
+        for i in range(len(self.player.statusList)):
+            screen.blit(pygame.image.load(self.player.statusList[i][1]),(WIDTH/5,HEIGHT/4 + (60*i),45,45))
+        for i in range(len(self.enemy.statusList)):
+            screen.blit(pygame.image.load(self.enemy.statusList[i][1]),(WIDTH/1.35,HEIGHT/4 + (60*i),45,45))
+
+
+        addOffset((WIDTH / 7, HEIGHT / 6),2,f'Your Damage: {self.player.damage}',screen)
+        message_surface = gameFont['small'].render(f'Your Damage: {self.player.damage}', True, (255, 215, 0))
+        message_rect = message_surface.get_rect(center=(WIDTH / 7, HEIGHT / 6))
+        screen.blit(message_surface, message_rect)
+
+        addOffset((WIDTH / 7, HEIGHT / 4.8),2,f'Your Armor: {self.player.armor}',screen)
+        message_surface = gameFont['small'].render(f'Your Armor: {self.player.armor}', True, (255, 215, 0))
+        message_rect = message_surface.get_rect(center=(WIDTH / 7, HEIGHT / 4.8))
+        screen.blit(message_surface, message_rect)
+
+        addOffset((WIDTH / 1.2, HEIGHT / 6),2,f'Enemy Damage: {self.enemy.damage}',screen)
+        message_surface = gameFont['small'].render(f'Enemy Damage: {self.enemy.damage}', True, (255, 215, 0))
+        message_rect = message_surface.get_rect(center=(WIDTH / 1.2, HEIGHT / 6))
+        screen.blit(message_surface, message_rect)
+
+        addOffset((WIDTH / 1.2, HEIGHT / 4.8),2,f'Enemy Armor: {self.enemy.armor}',screen)
+        message_surface = gameFont['small'].render(f'Enemy Armor: {self.enemy.armor}', True, (255, 215, 0))
+        message_rect = message_surface.get_rect(center=(WIDTH / 1.2, HEIGHT / 4.8))
+        screen.blit(message_surface, message_rect)
 
         if self.deadTimer > 0:
             if not self.monkRound:
+                screen.fill((0,0,0))
                 message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))
-                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 3))
                 screen.blit(message_surface, message_rect)
                 message_surface = gameFont['small'].render(f'Gold earned {self.enemy.gold+(2*self.round)}!', True, (255, 215, 0))
-                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.5))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
                 screen.blit(message_surface, message_rect)
                 message_surface = gameFont['small'].render(f'Health recovered {self.enemy.maxHealth // 2}!', True, (255, 215, 0))
-                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.25))
+                message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 1.8))
                 screen.blit(message_surface, message_rect)
                 self.deadTimer -= 1
                 if self.deadTimer <= 0:
                     self.called = 0
                     self.checkCharacter = False
-                    self.checkCharacter = False
                     stateManager.Change('select',{'player':self.player})
             else:
+
                 message_surface = gameFont['small'].render(f'You have defeated {self.enemy.name}!', True, (255, 215, 0))
                 message_rect = message_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
                 screen.blit(message_surface, message_rect)
@@ -370,16 +386,18 @@ class Play(BaseState):
         else:
             
             if self.enemy.name == 'Dang':
+                addOffset((WIDTH / 1.5, HEIGHT / 3.25),2,f"{self.thisNak.name}: {self.thisNak.health}",screen)
                 t_title = gameFont['small'].render(f"{self.thisNak.name}: {self.thisNak.health}", False, (255, 10, 40))
                 rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 3.25))
                 screen.blit(t_title,rect)
+            addOffset((WIDTH / 1.5, HEIGHT / 5),2,f"{self.enemy.name}: {self.enemy.health}",screen)
             t_title = gameFont['small'].render(f"{self.enemy.name}: {self.enemy.health}", False, (255, 10, 40))
             # print(self.enemy.name)
             rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 5))
-            rect = t_title.get_rect(center=(WIDTH / 1.5, HEIGHT / 5))
             screen.blit(t_title, rect)
+
+            addOffset((WIDTH / 3, HEIGHT / 5),2,f"Player Health {self.player.health}",screen)
             t_title = gameFont['small'].render(f"Player Health {self.player.health}", False, (255, 255, 255))
-            rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 5))
             rect = t_title.get_rect(center=(WIDTH / 3, HEIGHT / 5))
             screen.blit(t_title, rect)
 
@@ -399,14 +417,13 @@ class Play(BaseState):
                     
                     card_x = start_x + (i * (card_width + spacing))  # Add extra spacing for the first card
                     # print(card_x)
-                    # print(card_x)
                     if i + 1 == self.select:
                         # Card is selected
                         if (self.player.current[i].item.weaponType == 'melee' and self.player.noMelee) or (self.player.current[i] == self.lastCard and self.player.noCard):
                             # Display "Disabled" message if conditions are met
                             if self.enemy.name == 'Ka':
                                 t_title = gameFont['small'].render("KA", False, (80, 80, 80))
-                                rect = t_title.get_rect(center=(card_x, HEIGHT / 1.125))
+                                rect = t_title.get_rect(center=(card_x+40, HEIGHT / 1.25))
                                 screen.blit(t_title, rect)
                             else:
                                 t_title = gameFont['small'].render("Disabled!", False, (80, 80, 80))
@@ -416,7 +433,7 @@ class Play(BaseState):
                             # Display the card normally
                             if self.enemy.name == 'Ka':
                                 t_title = gameFont['small'].render("KA", False, (0, 123, 255))
-                                rect = t_title.get_rect(center=(card_x, HEIGHT / 1.6))
+                                rect = t_title.get_rect(center=(card_x+40, HEIGHT / 1.25))
                                 screen.blit(t_title, rect)
                             else:
                                 right_area_start = WIDTH // 1.25
@@ -433,7 +450,7 @@ class Play(BaseState):
                         # Card is not selected
                         if self.enemy.name == 'Ka':
                             t_title = gameFont['small'].render("KA", False, (255, 255, 255))
-                            rect = t_title.get_rect(center=(card_x, HEIGHT / 1.5))
+                            rect = t_title.get_rect(center=(card_x+40, HEIGHT / 1.125))
                             screen.blit(t_title, rect)
                         else:
                             self.player.current[i].render(screen, card_x, HEIGHT / 1.5)
@@ -495,8 +512,62 @@ class Play(BaseState):
 
                     screen.blit(t_title, rect)
         
-        for action in self.player.effectList:
-            text_surface = gameFont['small'].render(action['text'], True, (255, 255, 255))
-            position = action['position']
-            screen.blit(text_surface, (position[0], position[1]))
+        outline_color = (0, 0, 0) 
+        offset = 2  
 
+        for action in self.player.effectList:
+            text_surface = gameFont['small'].render(action['text'], True, action['color'])
+            position = action['position']
+            outline_positions = [
+                (position[0] - offset, position[1] - offset),  
+                (position[0] + offset, position[1] - offset),  
+                (position[0] - offset, position[1] + offset),  
+                (position[0] + offset, position[1] + offset),  
+                (position[0] - offset, position[1]),           
+                (position[0] + offset, position[1]),           
+                (position[0], position[1] - offset),           
+                (position[0], position[1] + offset)            
+            ]
+
+            for outline_pos in outline_positions:
+                outline_surface = gameFont['small'].render(action['text'], True, outline_color)
+                screen.blit(outline_surface, outline_pos)
+
+            screen.blit(text_surface, position)
+
+
+        for action in self.enemy.effectList:
+            text_surface = gameFont['small'].render(action['text'], True,action['color'])
+            position = action['position']
+            outline_positions = [
+                (position[0] - offset, position[1] - offset),  
+                (position[0] + offset, position[1] - offset),  
+                (position[0] - offset, position[1] + offset),  
+                (position[0] + offset, position[1] + offset),  
+                (position[0] - offset, position[1]),           
+                (position[0] + offset, position[1]),           
+                (position[0], position[1] - offset),           
+                (position[0], position[1] + offset)            
+            ]
+
+            for outline_pos in outline_positions:
+                outline_surface = gameFont['small'].render(action['text'], True, outline_color)
+                screen.blit(outline_surface, outline_pos)
+            screen.blit(text_surface,  position)
+
+
+def addOffset(position,offset,text,screen):
+    outline_positions = [
+                (position[0] - offset, position[1] - offset),  
+                (position[0] + offset, position[1] - offset),  
+                (position[0] - offset, position[1] + offset),  
+                (position[0] + offset, position[1] + offset),  
+                (position[0] - offset, position[1]),           
+                (position[0] + offset, position[1]),           
+                (position[0], position[1] - offset),           
+                (position[0], position[1] + offset)            
+            ]
+    for outline_pos in outline_positions:
+        outline_surface = gameFont['small'].render(text, True, (0,0,0))
+        outlinePosition = outline_surface.get_rect(center=outline_pos)
+        screen.blit(outline_surface, outlinePosition)

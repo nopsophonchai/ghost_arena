@@ -3,11 +3,12 @@ from src.Items.StatusEffect import StatusEffect
 from src.Items.Debuff import Debuff
 import random as rd
 import math
+from src.constants import *
 
 class Faker(Enemy):
     def __init__(self,name,health,damage,armor = 10):
         super().__init__(health,damage,armor,name='Faker',weakness=[])
-        self.attacks = {'normal':[self.smile,self.lice,self.freaky,self.poison,self.royalDancer,self.bigHand,self.epred],'dot':[self.smile]}
+        self.attacks = {'normal':[(self.smile,'smile'),(self.lice,'lice'),(self.freaky,'freaky'),(self.poison,'poison'),(self.royalDancer,'royal dancer'),(self.bigHand,'big hand'),(self.epred,'E Pred')],'dot':[(self.smile,'smile')]}
         self.gold = 1000
 
 
