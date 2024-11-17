@@ -75,6 +75,8 @@ class Character(BaseState):
             
         if 'midBattle' in params:
             self.midBattle = True
+        else:
+            self.midBattle = False
         if 'round' in params:
             self.round = params['round']
         self.player.ChangeAnimation('playerIdle')
