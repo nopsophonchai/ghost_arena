@@ -52,6 +52,7 @@ class Fire(Item):
         return self.effects + self.playerEffects
     
     def render(self,screen,x,y):
+        self.spellList = [('Burning',self.burning,f'Deal {self.damage} fire damage\nBurn for {self.damage//2} \nfire damage for 1 turn'),('Healing Flame',self.healingFlame,f'Overheal for {self.damage} health'),('Magma',self.magma,f'Remove enemy armor\nDeal {self.damage} fire damage\nBurn for {self.damage} for 1 turn')]
         cardX = x
         cardY = y
         screen.blit(pygame.image.load(f'graphics/items.png/{self.name}.png'),(cardX,cardY,0,0))

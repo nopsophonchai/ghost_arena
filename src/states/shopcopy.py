@@ -9,9 +9,9 @@ from src.Enemies.Preta import Preta
 from src.Items.Weapon import Weapon
 from src.Items.effects import gameEffects,playerEffects
 from src.Enemies.Monk import Monk
-
 pygame.font.init()
 import random as rd
+
 gameFont = {
         'small': pygame.font.Font('./fonts/font.ttf', 24),
         'medium': pygame.font.Font('./fonts/font.ttf', 48),
@@ -43,9 +43,9 @@ class Shop(BaseState):
 
         self.ibought = [0,0,0,0]
 
+        self.background_image = pygame.transform.scale(pygame.image.load("./graphics/shop_background.png"), (WIDTH, HEIGHT))
         self.monk_idle_animation = sprite_collection['Monk_Idle'].animation
-      
- 
+        self.bottom_image = pygame.image.load("./graphics/lotus_monk.png")
 
 
     def Reset(self):
@@ -71,13 +71,13 @@ class Shop(BaseState):
         self.thisRound = 0
 
         self.ibought = [0,0,0,0]
-
-        self.enemy = Monk('Monk',10,3)
+        self.enemy = Monk('Monk',80,10)
 
 
 
     def Exit(self):
         print(self.weaponSelect)
+        self.player.refresh()
         self.select = 0
         self.weaponSelect = False
 
@@ -104,10 +104,7 @@ class Shop(BaseState):
             self.roundCount = 1
 
     def update(self, dt, events):
-
         self.monk_idle_animation.update(dt)
-    
-
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -166,32 +163,34 @@ class Shop(BaseState):
                             self.player.gold -= self.healthPrice
                             self.player.maxHealth += 2
                             self.healthPrice += 2 * self.healthBought
-                            self.player.playerScale(1)
+                            # self.player.playerScale(1)
                             self.healthBought += 1
                         elif self.healthBought < 11:
                             self.player.maxHealth += 2
                             self.healthPrice += 2 * self.healthBought
-                            self.player.playerScale(1)
+                            # self.player.playerScale(1)
                             self.healthBought += 1
                     else:
                         self.player.gold -= self.healthPrice
                         self.player.maxHealth += 2
                         self.healthPrice += 2 * self.healthBought
-                        self.player.playerScale(1)
+                        # self.player.playerScale(1)
+                        # print(self.player.items['sword'].damage)
                         self.healthBought += 1
             elif self.select == 5:
                 if self.player.gold >= self.damagePrice or self.free:
                     if self.free:
                         if self.damageBought >= 11 and self.player.gold >= self.damagePrice:
                             self.player.gold -= self.damagePrice
-                            self.player.damage += 1
+                            self.player.maxDamage += 1
                         elif self.damageBought < 11:
-                            self.player.damage += 1
+                            self.player.maxDamage += 1
                     else:
                         self.player.gold -= self.damagePrice
-                        self.player.damage += 1
+                        self.player.maxDamage += 1
                     self.damagePrice += 2 * self.damageBought
                     self.player.playerScale(1)
+                    print(self.player.items['sword'].damage)
                     self.damageBought += 1
             elif self.select < 4:
                 #print(self.chosenList)
@@ -209,9 +208,10 @@ class Shop(BaseState):
 
                     
     def render(self, screen):
-        screen.blit(self.monk_idle_animation.image, (WIDTH / 2, HEIGHT / 2))
-
-            
+        screen.blit(self.background_image, (0, 0))
+        screen.blit(self.bottom_image, ((WIDTH - self.bottom_image.get_width()) // 2, HEIGHT - self.bottom_image.get_height()))
+        center = self.monk_idle_animation.image.get_rect(center=(WIDTH//2,HEIGHT//2))
+        screen.blit(self.monk_idle_animation.image, center)
         if not self.weaponSelect:
             locations = [(WIDTH / 3, HEIGHT / 3),(WIDTH / 1.5, HEIGHT / 3),(WIDTH / 3, HEIGHT / 1.5), (WIDTH / 1.5, HEIGHT / 1.5), (WIDTH / 3, HEIGHT / 1.25),(WIDTH / 1.5, HEIGHT / 1.25)]
             priceLocations = [(WIDTH / 3, HEIGHT / 2.7),(WIDTH / 1.5, HEIGHT / 2.7),(WIDTH / 3, HEIGHT / 1.4), (WIDTH / 1.5, HEIGHT / 1.4)]
@@ -258,7 +258,7 @@ class Shop(BaseState):
             screen.blit(text_surface,rect)
 
             screen.blit(text_surface, rect)
-            text_surface = gameFont['small'].render(f'Damage: {self.player.damage}', True, (255, 255, 255))
+            text_surface = gameFont['small'].render(f'Damage: {self.player.maxDamage}', True, (255, 255, 255))
             rect = text_surface.get_rect(center=(325,120))
             screen.blit(text_surface,rect)
 
@@ -297,3 +297,6 @@ class Shop(BaseState):
             if self.alertTimer >= 100:
                 self.alertTimer = 0
                 self.alert = False
+
+        
+

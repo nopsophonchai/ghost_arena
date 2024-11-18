@@ -188,7 +188,7 @@ class EnemySelection(BaseState):
         for enemy in self.enemiesList:
             enemy.render(dt)
     def render(self, screen):
-        
+        screen.blit(pygame.image.load('graphics/enemySelect.jpeg'),(0,0))
         if self.choose:
             item_spacing = 200
             total_width = item_spacing * (len(self.itemList) - 1)

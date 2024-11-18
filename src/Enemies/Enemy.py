@@ -77,6 +77,8 @@ class Enemy:
                 chosenAttack[0](target)
             elif chosenType == 'dot': #Code looks dumb now, might change later
                 chosenAttack[0](target)
+        else:
+            self.addEffect('Miss!',(WIDTH / 3, HEIGHT / 6), duration=100)
 
 
     def applyStatEff(self):

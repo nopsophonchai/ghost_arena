@@ -56,6 +56,7 @@ class Play(BaseState):
 
         self.monkRound = False
         self.checkCharacter = False
+        self.bgmusic = pygame.mixer.Sound('sound/fightmusic.MP3')
 
     def Reset(self):
         self.option = 1
@@ -93,16 +94,19 @@ class Play(BaseState):
         self.monkRound = False
 
         self.checkCharacter = False
+        self.bgmusic = pygame.mixer.Sound('sound/fightmusic.MP3')
 
 
 
     def Exit(self):
+        self.bgmusic.stop()
         if not self.checkCharacter:
             self.player.refresh()
 
 
 
     def Enter(self, params):
+        self.bgmusic.play(-1)
         if not self.checkCharacter:
             self.player = params['player']
             for i in range(3):
@@ -282,6 +286,7 @@ class Play(BaseState):
                             def remove(target):
                                 target.miss = False
                             sun = Debuff('sun',apply,remove,2)
+                            self.player.addEffect('Block!',(WIDTH / 3, HEIGHT / 6), duration=100)
                             self.enemy.buffs.append(sun)
                 elif chosenCard.item.type == 'Spell':
                     chosenCard.item.attack(self.enemy,self.player,self.interfaceSelect)

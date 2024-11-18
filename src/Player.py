@@ -40,7 +40,7 @@ class Player:
         
         self.noCard = False
 
-        self.gold = 10
+        self.gold = 100
 
 
         self.animationList = aniList

@@ -58,9 +58,9 @@ def waterloo(target,damage):
     target.damageEnemy(damage//3,'Water')
 
 gameEffects =  {
-    'theSun': (here_comes_the_sun,'Here Comes the Sun',50,'70% Chance to make the \nenemy miss the next attack'),
-    'bLights': (blinding_lights,'Blinding Lights',30,'50% Chance to make the \nenemy miss the next attack'),
-    'brightLights': (bright_lights,'Bright Lights',10,'30% Chance to make the \nenemy miss the next attack'),
+    'theSun': (here_comes_the_sun,'Here Comes the Sun',100,'70% Chance to make the \nenemy miss the next attack'),
+    'bLights': (blinding_lights,'Blinding Lights',50,'50% Chance to make the \nenemy miss the next attack'),
+    'brightLights': (bright_lights,'Bright Lights',30,'30% Chance to make the \nenemy miss the next attack'),
     'niceguy': (nice_guy,'No More Mr.Nice Guy',100,"Deals additional true damage \nequal to half your \nweapon's damage"),
     'discoinferno': (disco_inferno,'Disco Inferno',50,"Deals additional fire damage\n equal to one third \nyour weapon's damage"),
     'ricericebaby': (ricericebaby,'Rice Rice Baby',50,"Deals additional rice damage\n equal to one third \nyour weapon's damage"),
