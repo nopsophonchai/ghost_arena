@@ -85,6 +85,9 @@ class Character(BaseState):
 
         self.image6 = pygame.image.load('graphics/black.jpg')
         self.image6 = pygame.transform.scale(self.image6,(200,340))    
+
+        self.bgmusic = pygame.mixer.Sound('sound/character.mp3')
+
     def Reset(self):
         self.option = 1
         self.round = 0
@@ -94,12 +97,15 @@ class Character(BaseState):
         self.enemiesList = []
         self.roundEnd = True
         self.player = Player()
+        self.bgmusic = pygame.mixer.Sound('sound/character.mp3')
         self.page = 1
 
     def Exit(self):
+        self.bgmusic.stop()
         pass
 
     def Enter(self, params):
+        self.bgmusic.play(-1)
         if 'player' in params:
             self.player = params['player']
             
@@ -114,10 +120,13 @@ class Character(BaseState):
        self.player.render(dt)
        self.player.render(dt)
        for event in events:
+            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                sound = pygame.mixer.Sound('sound/hit.wav')
+                sound.play()
                 if event.key == pygame.K_RIGHT:
                     if self.midBattle:
                         stateManager.Change('play',{})

@@ -24,23 +24,18 @@ class Raindrop:
     def __init__(self):
         self.x = random.randint(0, WIDTH)
         self.y = random.randint(-HEIGHT, 0)
-        self.speed = 2  # Raindrop speed
+        self.speed = 20
 
     def fall(self):
-        # Move the raindrop down
         self.y += self.speed
-        # Reset position when it goes off screen
         if self.y > HEIGHT:
             self.y = random.randint(-HEIGHT, 0)
             self.x = random.randint(0, WIDTH)
-            self.speed = 2  # Reset speed
+            self.speed = 20 
 
     def draw(self, screen):
-        # Draw the black outline (pixel effect)
         pygame.draw.rect(screen, BLACK, (self.x - 1, self.y - 1, 3 + 2, 10 + 2))
-        # Draw the white outline
         pygame.draw.rect(screen, WHITE, (self.x, self.y, 3, 10))
-        # Draw the blue inner part of the raindrop
         pygame.draw.rect(screen, BLUE, (self.x + 1, self.y + 1, 3 - 2, 10 - 2))
 
 
@@ -62,6 +57,7 @@ class Lobby(BaseState):
 
         # Initialize raindrops
         self.raindrops = [Raindrop() for _ in range(30)]
+        self.rain = pygame.mixer.Sound('sound/rain.mp3')
 
     def Reset(self):
         self.option = 0
@@ -71,12 +67,14 @@ class Lobby(BaseState):
         self.enemiesList = []
         self.roundEnd = True
         self.player = Player()
+        self.rain = pygame.mixer.Sound('sound/rain.mp3')
         print(self.player.damage)
 
     def Exit(self):
-        pass
+        self.rain.stop()
 
     def Enter(self, params):
+        self.rain.play(-1) 
         if 'player' in params:
             self.player = params['player']
             self.player.refresh()
@@ -88,10 +86,13 @@ class Lobby(BaseState):
     def update(self, dt, events):
         self.player.render(dt)
         for event in events:
+            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                sound = pygame.mixer.Sound('sound/hit.wav')
+                sound.play()
                 if event.key == pygame.K_UP:  # Move up in the menu
                     self.option = (self.option - 1) % len(self.menu_options)  # Cycle options upwards
                 elif event.key == pygame.K_DOWN:  # Move down in the menu

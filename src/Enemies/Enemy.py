@@ -27,6 +27,7 @@ class Enemy:
     
 
     def damageEnemy(self,damage,type = 'normal'):
+        
         damageTaken = 0
         color = (153,153,153)
         if type in self.immune:
@@ -82,6 +83,7 @@ class Enemy:
 
 
     def applyStatEff(self):
+        pygame.mixer.Sound('sound/hurt.mp3').play()
         for i in self.statusEffects:
             i.apply(self)
             if self.health <= 0:
@@ -93,15 +95,16 @@ class Enemy:
                 self.statusEffects.remove(i)
 
     def applyDebuffs(self):
-            print(self.buffs)
-            for debuff in self.buffs[:]: 
-                debuff.apply(self)
-                print(self.miss)
-                if debuff.duration <= 0:
+        pygame.mixer.Sound('sound/hurt.mp3').play()
+        print(self.buffs)
+        for debuff in self.buffs[:]: 
+            debuff.apply(self)
+            print(self.miss)
+            if debuff.duration <= 0:
 
-                    debuff.remove(self)  
-                    self.buffs.remove(debuff)
-                    print(self.miss)
+                debuff.remove(self)  
+                self.buffs.remove(debuff)
+                print(self.miss)
 
     def ChangeAnimation(self,name):
         self.currAni = self.animationList[name]

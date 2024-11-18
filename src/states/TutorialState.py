@@ -6,7 +6,7 @@ class TutorialState(BaseState):
     def __init__(self):
         super(TutorialState, self).__init__()
         self.step = 0
-        self.bg_image = pygame.image.load("./graphics/bgtwo.png")
+        self.bg_image = pygame.image.load('graphics/enemySelect.jpeg')
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
         self.instructions = [
@@ -25,15 +25,18 @@ class TutorialState(BaseState):
         self.typing_speed = 0.005  # Adjust typing speed as needed
         self.time_since_last_char = 0
         self.show_next_button = False
+        self.bgmusic = pygame.mixer.Sound('sound/zelda.mp3')
 
         # Button to advance the tutorial
         self.next_button = pygame.Rect(1150, 620, 100, 50)
 
     def Enter(self, params):
         self.step = 0
+        self.bgmusic.play(-1)
         self.start_typing_effect()
 
     def Exit(self):
+        self.bgmusic.stop()
         pass
 
     def render(self, screen):
@@ -67,10 +70,13 @@ class TutorialState(BaseState):
                 self.show_next_button = True
 
         for event in events:
+            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
+                sound = pygame.mixer.Sound('sound/hit.wav')
+                sound.play()
                 if event.key == pygame.K_RETURN and self.show_next_button:
                     self.next_step()
                 elif event.key == pygame.K_ESCAPE:

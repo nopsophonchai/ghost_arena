@@ -52,6 +52,7 @@ class Shop(BaseState):
         self.image3 = pygame.transform.scale(self.image3,(70,70))
 
         self.monk_idle_animation = sprite_collection['Monk_Idle'].animation
+        self.bgmusic = pygame.mixer.Sound('sound/shop.mp3')
     
 
     def Reset(self):
@@ -77,6 +78,7 @@ class Shop(BaseState):
         self.thisRound = 0
 
         self.ibought = [0,0,0,0]
+        self.bgmusic = pygame.mixer.Sound('sound/shop.mp3')
 
 
 
@@ -85,8 +87,10 @@ class Shop(BaseState):
         print(self.weaponSelect)
         self.select = 0
         self.weaponSelect = False
+        self.bgmusic.stop()
 
     def Enter(self, params):
+        self.bgmusic.play(-1)
         print(self.weaponSelect)
         
         self.weaponSelect = False
@@ -115,6 +119,8 @@ class Shop(BaseState):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
+                sound = pygame.mixer.Sound('sound/hit.wav')
+                sound.play()
                 if event.key == pygame.K_LEFT:
                     if self.weaponSelect:
                         self.select = (self.select - 1) % len(self.weaponDict)
@@ -305,7 +311,7 @@ class Shop(BaseState):
             screen.blit(text_surface,rect)
 
             screen.blit(text_surface, rect)
-            text_surface = gameFont['small'].render(f'Damage: {self.player.damage}', True, (245, 64, 41))
+            text_surface = gameFont['small'].render(f'Damage: {self.player.maxDamage}', True, (245, 64, 41))
             rect = text_surface.get_rect(center=(150,90))
             screen.blit(text_surface,rect)
 

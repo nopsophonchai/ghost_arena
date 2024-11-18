@@ -7,6 +7,7 @@ class Card:
         self.name = name
         self.item = item #This is class Item
     def use(self,target,player):
+        pygame.mixer.Sound('sound/hurt.mp3').play()
         self.item.attack(target)
         print('called')
 

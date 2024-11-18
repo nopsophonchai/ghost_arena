@@ -49,9 +49,11 @@ class EnemySelection(BaseState):
         # self.allEnemies = ['Phrai']
         # self.allEnemies = ['NangRam']
         self.info = False
+        self.bgmusic = pygame.mixer.Sound('sound/ksi.mp3')
 
 
     def Reset(self):
+        self.bgmusic = pygame.mixer.Sound('sound/ksi.mp3')
         self.option = 1
         self.round = 0
         self.confirm = False
@@ -66,9 +68,11 @@ class EnemySelection(BaseState):
         self.allEnemies = ['Preta','GongGoi']
 
     def Exit(self):
+        self.bgmusic.stop()
         self.select = 0
 
     def Enter(self, params):
+        self.bgmusic.play(-1)
         self.player = params['player']
         if 'enemy' in params:
             self.enemy = params['enemy']
@@ -112,7 +116,10 @@ class EnemySelection(BaseState):
                 self.enemiesList.append(addedEnemy)
             # print(self.enemiesList)
             if self.round == 7:
-                self.enemiesList = [Faker('Faker',(8+(2*(self.round-1))),(2+(self.round-1)))]
+                faker = Faker('Faker',(100+(2*(self.round-1))),(10+(self.round-1)))
+                faker.ChangeAnimation(f'FakerIdle')
+                self.enemiesList = [faker]
+
 
 
 
@@ -134,10 +141,13 @@ class EnemySelection(BaseState):
        # self.enemy.render(dt)
         if not self.choose:
             for event in events:
+                
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
+                    sound = pygame.mixer.Sound('sound/hit.wav')
+                    sound.play()
                     if event.key == pygame.K_LEFT:
                         self.select = (self.select - 1) % (len(self.enemiesList))
                         print(self.select)

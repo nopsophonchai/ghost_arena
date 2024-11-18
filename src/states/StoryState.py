@@ -21,13 +21,15 @@ class StoryState(BaseState):
         self.show_start_button = False
 
         # Background
-        self.bg_image = pygame.image.load("./graphics/bgtwo.png")
+        self.bg_image = pygame.image.load('graphics/enemySelect.jpeg')
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
 
         # Button to advance the story
         self.next_button = pygame.Rect(1150, 620, 100, 50)
+        self.bgmusic = pygame.mixer.Sound('sound/zelda.mp3')
 
     def Enter(self, params):
+        self.bgmusic.play(-1)
         self.current_line_index = 0
         self.current_line = ""
         self.current_char_index = 0
@@ -36,6 +38,7 @@ class StoryState(BaseState):
         self.show_start_button = False
 
     def Exit(self):
+        self.bgmusic.stop()
         pass
 
     def render(self, screen):
@@ -75,10 +78,13 @@ class StoryState(BaseState):
                 self.show_next_button = True
 
         for event in events:
+            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
+                sound = pygame.mixer.Sound('sound/hit.wav')
+                sound.play()
                 if event.key == pygame.K_RETURN and self.show_next_button:
                     self.next_line()
                 elif event.key == pygame.K_ESCAPE:

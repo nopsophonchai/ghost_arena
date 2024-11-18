@@ -11,17 +11,17 @@
                 {
                     "x":0,
                     "y":128,
-                    "scale":1
+                    "scale":2
                 },
                 {
                     "x":128,
                     "y":128,
-                    "scale":1
+                    "scale":2
                 },
                 {
                     "x":0,
                     "y":128,
-                    "scale":1
+                    "scale":2
                 }
 			
             ],
@@ -29,7 +29,7 @@
 			{
 				"x":0,
 				"y":128,
-				"scale":1
+				"scale":2
 		     },
             "interval_time":1,
             "colorKey": null
@@ -42,24 +42,24 @@
                 {
                     "x":256,
                     "y":128,
-                    "scale":1
+                    "scale":2
                 },
                 {
                     "x":0,
                     "y":128,
-                    "scale":1
+                    "scale":2
                 },
                 {
                     "x":256,
                     "y":128,
-                    "scale":1
+                    "scale":2
                 }
             ],
 	       "idle_image":
 			{
 				"x":256,
 				"y":128,
-				"scale":1
+				"scale":2
 		     },
 
             "interval_time":1,

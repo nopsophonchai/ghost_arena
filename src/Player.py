@@ -40,7 +40,7 @@ class Player:
         
         self.noCard = False
 
-        self.gold = 100
+        self.gold = 1000
 
 
         self.animationList = aniList
@@ -50,6 +50,7 @@ class Player:
         self.statusList = []
 
     def damageEnemy(self,damage,type='normal'):
+        pygame.mixer.Sound('sound/hurt.mp3').play()
         damageTaken = 0
         color = (153,153,153)
         if not self.noArmor:
@@ -96,6 +97,7 @@ class Player:
         rd.shuffle(self.deck)
     
     def applyStatEff(self):
+        pygame.mixer.Sound('sound/hurt.mp3').play()
         # print('Poison!')
         for i in self.statusEffects:
             i.apply(self)
@@ -107,6 +109,7 @@ class Player:
                 self.statusEffects.remove(i)
                 
     def applyDebuffs(self):
+        pygame.mixer.Sound('sound/hurt.mp3').play()
         print(f'No card: {self.noCard}')
         for debuff in self.buffs[:]: 
             debuff.apply(self)

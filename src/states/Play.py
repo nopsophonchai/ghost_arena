@@ -146,10 +146,13 @@ class Play(BaseState):
                         self.player.applyDebuffs()
                     self.turnCount = 1
                 for event in events:
+                    
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.KEYDOWN:
+                        sound = pygame.mixer.Sound('sound/hit.wav')
+                        sound.play()
                         if event.key == pygame.K_LEFT:
                             self.select = (self.select - 1) % (len(self.player.current) + 2)
                             # print(self.select)
@@ -262,10 +265,13 @@ class Play(BaseState):
         else:
             # print("Welcome to the show")
             for event in events:
+                
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
+                    sound = pygame.mixer.Sound('sound/hit.wav')
+                    sound.play()
                     if event.key == pygame.K_UP:
                         self.interfaceSelect = (self.interfaceSelect - 1) % (3)
                     if event.key == pygame.K_DOWN:

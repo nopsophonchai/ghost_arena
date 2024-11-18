@@ -17,23 +17,18 @@ class Raindrop:
     def __init__(self):
         self.x = random.randint(0, WIDTH)
         self.y = random.randint(-HEIGHT, 0)
-        self.speed = 10  # Raindrop speed
+        self.speed = 10  
 
     def fall(self):
-        # Move the raindrop down
         self.y += self.speed
-        # Reset position when it goes off screen
         if self.y > HEIGHT:
             self.y = random.randint(-HEIGHT, 0)
             self.x = random.randint(0, WIDTH)
-            self.speed = 10  # Reset speed
+            self.speed = 10  
 
     def draw(self, screen):
-        # Draw the black outline (pixel effect)
         pygame.draw.rect(screen, BLACK, (self.x - 1, self.y - 1, 3 + 2, 10 + 2))
-        # Draw the white outline
         pygame.draw.rect(screen, WHITE, (self.x, self.y, 3, 10))
-        # Draw the blue inner part of the raindrop
         pygame.draw.rect(screen, BLUE, (self.x + 1, self.y + 1, 3 - 2, 10 - 2))
 
 class StartState(BaseState):
@@ -41,29 +36,28 @@ class StartState(BaseState):
         super(StartState, self).__init__()
         self.option = 1
         self.showNum = False
-        self.raindrops = [Raindrop() for _ in range(100)]  # Initialize raindrops
-        
-        # Lightning effect variables
+        self.raindrops = [Raindrop() for _ in range(100)]  
         self.lightning_active = False
         self.lightning_flash_count = 0
         self.lightning_timer = 0
-        self.lightning_cooldown = random.randint(200, 500)  # Time between strikes (ms)
-        self.lightning_alpha = 255  # Start with full brightness for lightning flash
+        self.lightning_cooldown = random.randint(200, 500)  
+        self.lightning_alpha = 255  
         self.mainScreen = False
 
         self.introTimer = 0
+        self.rain = pygame.mixer.Sound('sound/rain.mp3')
 
     def Reset(self):
         self.option = 1
         self.showNum = False
 
     def Exit(self):
-        # Close resources in moviepy if necessary
-        pass
+        self.rain.stop()
+        pygame.mixer.Sound('sound/thunder.mp3').stop()
 
     def Enter(self, params=None):
-        # Start with the intro video and prepare the frame iterator
-        pass
+        self.rain.play(-1)
+        pygame.mixer.Sound('sound/thunder.mp3').play()
 
     def render(self, screen):
     # Clear screen and draw raindrops
@@ -164,10 +158,13 @@ class StartState(BaseState):
             self.introTimer += 1
             print(self.introTimer)
         for event in events:
+            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                sound = pygame.mixer.Sound('sound/hit.wav')
+                sound.play()
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
@@ -189,6 +186,7 @@ class StartState(BaseState):
 
         # Handle lightning effect with fading
         if self.lightning_active:
+            
             if self.lightning_flash_count > 0:
                 # Start with a bright flash and fade out
                 self.lightning_alpha -= 25  # Decrease alpha to create fade-out effect
@@ -214,6 +212,7 @@ class StartState(BaseState):
             if self.lightning_timer >= self.lightning_cooldown:
                 # Start a new lightning sequence
                 self.lightning_active = True
+                pygame.mixer.Sound('sound/thunder.mp3').play()
                 self.lightning_flash_count = random.randint(2, 5)  # Random number of flashes per strike
                 self.lightning_alpha = 255  # Start with full brightness for each strike
                 self.lightning_timer = 0
