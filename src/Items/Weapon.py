@@ -58,7 +58,7 @@ class Weapon(Item):
             # Loop through the first 3 effects (or fewer if there are less than 3)
             for i in range(min(3, len(self.getCombinedEffects()))):
                 # Render the effect's name
-                text_surface = pygame.font.Font('./fonts/font.ttf', 10).render(f"{self.getCombinedEffects()[i][1]}", True, (0, 0, 0))
+                text_surface = pygame.font.Font('./fonts/font.ttf', 12).render(f"{self.getCombinedEffects()[i][1]}", True, (0, 0, 0))
                 rect = text_surface.get_rect(center=(cardX + 260, cardY + effect_y_position))
                 screen.blit(text_surface, rect)
                 
@@ -69,7 +69,7 @@ class Weapon(Item):
                 description_lines = self.getCombinedEffects()[i][2].split('\n')
                 for line in description_lines:
                     # Render each line of the description
-                    text_surface = pygame.font.Font('./fonts/font.ttf', 10).render(line, True, (0, 0, 0))
+                    text_surface = pygame.font.Font('./fonts/font.ttf', 12).render(line, True, (0, 0, 0))
                     rect = text_surface.get_rect(center=(cardX + 260, cardY + effect_y_position + effect_y_positionTwo))
                     screen.blit(text_surface, rect)
                     # Move down for the next line in the description

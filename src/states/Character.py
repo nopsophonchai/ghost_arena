@@ -137,8 +137,6 @@ class Character(BaseState):
                     else:
                         stateManager.Change('lobby',{'player': self.player})
                 if event.key == pygame.K_UP:
-                    self.page += 1
-                elif event.key == pygame.K_UP:
                     #self.page += 1
                     self.selected_item_index = (self.selected_item_index - 1) % len(self.player.items)
                     print(self.player.items)

@@ -57,7 +57,7 @@ class Water(Item):
         cardY = y
         screen.blit(pygame.image.load(f'graphics/items.png/{self.name}.png'),(cardX,cardY,0,0))
 
-        text_surface = gameFont['small'].render(f"{self.name}", True, (0, 0, 0))
+        text_surface = gameFont['small'].render(f"Water", True, (0, 0, 0))
         rect = text_surface.get_rect(center=(cardX + 90, cardY + 22))
         screen.blit(text_surface, rect)
 
@@ -73,14 +73,14 @@ class Water(Item):
             effect_y_position = 65
             effect_y_positionTwo = 10
             for i in range(3):
-                text_surface = pygame.font.Font('./fonts/font.ttf', 10).render(f"{self.spellList[i][0]}", True, (0, 0, 0))
+                text_surface = pygame.font.Font('./fonts/font.ttf', 12).render(f"{self.spellList[i][0]}", True, (0, 0, 0))
                 rect = text_surface.get_rect(center=(cardX + 260, cardY + effect_y_position))
                 screen.blit(text_surface, rect)
                 effect_y_position += 10 
                 effect_y_positionTwo = 0
                 description_lines = self.spellList[i][2].split('\n')
                 for line in description_lines:
-                    text_surface = pygame.font.Font('./fonts/font.ttf', 10).render(line, True, (0, 0, 0))
+                    text_surface = pygame.font.Font('./fonts/font.ttf', 12).render(line, True, (0, 0, 0))
                     rect = text_surface.get_rect(center=(cardX + 260, cardY + effect_y_position + effect_y_positionTwo))
                     screen.blit(text_surface, rect)
                     effect_y_positionTwo += 10 
