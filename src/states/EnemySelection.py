@@ -219,7 +219,7 @@ class EnemySelection(BaseState):
             total_width = item_spacing * (len(self.enemiesList) - 1)
             start_x = (WIDTH - total_width) / 2
             #round info
-            text_surface = gameFont['small'].render(f'Round {self.round}', True, (255, 255, 255))
+            text_surface = gameFont['medium'].render(f'Round {self.round}', True, (255, 255, 255))
             rect = text_surface.get_rect(center=(WIDTH / 2, HEIGHT / 5))
             screen.blit(text_surface, rect)
             text_surface = gameFont['small'].render(f'Press 0 to view enemy info', True, (255, 255, 255))
