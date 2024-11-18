@@ -232,7 +232,7 @@ class Shop(BaseState):
         screen.blit(scaled_bottom_image,(WIDTH/2 + 210,HEIGHT/2 + 70))
         screen.blit(scaled_bottom_image,(WIDTH/2 - 150 ,HEIGHT/4 - 120))
         # Scale up the monk
-        scale_factor = 2.5  
+        scale_factor = 1.5  
         monk_scaled = pygame.transform.scale(
             self.monk_idle_animation.image, 
             (

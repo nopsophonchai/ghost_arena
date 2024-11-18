@@ -11,22 +11,22 @@
                 {
                     "x":0,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":64,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":128,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":0,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 }
 			
             ],
@@ -34,7 +34,7 @@
 			{
 				"x":0,
 				"y":0,
-				"scale":2
+				"scale":3
 		     },
             "interval_time":0.5,
             "colorKey": null
@@ -47,32 +47,32 @@
                 {
                     "x":192,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":256,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":320,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":384,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":448,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 },
                 {
                     "x":192,
                     "y":0,
-                    "scale":2
+                    "scale":3
                 }
 
             ],
@@ -80,7 +80,7 @@
 			{
 				"x":128,
 				"y":0,
-				"scale":2
+				"scale":3
 		     },
 
             "interval_time":0.2,
