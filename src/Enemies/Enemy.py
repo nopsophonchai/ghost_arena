@@ -61,6 +61,8 @@ class Enemy:
                 color = (255,255,255)
 
         self.addEffect(f'{damageTaken}',(WIDTH / 1.5, HEIGHT / 6),color)
+        if self.health <= 0:
+            self.isDead = True
     def chooseAttacks(self):
         attackType, attackList = rd.choice(list(self.attacks.items()))
 

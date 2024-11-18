@@ -7,7 +7,7 @@ class Monk(Enemy):
     def __init__(self,name,health,damage,armor = 0):
         super().__init__(health,damage,armor,name='Monk',immune=[],weakness=[])
         self.attacks = {'normal':[(self.exorcise,'exorcise')],'dot':[(self.heal,'heal')]}
-        self.gold = 4
+        self.gold = 500
     def exorcise(self,target):
         if target.health < 5:
             target.damageEnemy(self.damage, 'true')

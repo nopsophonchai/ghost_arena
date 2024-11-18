@@ -100,6 +100,7 @@ class Play(BaseState):
 
     def Exit(self):
         self.bgmusic.stop()
+        self.monkRound = False
         if not self.checkCharacter:
             self.player.refresh()
 

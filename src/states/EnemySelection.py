@@ -41,10 +41,10 @@ class EnemySelection(BaseState):
 
         self.choose = False
         self.itemList = ['Fire','Water','Rice','Armor']
-        self.allEnemies = ['Preta','GongGoi']
+        # self.allEnemies = ['Preta','GongGoi']
         # self.allEnemies = ['Krasue']
         # self.allEnemies = ['Faker']
-        # self.allEnemies = ['MaeNak']
+        self.allEnemies = ['MaeNak']
         # self.allEnemies = ['Ka']
         # self.allEnemies = ['Phrai']
         # self.allEnemies = ['NangRam']
